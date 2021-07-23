@@ -1,0 +1,13 @@
+paths:
+    /:
+        get:
+            tags:
+                - Sample
+            summary: Router Summary
+            consumes:
+                - application/json
+            produces:
+                - application/json
+            responses:
+                "200":
+                    description: OK.

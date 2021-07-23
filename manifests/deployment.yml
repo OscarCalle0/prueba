@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: example
+    namespace: apis
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: example
+    template:
+        metadata:
+            labels:
+                app: example
+        spec:
+            containers:
+                - name: example
+                  image: gcr.io/google-samples/hello-app:1.0
+                  imagePullPolicy: Always
+                  ports:
+                      - containerPort: 8080
