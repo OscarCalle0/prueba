@@ -1,19 +1,19 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-    name: example-route
+    name: cu-pagos-pay-ms-router
     namespace: apis
 spec:
     hosts:
-        - api-dev.coordinadora.com
+        - $HOST
     gateways:
         - apis/api-gateway
     http:
         - match:
               - uri:
-                    exact: /
+                    prefix: /pagos
           route:
               - destination:
-                    host: example
+                    host: $SERVICIO
                     port:
                         number: 8080

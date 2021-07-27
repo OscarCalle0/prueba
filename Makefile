@@ -46,3 +46,6 @@ deploy: check-project check-commit-sha check-service-name
 
 base64:
 	openssl base64 -A -in .env -out .env.txt
+
+replace-files:
+	envsubst

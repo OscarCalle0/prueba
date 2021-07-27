@@ -9,7 +9,7 @@ on:
 env:
     SERVICE_NAME: example
     REGION: us-central1
-    GCP_PROJECT: ${{ secrets.PROJECT_ID_DEV }}
+    PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_DEV }}
     BD_PROJECT: ${{ secrets.BD_PROJECT_ID_DEV }}
     ENV_FILE: env/dev.env
 jobs:

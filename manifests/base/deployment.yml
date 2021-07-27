@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: $SERVICE_NAME
+    namespace: apis
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: $SERVICE_NAME
+    template:
+        metadata:
+            labels:
+                app: $SERVICE_NAME
+        spec:
+            volumes:
+                - name: "apis-service-account"
+                  secret:
+                    secretName: "apis-service-account" 
+            containers:
+                - name: $SERVICE_NAME
+                  imagePullPolicy: Always
+                  volumeMounts:
+                    - name: "apis-service-account"
+                      mountPath: "/var/secret"
+                  ports:
+                      - containerPort: 8080
+                  env:
+                    - name: "GOOGLE_APPLICATION_CREDENTIALS"
+                      value: "/var/secret/apis-service-account.json"

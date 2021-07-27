@@ -1,0 +1,20 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: $SERVICIO
+spec:
+  maxReplicas: 15
+  minReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          averageUtilization: 80
+          type: AverageValue
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          averageUtilization: 80
+          type: Utilization

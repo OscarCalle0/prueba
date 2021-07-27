@@ -1,0 +1,10 @@
+# [START api-sifa-$SERVICIO]
+apiVersion: v1
+kind: Service
+metadata:
+  name: $SERVICIO
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
