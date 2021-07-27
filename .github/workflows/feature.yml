@@ -60,7 +60,7 @@ jobs:
         - name: Create ENV File
           run: cp ${{ env.ENV_FILE }} .env
         - name: Build and deploy image
-          run: PROJECT_ID=$PROJECT_CLUSTER_ID COMMIT_SHA=${{ github.sha }} SERVICE_NAME=$SERVICE_NAME make deploy
+          run: PROJECT_ID=cm-cluster-coordinadora-dev COMMIT_SHA=${{ github.sha }} SERVICE_NAME=$SERVICE_NAME make deploy
 
     kubernetes:
       runs-on: ubuntu-latest
