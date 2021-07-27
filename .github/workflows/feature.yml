@@ -86,9 +86,11 @@ jobs:
           with:
               kustomize-version: '3.9.2'
         - name: Update image
-          run: kustomize edit set image gcr.io/PROJECT_ID/$SERVICE_NAME=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA ./manifests/$ENV
+          run: kustomize edit set image gcr.io/PROJECT_ID/$SERVICE_NAME=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA 
+          working-directory: ./manifests/$ENV
         - name: Build and Deploy
-          run: SERVICE_NAME=$SERVICE_NAME kustomize build ./manifests/$ENV
+          run: SERVICE_NAME=$SERVICE_NAME kustomize build .
+          working-directory: ./manifests/$ENV
 
     terraform:
       runs-on: ubuntu-latest
