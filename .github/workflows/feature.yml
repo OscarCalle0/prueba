@@ -9,7 +9,7 @@ env:
     SERVICE_NAME: microservicio-gke
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_DEV }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_DEV }}
-    CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+    CLUSTER_NAME: cm-cluster
     CLUSTER_LOCATION: us-central1
     ENV_FILE: env/dev.env
     ENV: dev
@@ -79,6 +79,7 @@ jobs:
           with:
               cluster_name: ${{ env.CLUSTER_NAME }}
               location: ${{ env.CLUSTER_LOCATION }}
+              project_id: ${{ secrets.PROJECT_CLUSTER_ID }}
         - name: Setup Kustomize
           uses: imranismail/setup-kustomize@v1
           with:
