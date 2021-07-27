@@ -87,7 +87,7 @@ jobs:
               kustomize-version: '3.9.2'
         - name: Update image
           run: pwd && ls -la
-          working-directory: ./manifests/${{ env.ENV }}
+          working-directory: .
         - name: Update image
           run: kustomize edit set image gcr.io/PROJECT_ID/$SERVICE_NAME=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA 
           working-directory: ./manifests/${{ env.ENV }}
