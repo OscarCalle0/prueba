@@ -4,9 +4,6 @@ on:
         branches:
           - 'feature/**'
           - 'fix/**'
-        paths-ignore:
-          - 'manifests/**'
-          - 'infra/**'
 env:
     SERVICE_NAME: example
     REGION: us-central1
