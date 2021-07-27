@@ -61,8 +61,6 @@ jobs:
           uses: imranismail/setup-kustomize@v1
           with:
               kustomize-version: '3.9.2'
-        - name: reemplazar variables
-          run: 
         - name: Update image
           run: kustomize edit set image gcr.io/PROJECT_ID/cu-pagos-pay-ms=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
         - name: Build and Deploy
