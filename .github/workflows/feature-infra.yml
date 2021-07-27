@@ -1,0 +1,50 @@
+name: Infra Feature Flow
+on:
+    push:
+        branches:
+          - 'feature/**'
+        paths:
+          - 'manifests/**'
+          - 'infra/**'
+env:
+    SERVICE_NAME: example
+    REGION: us-central1
+    GCP_PROJECT: ${{ secrets.PROJECT_ID_DEV }}
+    BD_PROJECT: ${{ secrets.BD_PROJECT_ID_DEV }}
+    ENV_FILE: env/dev.env
+jobs:
+    kubernetes:
+        runs-on: ubuntu-latest
+        name: Kubernetes
+        outputs:
+            url: ${{ steps.extract_url.outputs.url }}
+        steps:
+          - name: Get URL Cloud Run
+            shell: bash
+            run: echo "##[set-output name=url;]$(gcloud run services describe $SERVICE_NAME --platform managed --region $REGION --format 'value(status.url)')"
+            id: extract_url
+          - name: preparar env File
+            run: echo "BD_PROJECT_ID=${{env.BD_PROJECT}}">> dev.env
+
+    terraform:
+        runs-on: ubuntu-latest
+        name: Infra as Code
+        needs: build_and_deploy
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Set up Cloud SDK
+              uses: google-github-actions/setup-gcloud@master
+              with:
+                  project_id: ${{ secrets.PROJECT_ID_DEV }}
+                  service_account_key: ${{ secrets.GCP_SA_KEY }}
+                  export_default_credentials: true
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v1
+            - name: Init Terraform
+              run: make terraform-init
+            - name: Create Workspace Terraform
+              run: PROJECT_ID=$GCP_PROJECT ENV=dev  make terraform-create-workspace
+            - name: Apply Terraform
+              run: PROJECT_ID=$GCP_PROJECT ENV=dev  make terraform-apply
+    
