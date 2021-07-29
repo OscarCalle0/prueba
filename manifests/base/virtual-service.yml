@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-    name: cu-pagos-pay-ms-router
+    name: $SERVICIO-router
     namespace: apis
 spec:
     hosts:
@@ -11,7 +11,7 @@ spec:
     http:
         - match:
               - uri:
-                    prefix: /pagos
+                    prefix: /prueba
           route:
               - destination:
                     host: $SERVICIO
