@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: $SERVICIO
+  name: $SERVICE_NAME
 spec:
   maxReplicas: 5
   minReplicas: 1
