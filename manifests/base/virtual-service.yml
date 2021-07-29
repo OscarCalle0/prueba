@@ -2,7 +2,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
     name: $SERVICIO-router
-    namespace: apis
 spec:
     hosts:
         - $HOST
