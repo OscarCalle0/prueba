@@ -13,6 +13,7 @@ env:
     CLUSTER_LOCATION: us-central1
     ENV_FILE: env/dev.env
     ENV: dev
+    HOST: apiv2-dev.coordinadora.com
 
 jobs:
     build_and_deploy:
@@ -89,9 +90,9 @@ jobs:
               kustomize-version: '3.9.2'
         - name: Update image
           run: kustomize edit set image gcr.io/PROJECT_ID/$SERVICE_NAME=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA 
-          working-directory: ./manifests/overlays//${{ env.ENV }}
+          working-directory: ./manifests/overlays/${{ env.ENV }}
         - name: Build and Deploy
-          run: SERVICE_NAME=$SERVICE_NAME kustomize build . | envsubst
+          run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME kustomize build . | envsubst | kubectl apply -f -
           working-directory: ./manifests/overlays//${{ env.ENV }}
 
     terraform:
