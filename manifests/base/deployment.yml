@@ -15,7 +15,7 @@ spec:
             volumes:
                 - name: "apis-service-account"
                   secret:
-                    secretName: "apis-service-account" 
+                    secretName: "apis-legalizacion-service-account" 
             containers:
                 - name: $SERVICE_NAME
                   imagePullPolicy: Always
@@ -34,4 +34,4 @@ spec:
                       memory: 240Mi
                   env:
                     - name: "GOOGLE_APPLICATION_CREDENTIALS"
-                      value: "/var/secret/apis-service-account.json"
+                      value: "/var/secret/apis-legalizacion-service-account.json"
