@@ -89,7 +89,7 @@ jobs:
           with:
               kustomize-version: '3.9.2'
         - name: Update image
-          run: kustomize edit set image PROJECT/IMAGE=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA 
+          run: kustomize edit set image PROJECT/IMAGE=gcr.io/$PROJECT_CLUSTER_ID/$SERVICE_NAME:$GITHUB_SHA 
           working-directory: ./manifests/overlays/${{ env.ENV }}
         - name: Build and Deploy
           run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME kustomize build . | envsubst | kubectl apply -f -
