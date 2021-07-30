@@ -19,6 +19,7 @@ spec:
             containers:
                 - name: $SERVICE_NAME
                   imagePullPolicy: Always
+                  image: gcr.io/PROJECT_ID/SERVICE_NAME
                   volumeMounts:
                     - name: "apis-service-account"
                       mountPath: "/var/secret"
