@@ -8,3 +8,5 @@ spec:
     - name: http
       port: 8080
       protocol: TCP
+  selector:
+    app: $SERVICE_NAME
