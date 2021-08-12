@@ -96,6 +96,8 @@ jobs:
         - name: Build and Deploy
           run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME kustomize build . | envsubst | kubectl apply -f -
           working-directory: ./manifests/overlays//${{ env.ENV }}
+        - name: Delete pods
+          run: kubectl --namespace=apis delete pod -l app=$SERVICE_NAME
 
     terraform:
       runs-on: ubuntu-latest
