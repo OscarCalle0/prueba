@@ -9,13 +9,6 @@ spec:
         maxSurge: 25%
         maxUnavailable: 25%
       type: RollingUpdate
-    template:
-      spec:
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
     selector:
         matchLabels:
             app: $SERVICE_NAME
