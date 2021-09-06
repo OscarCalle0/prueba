@@ -1,10 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: apis
 resources:
-    - manifests/deployment.yml
-    - manifests/service.yml
-    - manifests/hpa.yml
-    - manifests/virtual-service.yml
+    - ../../base/
 
 patchesStrategicMerge:
-  - ./change_replicas.yaml
+  - ./hpa.yml
