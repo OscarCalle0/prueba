@@ -4,6 +4,11 @@ metadata:
     name: $SERVICE_NAME
 spec:
     replicas: 1
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
     selector:
         matchLabels:
             app: $SERVICE_NAME
