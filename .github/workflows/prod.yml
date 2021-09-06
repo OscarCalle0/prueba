@@ -8,11 +8,12 @@ env:
     SERVICE_NAME: template-example-ms
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_PROD }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_PROD }}
+    CLUSTER_URI: -prod
     CLUSTER_NAME: cm-cluster
     CLUSTER_LOCATION: us-central1
     ENV_FILE: env/prod.env
     ENV: prod
-    HOST: apiv2.coordinadora.com
+    HOST: apiv2-prod.coordinadora.com
     PREFIX: /example
 
 jobs:
