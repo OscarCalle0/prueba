@@ -18,7 +18,7 @@ spec:
                 app: $SERVICE_NAME
         spec:
             volumes:
-                - name: "apis-service-account"
+                - name: "apis-template-service-account"
                   secret:
                     secretName: "apis-template-service-account"
             containers:
@@ -26,7 +26,7 @@ spec:
                   imagePullPolicy: Always
                   image: PROJECT/IMAGE
                   volumeMounts:
-                    - name: "apis-service-account"
+                    - name: "apis-template-service-account"
                       mountPath: "/var/secret"
                   ports:
                       - containerPort: 8080
