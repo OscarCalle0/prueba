@@ -39,8 +39,4 @@ spec:
                       memory: 240Mi
                   env:
                     - name: "GOOGLE_APPLICATION_CREDENTIALS"
-<<<<<<< HEAD
-                      value: "/var/secret/apis-legalizacion-service-account.json"
-=======
                       value: "/var/secret/apis-template-service-account.json"
->>>>>>> dev
