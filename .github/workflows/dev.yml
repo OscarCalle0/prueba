@@ -1,5 +1,5 @@
 name: Code Development Flow
-concurrency: template-example-dev
+concurrency: despliegue-test-ms-dev
 on:
   push:
     branches:
