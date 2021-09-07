@@ -1,7 +1,8 @@
 import { example } from './ExampleRouter';
 import { FastifyInstance } from 'fastify';
+import { PREFIX } from '@util';
 
 export const initRoutes = (application: FastifyInstance): void => {
-    application.get('/', example);
-    application.post('/', example);
+    application.get(`/${PREFIX}/`, example);
+    application.post(`/${PREFIX}/`, example);
 };

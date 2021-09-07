@@ -1,6 +1,7 @@
 import { application } from '@infrastructure/api/Application';
 import { Firestore } from '@google-cloud/firestore';
 import MockFirebase from 'mock-cloud-firestore';
+import { PREFIX } from '@util';
 import { TYPES, DEPENDENCY_CONTAINER, createDependencyContainer } from '@configuration';
 
 const MockFirestore = new MockFirebase();
@@ -12,7 +13,7 @@ describe('Testing App Request', () => {
         DEPENDENCY_CONTAINER.rebind<Firestore>(TYPES.Firestore).toConstantValue(firestore);
     });
 
-    it('debería retornar 404', async () => {
+    it('test de prueba con error 404', async () => {
         const response = await application.inject({
             method: 'GET',
             url: '/route-not-found',
@@ -20,10 +21,10 @@ describe('Testing App Request', () => {
         expect(response.statusCode).toBe(404);
     });
 
-    it('debería retornar 200', async () => {
+    it('test de prueba exitoso', async () => {
         const response = await application.inject({
             method: 'GET',
-            url: '/',
+            url: `/${PREFIX}/`,
         });
         expect(response.statusCode).toBe(200);
     });

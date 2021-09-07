@@ -14,7 +14,6 @@ env:
     ENV_FILE: env/prod.env
     ENV: prod
     HOST: apiv2-prod.coordinadora.com
-    PREFIX: /example
 
 jobs:
     build_and_deploy:
@@ -104,7 +103,7 @@ jobs:
           run: kustomize edit set image PROJECT/IMAGE=gcr.io/$PROJECT_CLUSTER_ID/$SERVICE_NAME:$GITHUB_SHA
           working-directory: ./manifests/overlays/${{ env.ENV }}
         - name: Build and Deploy
-          run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME PREFIX=$PREFIX kustomize build . | envsubst | kubectl apply -f -
+          run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME kustomize build . | envsubst | kubectl apply -f -
           working-directory: ./manifests/overlays//${{ env.ENV }}
         - name: Delete pods
           run: kubectl --namespace=apis delete pod -l app=$SERVICE_NAME
@@ -125,7 +124,7 @@ jobs:
             SLACK_TITLE: ${{ github.repository }}
             SLACK_MESSAGE: |-
               ¡Grandioso! El pipeline del proyecto ${{ github.repository }} en producción fue exitoso
-              Verificalo en el URL ${{ env.HOST }}${{ env.PREFIX }}
+              Verificalo en el URL ${{ env.HOST }}/${{ env.SERVICE_NAME }}
               ¡Sigue así! :rocket:
             SLACK_USERNAME: Kubo
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -141,7 +140,7 @@ jobs:
           uses: rtCamp/action-slack-notify@v2
           env:
             SLACK_CHANNEL: alerts
-            SLACK_COLOR: '#FF0000'
+            SLACK_COLOR: '#67b2e6'
             SLACK_ICON: https://github.com/coordinadora-mercantil.png?size=48
             SLACK_TITLE: ${{ github.repository }}
             SLACK_MESSAGE: |-
