@@ -13,7 +13,7 @@ resource "google_pubsub_subscription" "example" {
   }
 
   push_config {
-    push_endpoint = "https://apiv2${var.cluster_uri}.coordinadora.com/example"
+    push_endpoint = "https://${var.host}/example"
   }
 
   retain_acked_messages = "false"

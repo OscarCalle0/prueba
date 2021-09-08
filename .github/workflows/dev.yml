@@ -8,7 +8,6 @@ env:
     SERVICE_NAME: despliegue-test-ms
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_DEV }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_DEV }}
-    CLUSTER_URI: -dev
     CLUSTER_NAME: cm-cluster
     CLUSTER_LOCATION: us-central1
     ENV_FILE: env/dev.env
@@ -76,7 +75,7 @@ jobs:
           uses: google-github-actions/setup-gcloud@master
           with:
             project_id: ${{ env.GCP_PROJECT }}
-            cluster_uri: ${{ env.CLUSTER_URI }}
+            host: ${{ env.HOST }}
             service_account_key: ${{ secrets.CM_GCP_KEY }}
             export_default_credentials: true
         - name: Setup Terraform
@@ -84,9 +83,9 @@ jobs:
         - name: Init Terraform
           run: make terraform-init
         - name: Create Workspace Terraform
-          run: PROJECT_ID=$GCP_PROJECT CLUSTER_URI=$CLUSTER_URI ENV=${{ env.ENV }}  make terraform-create-workspace
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST ENV=${{ env.ENV }}  make terraform-create-workspace
         - name: Apply Terraform
-          run: PROJECT_ID=$GCP_PROJECT CLUSTER_URI=$CLUSTER_URI ENV=${{ env.ENV }}  make terraform-apply
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST ENV=${{ env.ENV }}  make terraform-apply
 
     kubernetes:
       runs-on: ubuntu-latest

@@ -2,6 +2,6 @@ variable "project" {
   type = string
 }
 
-variable "cluster_uri" {
+variable "host" {
   type = string
 }

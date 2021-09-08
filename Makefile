@@ -3,11 +3,6 @@ ifndef ENV
 	$(error Please set ENV=[dev|test|prod])
 endif
 
-check-uri:
-ifndef CLUSTER_URI
-	$(error Please set CLUSTER_URI)
-endif
-
 check-project:
 ifndef PROJECT_ID
 	$(error Please set PROJECT_ID)
@@ -38,14 +33,14 @@ terraform-plan: $(prerequisites)
 		terraform workspace select $(ENV) && \
 		terraform plan \
 		-var="project=$(PROJECT_ID)" \
-		-var="cluster_uri=$(CLUSTER_URI)" \
+		-var="host=$(HOST)" \
 
 terraform-apply: $(prerequisites)
 	@cd infra && \
 		terraform workspace select $(ENV) && \
 		terraform apply \
 		-var="project=$(PROJECT_ID)" \
-		-var="cluster_uri=$(CLUSTER_URI)" \
+		-var="host=$(HOST)" \
         -auto-approve
 
 deploy: check-project check-commit-sha check-service-name
