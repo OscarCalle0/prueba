@@ -83,9 +83,9 @@ jobs:
         - name: Init Terraform
           run: make terraform-init
         - name: Create Workspace Terraform
-          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST ENV=${{ env.ENV }}  make terraform-create-workspace
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-create-workspace
         - name: Apply Terraform
-          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST ENV=${{ env.ENV }}  make terraform-apply
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-apply
 
     kubernetes:
       runs-on: ubuntu-latest
