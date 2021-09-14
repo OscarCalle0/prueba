@@ -1,7 +1,8 @@
-export const parse = <T>(data: string, withError = true): T => {
+export const parse = <T>(data: string): T | null => {
     try {
         return JSON.parse(data);
     } catch (error) {
-        throw withError ? new Error(error.message) : data;
+        console.log('ERROR__', error);
+        return null;
     }
 };
