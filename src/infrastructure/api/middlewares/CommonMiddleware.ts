@@ -3,6 +3,7 @@ import cors from 'fastify-cors';
 import helmet from 'fastify-helmet';
 import formbody from 'fastify-formbody';
 import { validatePubSub } from '@infrastructure/api';
+import { decode, parse } from '@util';
 
 type Payload = Record<string, unknown>;
 
@@ -14,9 +15,9 @@ export const middlewares = (application: FastifyInstance): void => {
     application.addHook<Payload, any>('onSend', async (req, reply, payload) => {
         const { id, method, url, headers, params, query, body } = req;
         const isPubSub = await validatePubSub(body);
-        console.log(
-            JSON.stringify(
-                {
+        if (isPubSub) {
+            console.log(
+                JSON.stringify({
                     application: process.env.APP_NAME ?? 'APP_NAME NOT FOUND',
                     id,
                     method,
@@ -24,7 +25,7 @@ export const middlewares = (application: FastifyInstance): void => {
                     request: {
                         headers,
                         body: body ?? {},
-                        buffer: isPubSub ?? {},
+                        buffer: parse(decode(isPubSub.message.data)) ?? {},
                         messageId: isPubSub ? isPubSub.message.messageId : null,
                         params,
                         query,
@@ -33,10 +34,27 @@ export const middlewares = (application: FastifyInstance): void => {
                         statusCode: reply.statusCode,
                         payload,
                     },
-                },
-                null,
-                2,
-            ),
-        );
+                }),
+            );
+        } else {
+            console.log(
+                JSON.stringify({
+                    application: process.env.APP_NAME ?? 'APP_NAME NOT FOUND',
+                    id,
+                    method,
+                    url,
+                    request: {
+                        headers,
+                        body: body ?? {},
+                        params,
+                        query,
+                    },
+                    response: {
+                        statusCode: reply.statusCode,
+                        payload,
+                    },
+                }),
+            );
+        }
     });
 };
