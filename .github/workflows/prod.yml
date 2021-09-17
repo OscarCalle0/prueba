@@ -1,11 +1,12 @@
 name: Code Production Flow
-concurrency: template-example-prod
+concurrency: ${{ github.event.repository.name }}-prod
 on:
   push:
     branches:
       - 'master'
 env:
-    SERVICE_NAME: template-example-ms
+    SERVICE_NAME: ${{ github.event.repository.name }}
+    APP_NAME: ${{ github.event.repository.name }}
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_PROD }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_PROD }}
     CLUSTER_NAME: cm-cluster

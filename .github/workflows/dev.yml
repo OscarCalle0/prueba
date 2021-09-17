@@ -1,11 +1,12 @@
 name: Code Development Flow
-concurrency: despliegue-test-ms-dev
+concurrency: ${{ github.event.repository.name }}-dev
 on:
   push:
     branches:
       - 'dev'
 env:
-    SERVICE_NAME: despliegue-test-ms
+    SERVICE_NAME: ${{ github.event.repository.name }}
+    APP_NAME: ${{ github.event.repository.name }}
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_DEV }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_DEV }}
     CLUSTER_NAME: cm-cluster

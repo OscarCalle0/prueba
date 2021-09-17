@@ -1,11 +1,12 @@
 name: Code Testing Flow
-concurrency: template-example-test
+concurrency: ${{ github.event.repository.name }}-test
 on:
   push:
     branches:
       - 'testing'
 env:
-    SERVICE_NAME: template-example-ms
+    SERVICE_NAME: ${{ github.event.repository.name }}
+    APP_NAME: ${{ github.event.repository.name }}
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_TEST }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_TEST }}
     CLUSTER_NAME: cm-cluster

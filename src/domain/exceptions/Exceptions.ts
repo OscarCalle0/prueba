@@ -55,6 +55,10 @@ export class FirestoreException extends Exception {
             case '4':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore deadline exceeded');
                 break;
+            case 5:
+            case '5':
+                super(message, fsError, StatusCode.INTERNAL_ERROR, 'Update nonexistent document');
+                break;
             case 7:
             case '7':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore permission denied');
