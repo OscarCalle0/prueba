@@ -13,7 +13,7 @@ env:
     CLUSTER_LOCATION: us-central1
     ENV_FILE: env/prod.env
     ENV: prod
-    HOST: apiv2-prod.coordinadora.com
+    HOST: apiv2.coordinadora.com
 
 jobs:
     build_and_deploy:
