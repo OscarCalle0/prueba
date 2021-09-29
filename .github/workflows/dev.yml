@@ -110,6 +110,7 @@ jobs:
             location: ${{ env.CLUSTER_LOCATION }}
             credentials: ${{ secrets.CM_GCP_KEY }}
             project_id: ${{ env.PROJECT_CLUSTER_ID }}
+            project_service:
         - name: Setup Kustomize
           uses: imranismail/setup-kustomize@v1
           with:

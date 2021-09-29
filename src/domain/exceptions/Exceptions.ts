@@ -59,6 +59,10 @@ export class FirestoreException extends Exception {
             case '5':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Update nonexistent document');
                 break;
+            case 6:
+            case '6':
+                super(message, fsError, StatusCode.OK, 'Firestore document already exists');
+                break;
             case 7:
             case '7':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore permission denied');
