@@ -1,7 +1,7 @@
 export const examplePostSchema = {
     schema: {
         description: 'post some data',
-        tags: ['example_template'],
+        tags: ['post_example_template'],
         body: {
             type: 'object',
             properties: {
@@ -29,7 +29,7 @@ export const examplePostSchema = {
                 },
             },
             '400-BAD_REQUEST': {
-                description: 'Succesful response',
+                description: 'Bad Request',
                 type: 'object',
                 properties: {
                     isError: { type: 'boolean', example: false },
@@ -45,7 +45,7 @@ export const examplePostSchema = {
 export const exampleGetSchema = {
     schema: {
         description: 'post some data',
-        tags: ['example_template'],
+        tags: ['get_example_template'],
         query: {
             type: 'object',
             properties: {
@@ -69,7 +69,7 @@ export const exampleGetSchema = {
                 },
             },
             '400-BAD_REQUEST': {
-                description: 'Succesful response',
+                description: 'Bad Request',
                 type: 'object',
                 properties: {
                     isError: { type: 'boolean', example: false },

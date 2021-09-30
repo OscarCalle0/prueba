@@ -4,4 +4,4 @@ export const GCP_PROJECT = process.env.GCP_PROJECT;
 
 export const PREFIX = process.env.SERVICE_NAME;
 
-export const HOST = process.env.HOST || 'apiv2-dev.coordinadora.com';
+export const HOST = process.env.HOST || 'localhost';

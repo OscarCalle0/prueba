@@ -19,8 +19,8 @@ export const application = fastify({
 middlewares(application);
 errorHandler(application);
 
-// routes
-application.register(initRoutes, { prefix: PREFIX });
-
 //fastify swagger
 application.register(fastifySwagger, swagger_config);
+
+// routes
+application.register(initRoutes, { prefix: PREFIX });
