@@ -8,6 +8,7 @@ const start = async () => {
     const port = process.env.PORT || 8080;
     try {
         const server = await application.listen(port, '0.0.0.0');
+        application.swagger();
         createDependencyContainer();
         console.log(`Application running on ${server}`);
     } catch (error) {
@@ -15,5 +16,4 @@ const start = async () => {
         await application.close();
     }
 };
-
 start();

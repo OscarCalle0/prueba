@@ -8,7 +8,7 @@ terraform {
 
   backend "gcs" {
     bucket = "cm-tf-admin-state"
-    prefix = "/repository-name"
+    prefix = "/cm-plantilla-microservicio-gke"
   }
 }
 

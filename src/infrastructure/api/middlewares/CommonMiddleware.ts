@@ -15,46 +15,25 @@ export const middlewares = (application: FastifyInstance): void => {
     application.addHook<Payload, any>('onSend', async (req, reply, payload) => {
         const { id, method, url, headers, params, query, body } = req;
         const isPubSub = await validatePubSub(body);
-        if (isPubSub) {
-            console.log(
-                JSON.stringify({
-                    application: process.env.APP_NAME ?? 'APP_NAME NOT FOUND',
-                    id,
-                    method,
-                    url,
-                    request: {
-                        headers,
-                        body: body ?? {},
-                        buffer: parse(decode(isPubSub.message.data)) ?? {},
-                        messageId: isPubSub ? isPubSub.message.messageId : null,
-                        params,
-                        query,
-                    },
-                    response: {
-                        statusCode: reply.statusCode,
-                        payload,
-                    },
-                }),
-            );
-        } else {
-            console.log(
-                JSON.stringify({
-                    application: process.env.APP_NAME ?? 'APP_NAME NOT FOUND',
-                    id,
-                    method,
-                    url,
-                    request: {
-                        headers,
-                        body: body ?? {},
-                        params,
-                        query,
-                    },
-                    response: {
-                        statusCode: reply.statusCode,
-                        payload,
-                    },
-                }),
-            );
-        }
+        console.log(
+            JSON.stringify({
+                application: process.env.SERVICE_NAME ?? 'SERVICE_NAME NOT FOUND',
+                id,
+                method,
+                url,
+                request: {
+                    headers,
+                    body: body ?? {},
+                    buffer: isPubSub ? parse(decode(isPubSub.message.data)) : {},
+                    messageId: isPubSub ? isPubSub.message.messageId : null,
+                    params,
+                    query,
+                },
+                response: {
+                    statusCode: reply.statusCode,
+                    payload,
+                },
+            }),
+        );
     });
 };
