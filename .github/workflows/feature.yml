@@ -1,0 +1,37 @@
+name: Code Feature Flow
+concurrency: ${{ github.event.repository.name }}-feature
+on:
+    push:
+        branches:
+          - 'feature/**'
+          - 'fix/**'
+jobs:
+  create_pull_request:
+    runs-on: ubuntu-latest
+    name: Dev Pull Request
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Make changes to pull request
+        run: date +%s > report.txt
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.USER_PAT }}
+          commit-message: merging feature into dev
+          author: ${{ github.actor }} <${{ github.actor }}>
+          signoff: false
+          branch: ${{ github.ref }}
+          base: dev
+          title: 'merge feature into dev branch'
+          body: |
+            Update report
+            desplegando features nuevos en dev.
+          labels: |
+            report
+            automated pr
+          team-reviewers: |
+            legalizacion-reviewers
+            checkpoint-review
