@@ -159,7 +159,7 @@ jobs:
     slackNotification:
       name: Slack Notification
       runs-on: ubuntu-latest
-      needs: [build_and_deploy, terraform, kubernetes, create_pull_request]
+      needs: [build_and_deploy, terraform, kubernetes, documentation, create_pull_request]
       if: ${{ success() }}
       steps:
         - uses: actions/checkout@v2
@@ -180,7 +180,7 @@ jobs:
     slackNotificationFailure:
       name: Slack Notification failure
       runs-on: ubuntu-latest
-      needs: [build_and_deploy, terraform, kubernetes, create_pull_request]
+      needs: [build_and_deploy, terraform, kubernetes, documentation, create_pull_request]
       if: ${{ failure() }}
       steps:
         - uses: actions/checkout@v2
