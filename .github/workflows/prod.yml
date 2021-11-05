@@ -6,7 +6,6 @@ on:
       - 'master'
 env:
     SERVICE_NAME: ${{ github.event.repository.name }}
-    APP_NAME: ${{ github.event.repository.name }}
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_PROD }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_PROD }}
     CLUSTER_NAME: cm-cluster
@@ -14,6 +13,10 @@ env:
     ENV_FILE: env/prod.env
     ENV: prod
     HOST: apiv2.coordinadora.com
+    URL_DOC: https://apiv2.coordinadora.com/cm-plantilla-mricroservicio-gke/docs/json
+    IS_PUBLIC: false
+    DOMAIN: example
+    SUB_DOMAIN: example #campo opcional --> eliminar tambien del paso de la documentacion
 
 jobs:
     build_and_deploy:
@@ -31,6 +34,20 @@ jobs:
           uses: ./.github/actions/build
         - name: Build tests
           uses: ./.github/actions/quality
+        - name: SonarQube Scan
+          uses: sonarsource/sonarqube-scan-action@master
+          with:
+            projectBaseDir: .
+          env:
+            SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST }}
+            SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+        # - name: SonarQube Quality Gate check
+        #   uses: sonarsource/sonarqube-quality-gate-action@master
+        #   timeout-minutes: 5
+        #   env:
+        #     SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+        #   with:
+        #     scanMetadataReportFile: ./.scannerwork/report-task.txt
         - name: Set up Cloud SDK
           uses: google-github-actions/setup-gcloud@master
           with:
@@ -108,6 +125,21 @@ jobs:
           working-directory: ./manifests/overlays//${{ env.ENV }}
         - name: Delete pods
           run: kubectl --namespace=apis delete pod -l app=$SERVICE_NAME
+
+    documentation:
+      runs-on: ubuntu-latest
+      needs: kubernetes
+      steps:
+        - name: Documentation
+          id: myRequest
+          uses: fjogeleit/http-request-action@master
+          with:
+            url: ${{ secrets.PORTAL_URL_DEV }}
+            method: 'POST'
+            contentType: application/json
+            data: '{"id":"${{ env.SERVICE_NAME }}", "nombre": "${{ env.SERVICE_NAME }}", "dominio": "${{ env.DOMAIN }}", "subdominio": "${{ env.SUB_DOMAIN }}", "isPublic": ${{ env.IS_PUBLIC }}, "urlDoc": "${{ env.URL_DOC }}"}'
+        - name: Response
+          run: echo ${{ steps.myRequest.outputs.response }}
 
     slackNotification:
       name: Slack Notification

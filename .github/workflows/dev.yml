@@ -13,7 +13,7 @@ env:
     ENV_FILE: env/dev.env
     ENV: dev
     HOST: apiv2-dev.coordinadora.com
-    URL_DOC: https://${{ env.HOST }}/${{ env.SERVICE_NAME }}/docs/json
+    URL_DOC: https://apiv2-dev.coordinadora.com/cm-plantilla-mricroservicio-gke/docs/json
     IS_PUBLIC: false
     DOMAIN: example
     SUB_DOMAIN: example #campo opcional --> eliminar tambien del paso de la documentacion
@@ -41,13 +41,13 @@ jobs:
           env:
             SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST }}
             SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
-        # - name: SonarQube Quality Gate check
-        #   uses: sonarsource/sonarqube-quality-gate-action@master
-        #   timeout-minutes: 5
-        #   env:
-        #     SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
-        #   with:
-        #     scanMetadataReportFile: ./.scannerwork/report-task.txt
+        - name: SonarQube Quality Gate check
+          uses: sonarsource/sonarqube-quality-gate-action@master
+          timeout-minutes: 5
+          env:
+            SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          with:
+            scanMetadataReportFile: ./.scannerwork/report-task.txt
         - name: Set up Cloud SDK
           uses: google-github-actions/setup-gcloud@master
           with:
@@ -61,74 +61,74 @@ jobs:
         - name: Build and deploy image
           run: PROJECT_ID=$PROJECT_CLUSTER_ID COMMIT_SHA=${{ github.sha }} SERVICE_NAME=$SERVICE_NAME make deploy
 
-    # terraform:
-    #   runs-on: ubuntu-latest
-    #   name: Infra as Code
-    #   needs: build_and_deploy
-    #   steps:
-    #     - name: Checkout
-    #       uses: actions/checkout@v2
-    #     - name: Set branch-based environment variables
-    #       uses: iamtheyammer/branch-env-vars@v1.0.3
-    #       with:
-    #         GCP_PROJECT: |
-    #           master:${{ secrets.PROJECT_ID_PROD }}
-    #           testing:${{ secrets.PROJECT_ID_TEST }}
-    #           !default:${{ secrets.PROJECT_ID_DEV }}
-    #     - name: Set up Cloud SDK
-    #       uses: google-github-actions/setup-gcloud@master
-    #       with:
-    #         project_id: ${{ env.GCP_PROJECT }}
-    #         host: ${{ env.HOST }}
-    #         service_name: ${{ env.SERVICE_NAME }}
-    #         service_account_key: ${{ secrets.CM_GCP_KEY }}
-    #         export_default_credentials: true
-    #     - name: Setup Terraform
-    #       uses: hashicorp/setup-terraform@v1
-    #     - name: Init Terraform
-    #       run: make terraform-init
-    #     - name: Create Workspace Terraform
-    #       run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-create-workspace
-    #     - name: Apply Terraform
-    #       run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-apply
+    terraform:
+      runs-on: ubuntu-latest
+      name: Infra as Code
+      needs: build_and_deploy
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Set branch-based environment variables
+          uses: iamtheyammer/branch-env-vars@v1.0.3
+          with:
+            GCP_PROJECT: |
+              master:${{ secrets.PROJECT_ID_PROD }}
+              testing:${{ secrets.PROJECT_ID_TEST }}
+              !default:${{ secrets.PROJECT_ID_DEV }}
+        - name: Set up Cloud SDK
+          uses: google-github-actions/setup-gcloud@master
+          with:
+            project_id: ${{ env.GCP_PROJECT }}
+            host: ${{ env.HOST }}
+            service_name: ${{ env.SERVICE_NAME }}
+            service_account_key: ${{ secrets.CM_GCP_KEY }}
+            export_default_credentials: true
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v1
+        - name: Init Terraform
+          run: make terraform-init
+        - name: Create Workspace Terraform
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-create-workspace
+        - name: Apply Terraform
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-apply
 
-    # kubernetes:
-    #   runs-on: ubuntu-latest
-    #   name: Kubernetes
-    #   needs: terraform
-    #   steps:
-    #     - name: Checkout
-    #       uses: actions/checkout@v2
-    #     - name: Set up Cloud SDK
-    #       uses: google-github-actions/setup-gcloud@master
-    #       with:
-    #         project_id: ${{ env.PROJECT_CLUSTER_ID }}
-    #         service_account_key: ${{ secrets.CM_GCP_KEY }}
-    #         export_default_credentials: true
-    #     - id: get-credentials
-    #       name: Get Credentials
-    #       uses: google-github-actions/get-gke-credentials@main
-    #       with:
-    #         cluster_name: ${{ env.CLUSTER_NAME }}
-    #         location: ${{ env.CLUSTER_LOCATION }}
-    #         credentials: ${{ secrets.CM_GCP_KEY }}
-    #         project_id: ${{ env.PROJECT_CLUSTER_ID }}
-    #     - name: Setup Kustomize
-    #       uses: imranismail/setup-kustomize@v1
-    #       with:
-    #           kustomize-version: '3.9.2'
-    #     - name: Update image
-    #       run: kustomize edit set image PROJECT/IMAGE=gcr.io/$PROJECT_CLUSTER_ID/$SERVICE_NAME:$GITHUB_SHA
-    #       working-directory: ./manifests/overlays/${{ env.ENV }}
-    #     - name: Build and Deploy
-    #       run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME GCP_PROJECT=$PROJECT_ID kustomize build . | envsubst | kubectl apply -f -
-    #       working-directory: ./manifests/overlays//${{ env.ENV }}
-    #     - name: Delete pods
-    #       run: kubectl --namespace=apis delete pod -l app=$SERVICE_NAME
+    kubernetes:
+      runs-on: ubuntu-latest
+      name: Kubernetes
+      needs: terraform
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Set up Cloud SDK
+          uses: google-github-actions/setup-gcloud@master
+          with:
+            project_id: ${{ env.PROJECT_CLUSTER_ID }}
+            service_account_key: ${{ secrets.CM_GCP_KEY }}
+            export_default_credentials: true
+        - id: get-credentials
+          name: Get Credentials
+          uses: google-github-actions/get-gke-credentials@main
+          with:
+            cluster_name: ${{ env.CLUSTER_NAME }}
+            location: ${{ env.CLUSTER_LOCATION }}
+            credentials: ${{ secrets.CM_GCP_KEY }}
+            project_id: ${{ env.PROJECT_CLUSTER_ID }}
+        - name: Setup Kustomize
+          uses: imranismail/setup-kustomize@v1
+          with:
+              kustomize-version: '3.9.2'
+        - name: Update image
+          run: kustomize edit set image PROJECT/IMAGE=gcr.io/$PROJECT_CLUSTER_ID/$SERVICE_NAME:$GITHUB_SHA
+          working-directory: ./manifests/overlays/${{ env.ENV }}
+        - name: Build and Deploy
+          run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME GCP_PROJECT=$PROJECT_ID kustomize build . | envsubst | kubectl apply -f -
+          working-directory: ./manifests/overlays//${{ env.ENV }}
+        - name: Delete pods
+          run: kubectl --namespace=apis delete pod -l app=$SERVICE_NAME
 
     documentation:
       runs-on: ubuntu-latest
-      # needs: kubernetes
+      needs: kubernetes
       steps:
         - name: Documentation
           id: myRequest

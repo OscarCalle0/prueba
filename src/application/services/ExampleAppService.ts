@@ -8,6 +8,7 @@ import { Result, Response } from '@domain/response';
 @injectable()
 export class ExampleAppService {
     private exampleRepository = DEPENDENCY_CONTAINER.get<ExampleRepository>(TYPES.FirestoreExampleRepository);
+
     async example(): Promise<Response<string | null>> {
         const example = ExampleEntity.create('123', 'Daniel');
         await this.exampleRepository.save(example);
