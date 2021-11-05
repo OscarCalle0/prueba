@@ -4,7 +4,6 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 export const example = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const exampleService = DEPENDENCY_CONTAINER.get(ExampleAppService);
-    const { id } = req;
     const response = await exampleService.example();
-    return reply.send({ ...response, id });
+    return reply.send({ ...response, id: req.id });
 };

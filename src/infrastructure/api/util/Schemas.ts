@@ -11,7 +11,7 @@ export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
         const { error, value } = schema.validate(dataToValidate, { convert: true });
         if (error) {
             console.error(`schemaError: ${JSON.stringify(error)}`);
-            throw new Error(error.message);
+            throw new BadMessageException(error.message, 'Los valores de entrada no son correctos.');
         }
         return value;
     }

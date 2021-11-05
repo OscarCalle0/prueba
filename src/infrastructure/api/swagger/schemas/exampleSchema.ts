@@ -42,6 +42,7 @@ export const examplePostSchema = {
         },
     },
 };
+
 export const exampleGetSchema = {
     schema: {
         description: 'post some data',

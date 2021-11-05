@@ -1,7 +1,7 @@
 import { FastifyError, FastifyInstance } from 'fastify';
 import { ErrorCode, Exception } from '@domain/exceptions';
 
-const buildErrorResponse = (error: FastifyError, statusCode?: number, errorCode?: ErrorCode, cause?: string) => {
+const buildErrorResponse = (error: FastifyError, cause?: string, statusCode?: number, errorCode?: ErrorCode) => {
     return {
         isError: true,
         message: error.message,
@@ -14,11 +14,11 @@ const buildErrorResponse = (error: FastifyError, statusCode?: number, errorCode?
 
 const translateError = (error: FastifyError) => {
     if (error instanceof SyntaxError) {
-        return buildErrorResponse(error, 500, ErrorCode.SYNTAX_ERROR, 'Syntax error in JSON');
+        return buildErrorResponse(error, 'Syntax error in JSON', 500, ErrorCode.SYNTAX_ERROR);
     }
-    if (error instanceof Exception) return buildErrorResponse(error);
-    console.error('log default traductor: ', error);
-    return buildErrorResponse(error, 500, ErrorCode.UNKNOWN_ERROR);
+    if (error instanceof Exception) return buildErrorResponse(error, error.cause ? error.cause : undefined);
+    console.error('log default translator: ', error);
+    return buildErrorResponse(error, 'Default translator error', 500, ErrorCode.UNKNOWN_ERROR);
 };
 
 export const errorHandler = (application: FastifyInstance): void => {
