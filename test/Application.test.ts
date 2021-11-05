@@ -15,7 +15,7 @@ describe('Testing App Request', () => {
 
     it('test de prueba con error 404', async () => {
         const response = await application.inject({
-            method: 'GET',
+            method: 'POST',
             url: '/route-not-found',
         });
         expect(response.statusCode).toBe(404);
@@ -24,7 +24,7 @@ describe('Testing App Request', () => {
     it('test de prueba exitoso', async () => {
         const response = await application.inject({
             method: 'GET',
-            url: `/${PREFIX}/`,
+            url: `/${PREFIX}`,
         });
         expect(response.statusCode).toBe(200);
     });
