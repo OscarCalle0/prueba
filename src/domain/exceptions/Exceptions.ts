@@ -36,7 +36,7 @@ export class PubSubException extends Exception {
 }
 
 export class FirestoreException extends Exception {
-    constructor(code: number | string, message: string) {
+    constructor(code: number | string | undefined, message: string) {
         const fsError = ErrorCode.REPOSITORY_ERROR;
         switch (code) {
             case 1:
