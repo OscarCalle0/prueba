@@ -13,7 +13,7 @@ env:
     ENV_FILE: env/dev.env
     ENV: dev
     HOST: apiv2-dev.coordinadora.com
-    URL_DOC: https://apiv2-dev.coordinadora.com/cm-plantilla-mricroservicio-gke/docs/json
+    URL_DOC: https://apiv2-dev.coordinadora.com/cm-plantilla-microservicio-gke/docs/json
     IS_PUBLIC: false
     DOMAIN: example
     SUB_DOMAIN: example #campo opcional --> eliminar tambien del paso de la documentacion
@@ -131,6 +131,7 @@ jobs:
 
     documentation:
       runs-on: ubuntu-latest
+      name: Documentation
       needs: kubernetes
       steps:
         - name: Documentation
