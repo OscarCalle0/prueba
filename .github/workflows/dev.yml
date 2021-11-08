@@ -13,7 +13,7 @@ env:
     ENV_FILE: env/dev.env
     ENV: dev
     HOST: apiv2-dev.coordinadora.com
-    URL_DOC: https://apiv2-dev.coordinadora.com/cm-plantilla-microservicio-gke/docs/json
+    URL_DOC: https://apiv2-dev.coordinadora.com/${{ github.event.repository.name }}/docs/json
     IS_PUBLIC: false
     DOMAIN: example
     SUB_DOMAIN: example #campo opcional --> eliminar tambien del paso de la documentacion

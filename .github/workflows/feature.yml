@@ -25,7 +25,7 @@ jobs:
           signoff: false
           branch: ${{ github.ref }}
           base: dev
-          title: 'merge feature into dev branch'
+          title: 'Merge feature into dev branch'
           body: |
             Update report
             desplegando features nuevos en dev.
