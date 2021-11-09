@@ -138,7 +138,7 @@ jobs:
           id: myRequest
           uses: fjogeleit/http-request-action@master
           with:
-            url: ${{ secrets.PORTAL_URL_DEV }}
+            url: ${{ secrets.PORTAL_URL_TEST }}
             method: 'POST'
             contentType: application/json
             data: '{"id":"${{ env.SERVICE_NAME }}", "nombre": "${{ env.SERVICE_NAME }}", "dominio": "${{ env.DOMAIN }}", "subdominio": "${{ env.SUB_DOMAIN }}", "isPublic": ${{ env.IS_PUBLIC }}, "urlDoc": "${{ env.URL_DOC }}"}'
