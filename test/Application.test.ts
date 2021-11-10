@@ -24,7 +24,7 @@ describe('Testing App Request', () => {
     it('test de prueba exitoso', async () => {
         const response = await application.inject({
             method: 'GET',
-            url: `/${PREFIX}/`,
+            url: `${PREFIX}/`,
         });
         expect(response.statusCode).toBe(200);
     });

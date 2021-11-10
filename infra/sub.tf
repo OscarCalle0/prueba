@@ -13,7 +13,7 @@ resource "google_pubsub_subscription" "example" {
   }
 
   push_config {
-    push_endpoint = "https://${var.host}/${var.service_name}/example"
+    push_endpoint = "https://${var.host}/${var.domain}/${var.service_name}/example"
   }
 
   retain_acked_messages = "false"

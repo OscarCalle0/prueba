@@ -18,9 +18,14 @@ ifndef SERVICE_NAME
 	$(error Please set SERVICE_NAME)
 endif
 
-prerequisites=check-project check-group
+check-domain:
+ifndef DOMAIN
+	$(error Please set DOMAIN)
+endif
 
-terraform-create-workspace: $(prerequisites)
+prerequisites=check-project check-group check-service-name check-domain
+
+terraform-create-workspace: check-group
 	@cd infra && \
 		terraform workspace select $(ENV) || terraform workspace new $(ENV)
 
@@ -35,6 +40,7 @@ terraform-plan: $(prerequisites)
 		-var="project=$(PROJECT_ID)" \
 		-var="host=$(HOST)" \
 		-var="service_name=$(SERVICE_NAME)" \
+		-var="domain=$(DOMAIN)" \
 
 terraform-apply: $(prerequisites)
 	@cd infra && \
@@ -43,6 +49,7 @@ terraform-apply: $(prerequisites)
 		-var="project=$(PROJECT_ID)" \
 		-var="host=$(HOST)" \
 		-var="service_name=$(SERVICE_NAME)" \
+		-var="domain=$(DOMAIN)" \
         -auto-approve
 
 deploy: check-project check-commit-sha check-service-name

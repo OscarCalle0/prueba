@@ -9,3 +9,7 @@ variable "host" {
 variable "service_name" {
   type = string
 }
+
+variable "domain" {
+  type = string
+}

@@ -13,9 +13,9 @@ env:
     ENV_FILE: env/test.env
     ENV: test
     HOST: apiv2-test.coordinadora.com
-    URL_DOC: https://apiv2-test.coordinadora.com/${{ github.event.repository.name }}/docs/json
+    URL_DOC: https://apiv2-test.coordinadora.com/plantillas/${{ github.event.repository.name }}/docs/json
     IS_PUBLIC: false
-    DOMAIN: example
+    DOMAIN: plantillas
     SUB_DOMAIN: example #campo opcional --> eliminar tambien del paso de la documentacion
 
 jobs:
@@ -59,6 +59,7 @@ jobs:
             echo "GCP_PROJECT=${{env.PROJECT_ID}}" >> ${{ env.ENV_FILE }}
             echo "SERVICE_NAME=${{env.SERVICE_NAME}}" >> ${{ env.ENV_FILE }}
             echo "HOST=${{env.HOST}}" >> ${{ env.ENV_FILE }}
+            echo "DOMAIN=${{env.DOMAIN}}" >> ${{ env.ENV_FILE }}
         - name: Create ENV File
           run: cp ${{ env.ENV_FILE }} .env
         - name: Build and deploy image
@@ -91,9 +92,9 @@ jobs:
         - name: Init Terraform
           run: make terraform-init
         - name: Create Workspace Terraform
-          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-create-workspace
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }} DOMAIN=$DOMAIN make terraform-create-workspace
         - name: Apply Terraform
-          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-apply
+          run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }} DOMAIN=$DOMAIN make terraform-apply
 
     kubernetes:
       runs-on: ubuntu-latest
@@ -190,7 +191,7 @@ jobs:
             SLACK_TITLE: ${{ github.repository }}
             SLACK_MESSAGE: |-
               ¡Grandioso! El pipeline del proyecto ${{ github.repository }} en testing fue exitoso
-              Verificalo en el URL ${{ env.HOST }}/${{ env.SERVICE_NAME }}
+              Verificalo en el URL ${{ env.HOST }}/${{ env.DOMAIN }}/${{ env.SERVICE_NAME }}
               ¡Sigue así! :rocket:
             SLACK_USERNAME: Kubo
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

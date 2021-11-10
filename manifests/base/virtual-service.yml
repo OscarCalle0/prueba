@@ -10,7 +10,7 @@ spec:
     http:
         - match:
               - uri:
-                    prefix: /$SERVICE_NAME
+                    prefix: /$DOMAIN/$SERVICE_NAME
           route:
               - destination:
                     host: $SERVICE_NAME
