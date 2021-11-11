@@ -117,6 +117,8 @@ jobs:
             location: ${{ env.CLUSTER_LOCATION }}
             credentials: ${{ secrets.CM_GCP_KEY }}
             project_id: ${{ env.PROJECT_CLUSTER_ID }}
+            service_name: ${{ env.SERVICE_NAME}}
+            domain: ${{ env.DOMAIN}}
         - name: Setup Kustomize
           uses: imranismail/setup-kustomize@v1
           with:
@@ -125,7 +127,7 @@ jobs:
           run: kustomize edit set image PROJECT/IMAGE=gcr.io/$PROJECT_CLUSTER_ID/$SERVICE_NAME:$GITHUB_SHA
           working-directory: ./manifests/overlays/${{ env.ENV }}
         - name: Build and Deploy
-          run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME GCP_PROJECT=$PROJECT_ID kustomize build . | envsubst | kubectl apply -f -
+          run: HOST=$HOST SERVICE_NAME=$SERVICE_NAME GCP_PROJECT=$PROJECT_ID DOMAIN=$DOMAIN kustomize build . | envsubst | kubectl apply -f -
           working-directory: ./manifests/overlays//${{ env.ENV }}
         - name: Delete pods
           run: kubectl --namespace=apis delete pod -l app=$SERVICE_NAME
