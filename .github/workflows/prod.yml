@@ -165,6 +165,10 @@ jobs:
             SLACK_MESSAGE: |-
               ¡Grandioso! El pipeline del proyecto ${{ github.repository }} en producción fue exitoso
               Verificalo en el URL ${{ env.HOST }}/${{ env.DOMAIN }}/${{ env.SERVICE_NAME }}
+              Para ver los logs del servicio:
+              https://console.cloud.google.com/kubernetes/deployment/${{env.CLUSTER_LOCATION}}/${{env.CLUSTER_NAME}}/apis/${{env.SERVICE_NAME}}/logs?project=${{env.PROJECT_CLUSTER_ID}}
+              Para ver la documentación:
+              https://${{env.HOST}}/${{env.DOMAIN}}/${{env.SERVICE_NAME}}/docs
               ¡Sigue así! :rocket:
             SLACK_USERNAME: Kubo
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
