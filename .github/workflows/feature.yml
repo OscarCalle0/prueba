@@ -3,35 +3,63 @@ concurrency: ${{ github.event.repository.name }}-feature
 on:
     push:
         branches:
-          - 'feature/**'
-          - 'fix/**'
+            - 'feature/**'
+            - 'fix/**'
+            - 'feat:/**'
 jobs:
-  create_pull_request:
-    runs-on: ubuntu-latest
-    name: Dev Pull Request
-    steps:
-      - uses: actions/checkout@v2
+    testing_app:
+        runs-on: ubuntu-latest
+        name: Testing service
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: Make changes to pull request
-        run: date +%s > report.txt
+            - name: Cache node modules
+              uses: actions/cache@v2
+              with:
+                  path: '**/node_modules'
+                  key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.USER_PAT }}
-          commit-message: merging feature into dev
-          author: ${{ github.actor }} <${{ github.actor }}>
-          signoff: false
-          branch: ${{ github.ref }}
-          base: dev
-          title: 'Merge feature into dev branch'
-          body: |
-            Update report
-            desplegando features nuevos en dev.
-          labels: |
-            report
-            automated pr
-          team-reviewers: |
-            legalizacion-reviewers
-            checkpoint-review
+            - name: Install and Build
+              uses: ./.github/actions/build
+
+            - name: Set up Cloud SDK
+              uses: google-github-actions/setup-gcloud@master
+              with:
+                  project_id: ${{ env.PROJECT_CLUSTER_ID }}
+                  service_account_key: ${{ secrets.CM_GCP_KEY }}
+                  export_default_credentials: true
+
+            - name: Build tests
+              uses: ./.github/actions/quality
+
+    create_pull_request:
+        runs-on: ubuntu-latest
+        name: Dev Pull Request
+        needs: testing_app
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Make changes to pull request
+              run: date +%s > report.txt
+
+            - name: Create Pull Request
+              id: cpr
+              uses: peter-evans/create-pull-request@v3
+              with:
+                  token: ${{ secrets.USER_PAT }}
+                  commit-message: merging feature into dev
+                  author: ${{ github.actor }} <${{ github.actor }}>
+                  signoff: false
+                  branch: ${{ github.ref }}
+                  base: dev
+                  title: 'Merge feature into dev branch'
+                  body: |
+                      Update report
+                      desplegando features nuevos en dev.
+                  labels: |
+                      report
+                      automated pr
+                  team-reviewers: |
+                    legalizacion-reviewers
+                    checkpoint-review
