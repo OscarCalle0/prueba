@@ -23,13 +23,6 @@ jobs:
             - name: Install and Build
               uses: ./.github/actions/build
 
-            - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@master
-              with:
-                  project_id: ${{ env.PROJECT_CLUSTER_ID }}
-                  service_account_key: ${{ secrets.CM_GCP_KEY }}
-                  export_default_credentials: true
-
             - name: Build tests
               uses: ./.github/actions/quality
 
