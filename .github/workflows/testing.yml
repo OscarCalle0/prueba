@@ -49,7 +49,7 @@ jobs:
         #   with:
         #     scanMetadataReportFile: ./.scannerwork/report-task.txt
         - name: Set up Cloud SDK
-          uses: google-github-actions/setup-gcloud@master
+          uses: google-github-actions/setup-gcloud@v0
           with:
               project_id: ${{ env.PROJECT_CLUSTER_ID }}
               service_account_key: ${{ secrets.CM_GCP_KEY }}
@@ -80,7 +80,7 @@ jobs:
               testing:${{ secrets.PROJECT_ID_TEST }}
               !default:${{ secrets.PROJECT_ID_DEV }}
         - name: Set up Cloud SDK
-          uses: google-github-actions/setup-gcloud@master
+          uses: google-github-actions/setup-gcloud@v0
           with:
             project_id: ${{ env.GCP_PROJECT }}
             host: ${{ env.HOST }}
@@ -104,7 +104,7 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v2
         - name: Set up Cloud SDK
-          uses: google-github-actions/setup-gcloud@master
+          uses: google-github-actions/setup-gcloud@v0
           with:
             project_id: ${{ env.PROJECT_CLUSTER_ID }}
             service_account_key: ${{ secrets.CM_GCP_KEY }}
