@@ -29,7 +29,7 @@ jobs:
     create_pull_request:
         runs-on: ubuntu-latest
         name: Dev Pull Request
-        needs: testing_app
+        needs: build_and_test
         steps:
             - uses: actions/checkout@v2
 
