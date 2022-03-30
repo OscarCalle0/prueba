@@ -162,7 +162,7 @@ jobs:
           id: cpr
           uses: peter-evans/create-pull-request@v3
           with:
-            token: ${{ secrets.USER_PAT }}
+            token: ${{ secrets.GITHUB_TOKEN }}
             commit-message: merging feature into dev
             author: ${{ github.actor }} <${{ github.actor }}>
             signoff: false

@@ -162,7 +162,7 @@ jobs:
           id: cpr
           uses: peter-evans/create-pull-request@v3
           with:
-            token: ${{ secrets.USER_PAT }}
+            token: ${{ secrets.GITHUB_TOKEN }}
             commit-message: merging testing into master
             author: ${{ github.actor }} <${{ github.actor }}>
             signoff: false
@@ -175,7 +175,9 @@ jobs:
             labels: |
               report
               automated pr
-            reviewers: Santy182
+            team-reviewers: |
+                    legalizacion-reviewers
+                    checkpoint-review
 
     slackNotification:
       name: Slack Notification

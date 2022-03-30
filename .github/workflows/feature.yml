@@ -7,9 +7,9 @@ on:
             - 'fix/**'
             - 'feat:/**'
 jobs:
-    testing_app:
+    build_and_test:
         runs-on: ubuntu-latest
-        name: Testing service
+        name: Build and test
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -40,7 +40,7 @@ jobs:
               id: cpr
               uses: peter-evans/create-pull-request@v3
               with:
-                  token: ${{ secrets.USER_PAT }}
+                  token: ${{ secrets.GITHUB_TOKEN }}
                   commit-message: merging feature into dev
                   author: ${{ github.actor }} <${{ github.actor }}>
                   signoff: false
@@ -49,7 +49,7 @@ jobs:
                   title: 'Merge feature into dev branch'
                   body: |
                       Update report
-                      desplegando features nuevos en dev.
+                      desplegando features nuevos en dev. :heart:
                   labels: |
                       report
                       automated pr
