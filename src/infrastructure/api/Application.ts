@@ -4,11 +4,12 @@ import 'module-alias/register';
 import dotenv from 'dotenv';
 dotenv.config();
 import fastify from 'fastify';
-import { middlewares, errorHandler } from '@infrastructure/api/middlewares';
-import { initRoutes } from '@infrastructure/api/routers';
+import fastifySwagger from '@fastify/swagger';
 import { randomBytes } from 'crypto';
 import { PREFIX } from '@util';
-import fastifySwagger from 'fastify-swagger';
+import { initRoutes } from '@infrastructure/api/routers';
+import { middlewares, errorHandler } from '@infrastructure/api/middlewares';
+
 import { swagger_config } from '@infrastructure/api/swagger';
 
 export const application = fastify({

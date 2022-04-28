@@ -1,5 +1,5 @@
 import { PREFIX, HOST, NODE_ENV } from '@util';
-import { FastifyDynamicSwaggerOptions } from 'fastify-swagger';
+import { FastifyDynamicSwaggerOptions } from '@fastify/swagger';
 
 export const swagger_config: FastifyDynamicSwaggerOptions = {
     routePrefix: `${PREFIX}/docs`,

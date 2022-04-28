@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
-import cors from 'fastify-cors';
-import helmet from 'fastify-helmet';
-import formbody from 'fastify-formbody';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
+import formbody from '@fastify/formbody';
 import { validatePubSub } from '@infrastructure/api';
 import { decode, parse } from '@util';
 
