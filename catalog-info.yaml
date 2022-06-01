@@ -5,6 +5,6 @@ metadata:
   annotations:
     github.com/project-slug: coordinadora-mercantil/cm-plantilla-microservicio-gke
 spec:
-  type: rest
+  type: Template
   lifecycle: experimental
   owner: guests
