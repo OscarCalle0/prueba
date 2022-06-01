@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cm-plantilla-microservicio-gke
+  annotations:
+    github.com/project-slug: coordinadora-mercantil/cm-plantilla-microservicio-gke
+spec:
+  type: other
+  lifecycle: unknown
+  owner: guests
