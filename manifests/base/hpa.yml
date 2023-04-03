@@ -9,13 +9,13 @@ spec:
       resource:
         name: memory
         target:
-          averageUtilization: 80
+          averageUtilization: 70
           type: AverageValue
     - type: Resource
       resource:
         name: cpu
         target:
-          averageUtilization: 80
+          averageUtilization: 70
           type: Utilization
   scaleTargetRef:
     apiVersion: apps/v1
