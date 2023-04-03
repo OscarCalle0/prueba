@@ -3,5 +3,5 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: $SERVICE_NAME
 spec:
-  maxReplicas: 15
+  maxReplicas: 10
   minReplicas: 1
