@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: $SERVICE_NAME
+    name: #{SERVICE_NAME}#
 spec:
     replicas: 1
     strategy:
@@ -11,20 +11,20 @@ spec:
       type: RollingUpdate
     selector:
         matchLabels:
-            app: $SERVICE_NAME
+            app: #{SERVICE_NAME}#
     template:
         metadata:
             labels:
-                app: $SERVICE_NAME
+                app: #{SERVICE_NAME}#
         spec:
             volumes:
                 - name: "apis-template-service-account"
                   secret:
                     secretName: "apis-template-service-account"
             containers:
-                - name: $SERVICE_NAME
+                - name: #{SERVICE_NAME}#
                   imagePullPolicy: Always
-                  image: PROJECT/IMAGE
+                  image: cr.io/#{CLUSTER_PROJECT_ID}#/#{SERVICE_NAME}#
                   volumeMounts:
                     - name: "apis-template-service-account"
                       mountPath: "/var/secret"

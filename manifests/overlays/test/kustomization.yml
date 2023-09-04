@@ -4,5 +4,6 @@ namespace: apis
 resources:
     - ../../base/
 
-patchesStrategicMerge:
-  - ./hpa.yml
+patches:
+  - path: ./hpa.yml
+
