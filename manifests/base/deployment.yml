@@ -24,7 +24,7 @@ spec:
             containers:
                 - name: #{SERVICE_NAME}#
                   imagePullPolicy: Always
-                  image: cr.io/#{CLUSTER_PROJECT_ID}#/#{SERVICE_NAME}#
+                  image: gcr.io/#{CLUSTER_PROJECT_ID}#/#{SERVICE_NAME}#:#{Build.BuildId}#
                   volumeMounts:
                     - name: "apis-template-service-account"
                       mountPath: "/var/secret"
