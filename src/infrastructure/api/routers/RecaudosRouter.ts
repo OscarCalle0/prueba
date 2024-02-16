@@ -1,0 +1,15 @@
+import { RecaudosAppService } from '@application/services';
+import { DEPENDENCY_CONTAINER } from '@configuration';
+import { FastifyRequest, FastifyReply } from 'fastify';
+import { validateData } from '../util';
+import { IRecaudosIn } from '@application/data';
+import { GuardarRecaudosJoiSchema } from '../schemas/GuardaRecaudosJoiSchema';
+
+export const guardarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
+
+    const data = validateData<IRecaudosIn>(GuardarRecaudosJoiSchema, req.body);
+
+    const response = await recaudosService.guardarRecaudo(data);
+    return reply.status(201).send({ ...response, id: req.id });
+};

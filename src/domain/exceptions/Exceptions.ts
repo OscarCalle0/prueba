@@ -18,11 +18,11 @@ export abstract class Exception {
 
 export class BadMessageException extends Exception {
     constructor(cause: string, message: string) {
-        super(message, ErrorCode.BAD_MESSAGE, StatusCode.OK, cause);
+        super(message, ErrorCode.BAD_MESSAGE, StatusCode.INTERNAL_ERROR, cause);
     }
 }
 
-export class RepositoryException extends Exception {
+/* export class RepositoryException extends Exception {
     constructor() {
         const message = 'Ocurrió un error al momento de guardar la guía';
         super(message, ErrorCode.REPOSITORY_ERROR, StatusCode.INTERNAL_ERROR);
@@ -77,6 +77,50 @@ export class FirestoreException extends Exception {
                 break;
             default:
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Defaulted unkwnown fs error');
+                break;
+        }
+    }
+} */
+
+export class PostgresError extends Exception {
+    constructor(code: string, message: string) {
+        const pgError = ErrorCode.REPOSITORY_ERROR;
+        switch (code) {
+            case 'P0001':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'Raise Exception');
+                break;
+            case '23505':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'Intentando insertar llave única duplicada');
+                break;
+            case '23514':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'Acción viola una restricción de la tabla');
+                break;
+            case '23502':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'Insertando una llave nula que no puede serlo');
+                break;
+            case '42883':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'llamado a funcion Inexistente');
+                break;
+            case '42P01':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'llamado a tabla Inexistente');
+                break;
+            case '42P02':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'llamado a parametro Inexistente');
+                break;
+            case '42704':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'llamado a objeto Inexistente');
+                break;
+            case '42703':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'llamado a columna Inexistente');
+                break;
+            case '57014':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'Query cancelled');
+                break;
+            case 'ECONNREFUSED':
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'Conexión con pg rechazada');
+                break;
+            default:
+                super(message, pgError, StatusCode.INTERNAL_ERROR, 'Error desconocido');
                 break;
         }
     }

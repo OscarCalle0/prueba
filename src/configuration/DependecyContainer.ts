@@ -1,16 +1,14 @@
 import { Container } from 'inversify';
-import { Firestore } from '@google-cloud/firestore';
-import { ExampleAppService } from '@application/services';
-import { firestore, FirestoreExampleRepository } from '@infrastructure/repositories';
-import { ExampleRepository } from '@domain/repository';
-import { TYPES } from '@configuration';
+import { RecaudosAppService } from '@application/services';
+import { RecaudosDao, db } from '@infrastructure/repositories';
+import { TYPES } from './Types';
+import { IDatabase, IMain } from 'pg-promise';
 
 export const DEPENDENCY_CONTAINER = new Container();
 
 export const createDependencyContainer = (): void => {
-    DEPENDENCY_CONTAINER.bind<Firestore>(TYPES.Firestore).toConstantValue(firestore);
-    DEPENDENCY_CONTAINER.bind(ExampleAppService).toSelf().inSingletonScope();
-    DEPENDENCY_CONTAINER.bind<ExampleRepository>(TYPES.FirestoreExampleRepository)
-        .to(FirestoreExampleRepository)
-        .inSingletonScope();
+    DEPENDENCY_CONTAINER.bind<IDatabase<IMain>>(TYPES.Pg).toConstantValue(db);
+
+    DEPENDENCY_CONTAINER.bind(RecaudosAppService).toSelf().inSingletonScope();
+    DEPENDENCY_CONTAINER.bind(RecaudosDao).toSelf().inSingletonScope();
 };
