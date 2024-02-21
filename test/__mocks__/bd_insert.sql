@@ -15,13 +15,13 @@ INSERT INTO public.medios_pagos(id_medio_pago, descripcion_medio_pago)VALUES(10,
 
 
 
-INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo, is_guia)VALUES('1-7', 'Flete pago internacional', true);
-INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo, is_guia)VALUES('1-1', 'Flete pago', true);
-INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo, is_guia)VALUES('1-6', 'Flete contra entrega', true);
-INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo, is_guia)VALUES('2-22', 'Recaudo Contra Entrega', true);
-INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo, is_guia)VALUES('2-105', 'Recaudo Contra Entrega Mismo Dia', true);
-INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo, is_guia)VALUES('2-106', 'Recaudo Contra Entrega AM', true);
-INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo, is_guia)VALUES('3-1', 'Servicios publicos', false);
+INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo)VALUES('1-7', 'Flete pago internacional');
+INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo)VALUES('1-1', 'Flete pago');
+INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo)VALUES('1-6', 'Flete contra entrega');
+INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo)VALUES('2-22', 'Recaudo Contra Entrega');
+INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo)VALUES('2-105', 'Recaudo Contra Entrega Mismo Dia');
+INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo)VALUES('2-106', 'Recaudo Contra Entrega AM');
+INSERT INTO public.tipos_recaudos(id_tipo_recaudo, descripcion_recaudo)VALUES('3-1', 'Servicios publicos');
 
 
 

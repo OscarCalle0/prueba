@@ -26,7 +26,6 @@ CREATE TABLE public.medios_pagos (
 CREATE TABLE public.tipos_recaudos (
 	id_tipo_recaudo varchar(10) NOT NULL,
 	descripcion_recaudo varchar(40) NOT NULL,
-	is_guia bool NOT NULL,
 	CONSTRAINT pk_tipos_recaudos PRIMARY KEY (id_tipo_recaudo)
 );
 
