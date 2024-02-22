@@ -15,6 +15,14 @@ export class Result {
         };
     }
 
+    static okBool<T>(data: T): Response<T> {
+        return {
+            isError: false,
+            data: data,
+            timestamp: new Date(),
+        };
+    }
+
     static failure<E = Exception>(exception: E): E {
         throw exception;
     }

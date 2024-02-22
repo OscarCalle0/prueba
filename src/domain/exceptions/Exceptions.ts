@@ -18,6 +18,12 @@ export abstract class Exception {
 
 export class BadMessageException extends Exception {
     constructor(cause: string, message: string) {
+        super(message, ErrorCode.BAD_MESSAGE, StatusCode.BAD_REQUEST, cause);
+    }
+}
+
+export class DatabaseError extends Exception {
+    constructor(cause: string, message: string) {
         super(message, ErrorCode.BAD_MESSAGE, StatusCode.INTERNAL_ERROR, cause);
     }
 }
