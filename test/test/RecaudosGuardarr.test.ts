@@ -90,7 +90,7 @@ describe('RecaudosGuardar', () => {
 
         const result = response.json();
 
-        expect(response.statusCode).toBe(500);
+        expect(response.statusCode).toBe(400);
         expect(result.isError).toBe(true);
         expect(result.message).toBe('Los valores de entrada no son correctos.');
         expect(result.cause).toEqual([
@@ -109,7 +109,7 @@ describe('RecaudosGuardar', () => {
 
         const result = response.json();
 
-        expect(response.statusCode).toBe(500);
+        expect(response.statusCode).toBe(400);
         expect(result.isError).toBe(true);
         expect(result.message).toBe('mensaje indefinido');
     });
