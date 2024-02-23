@@ -2,18 +2,13 @@ export const ConsultarRCESchema = {
     schema: {
         description: 'Endpoint para obtener si una referencia tiene un recaudo asociado',
         tags: ['RCE', 'Recaudos'],
-        parameters: [
-            {
-                in: 'query',
-                name: 'codigo_remision',
-                required: true,
-                schema: {
-                    type: 'string',
-                    example: '73940715360',
-                },
-                description: 'Obligatorio',
+        params: {
+            type: 'object',
+            properties: {
+                id_equipo: { type: 'string', example: '121120124', description: '(Obligatorio)' },
             },
-        ],
+            required: ['codigo_remision'],
+        },
         response: {
             '200': {
                 description: 'Recaudo encontrado exitosamente',
