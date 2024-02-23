@@ -5,7 +5,7 @@ export const ConsultarRCESchema = {
         params: {
             type: 'object',
             properties: {
-                id_equipo: { type: 'string', example: '121120124', description: '(Obligatorio)' },
+                codigo_remision: { type: 'string', example: '121120124', description: '(Obligatorio)' },
             },
             required: ['codigo_remision'],
         },
