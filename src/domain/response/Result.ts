@@ -8,18 +8,20 @@ export interface Response<T> {
 
 export class Result {
     static ok<T>(data?: T): Response<T | null> {
+        const fechaActual = new Date();
         return {
             isError: false,
             data: data || null,
-            timestamp: new Date(),
+            timestamp: new Date(fechaActual.toLocaleString('en-US', { timeZone: 'America/Bogota' })),
         };
     }
 
     static okBool<T>(data: T): Response<T> {
+        const fechaActual = new Date();
         return {
             isError: false,
             data: data,
-            timestamp: new Date(),
+            timestamp: new Date(fechaActual.toLocaleString('en-US', { timeZone: 'America/Bogota' })),
         };
     }
 
