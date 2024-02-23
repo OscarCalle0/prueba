@@ -12,23 +12,9 @@ export class RecaudosDao {
     public async guardarRecaudo(data: IRecaudosIn): Promise<void> {
         await this.db
             .tx(async (t) => {
-                let idRecurso = null;
-                if (data.recurso && data.tipo_recurso && data.recaudo_anticipado === false) {
-                    const sqlRecursos = this.updsertRecaudoSql(data.recurso, data.tipo_recurso);
-                    const recurso = await t.one<IRecursoOut>(sqlRecursos);
-                    idRecurso = recurso.id_recurso;
-                }
-
-                let idResponsable = null;
-                if (data.responsable && data.tipo_recurso_responsable && data.recaudo_anticipado === false) {
-                    const sqlRecursos = this.updsertRecaudoSql(data.responsable, data.tipo_recurso_responsable);
-                    const responsable = await t.one<IRecursoOut>(sqlRecursos);
-                    idResponsable = responsable.id_recurso;
-                }
-
                 const sqlRecaudo = `INSERT INTO recaudos
-                                (id_recaudo, id_medio_pago, fecha_hora_recaudo, valor, terminal, id_tipo_recaudo, id_responsable, id_recurso, id_tipo_recurso_referencias)
-                                VALUES ($/id_recaudo/, $/id_medio_pago/, $/fecha_hora_recaudo/, $/valor/, $/terminal/, $/id_tipo_recaudo/, $/id_responsable/, $/id_recurso/, $/id_tipo_recurso_referencias/)
+                                (id_recaudo, id_medio_pago, fecha_hora_recaudo, valor, terminal, id_tipo_recaudo)
+                                VALUES ($/id_recaudo/, $/id_medio_pago/, $/fecha_hora_recaudo/, $/valor/, $/terminal/, $/id_tipo_recaudo/)
                                 RETURNING id_recaudo;`;
 
                 const resultadoRecaudo = await t.one<{ id_recaudo: number }>(sqlRecaudo, {
@@ -38,9 +24,6 @@ export class RecaudosDao {
                     valor: data.valor_recaudo,
                     terminal: data.terminal,
                     id_tipo_recaudo: data.origen_recaudo + '-' + data.tipo_recaudo,
-                    id_responsable: idResponsable,
-                    id_recurso: idRecurso,
-                    id_tipo_recurso_referencias: data.tipo_recurso_referencias,
                 });
 
                 const sqlTrasacciones = `INSERT INTO transacciones
@@ -55,45 +38,21 @@ export class RecaudosDao {
                     id_movimiento: resultadoRecaudo.id_recaudo,
                 });
 
-                if (data.referencias.length > 0) {
-                    const referencias = data.referencias.map((item) => {
-                        return {
-                            id_recaudo: resultadoRecaudo.id_recaudo,
-                            referencia_recaudo: item.referencia,
-                            valor_recaudo: item.valor,
-                        };
-                    });
+                const complemetariasPromise = data.recursos.map(async (item) => {
+                    const sqlRecursos = this.updsertRecaudoSql(item.valor, item.tipo);
+                    const recurso = await t.one<IRecursoOut>(sqlRecursos);
 
-                    const sqlInsert = pgp.helpers.insert(
-                        referencias,
-                        ['id_recaudo', 'referencia_recaudo', 'valor_recaudo'],
-                        'recaudos_referencias',
-                    );
+                    return {
+                        id_recaudo: resultadoRecaudo.id_recaudo,
+                        id_recurso: recurso.id_recurso,
+                    };
+                });
 
-                    await t.none(sqlInsert);
-                }
+                const complemetarias = await Promise.all(complemetariasPromise);
 
-                if (data.info_complementaria.length > 0) {
-                    const complemetariasPromise = data.info_complementaria.map(async (item) => {
-                        const sqlRecursos = this.updsertRecaudoSql(item.valor, item.tipo);
-                        const recurso = await t.one<IRecursoOut>(sqlRecursos);
+                const sqlInsert = pgp.helpers.insert(complemetarias, ['id_recaudo', 'id_recurso'], 'recaudos_recursos');
 
-                        return {
-                            id_recaudo: resultadoRecaudo.id_recaudo,
-                            id_recurso: recurso.id_recurso,
-                        };
-                    });
-
-                    const complemetarias = await Promise.all(complemetariasPromise);
-
-                    const sqlInsert = pgp.helpers.insert(
-                        complemetarias,
-                        ['id_recaudo', 'id_recurso'],
-                        'recaudos_recursos',
-                    );
-
-                    await t.none(sqlInsert);
-                }
+                await t.none(sqlInsert);
             })
             .catch((error) => {
                 //console.log('error', JSON.stringify(error));
