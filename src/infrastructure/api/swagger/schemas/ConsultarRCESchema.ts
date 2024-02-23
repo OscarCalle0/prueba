@@ -2,7 +2,7 @@ export const ConsultarRCESchema = {
     schema: {
         description: 'Endpoint para obtener si una referencia tiene un recaudo asociado',
         tags: ['RCE', 'Recaudos'],
-        querystring: {
+        ParameterizedQuery: {
             type: 'object',
             properties: {
                 codigo_remision: { type: 'string', example: '73940715360', description: 'Obligatorio' },
