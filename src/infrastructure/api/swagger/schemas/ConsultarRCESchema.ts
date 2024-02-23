@@ -1,7 +1,7 @@
 export const ConsultarRCESchema = {
     schema: {
         description: 'Endpoint para obtener si una referencia tiene un recaudo asociado',
-        tags: ['RCE', 'Recaudos'],
+        tags: ['RCE'],
         params: {
             type: 'object',
             properties: {
