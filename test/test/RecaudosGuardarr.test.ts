@@ -18,28 +18,13 @@ describe('RecaudosGuardar', () => {
     const payload = {
         recaudo_id: '3421131sx241112',
         terminal: '1',
-        tipo_recurso: 6,
-        recurso: '1',
-        tipo_recurso_responsable: 1,
-        responsable: '301034',
         valor_recaudo: 200,
         medio_pago: 1,
         fecha_hora_accion: '2023-10-12 12:12:12',
         tipo_recaudo: 22,
         origen_recaudo: 2,
         recaudo_anticipado: false,
-        tipo_recurso_referencias: 4,
-        referencias: [
-            {
-                referencia: '1111',
-                valor: 100,
-            },
-            {
-                referencia: '1111',
-                valor: 100,
-            },
-        ],
-        info_complementaria: [
+        recursos: [
             {
                 valor: 'ass41282351rf',
                 tipo: 6,
@@ -69,7 +54,7 @@ describe('RecaudosGuardar', () => {
         const response = await application.inject({
             method: 'POST',
             url: `${PREFIX}/recaudos`,
-            payload: { ...payload, tipo_recurso: 16 },
+            payload: { ...payload },
         });
 
         const result = response.json();
@@ -77,7 +62,7 @@ describe('RecaudosGuardar', () => {
         expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
         expect(result.message).toBe(
-            'insert or update on table "tipos_recursos" violates foreign key constraint on table "fk_recursos_id_tipo_recurso"',
+            `insert into "recaudos" (id_recaudo, id_medio_pago, fecha_hora_recaudo, valor, terminal, id_tipo_recaudo) values ($1, $2, $3, $4, $5, $6) returning "id_recaudo" - duplicate key value violates unique constraint "recaudos_pkey"`,
         );
     });
 
@@ -85,7 +70,7 @@ describe('RecaudosGuardar', () => {
         const response = await application.inject({
             method: 'POST',
             url: `${PREFIX}/recaudos`,
-            payload: { ...payload, tipo_recurso: undefined },
+            payload: { ...payload, medio_pago: undefined },
         });
 
         const result = response.json();
@@ -95,8 +80,8 @@ describe('RecaudosGuardar', () => {
         expect(result.message).toBe('Los valores de entrada no son correctos.');
         expect(result.cause).toEqual([
             {
-                message: 'El campo tipo_recurso es obligatorio',
-                path: 'tipo_recurso',
+                message: 'El campo medio_pago es obligatorio',
+                path: 'medio_pago',
             },
         ]);
     });
