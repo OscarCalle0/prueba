@@ -69,7 +69,6 @@ describe('RecaudosGuardar', () => {
         });
 
         const result = response.json();
-        console.log('result', result);
 
         expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
