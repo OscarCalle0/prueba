@@ -1,6 +1,7 @@
 export const ConsultarRCESchema = {
     schema: {
-        description: 'Endpoint para obtener si una referencia tiene un recaudo asociado',
+        description:
+            'Endpoint para consultar si una guía con NS/SC RCE, RCE Mismo día o RCE Entregas AM está recaudada.',
         tags: ['RCE'],
         params: {
             type: 'object',
