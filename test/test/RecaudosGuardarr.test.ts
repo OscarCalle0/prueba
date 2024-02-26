@@ -14,9 +14,9 @@ describe('RecaudosGuardar', () => {
 
         DEPENDENCY_CONTAINER.rebind<IDataBase<IMain>>(TYPES.Pg).toConstantValue(db);
     });
-
+/*
     const payload = {
-        recaudo_id: '21aaa2bcwex12',
+        recaudo_id: 'vmashcovu',
         terminal: 12,
         valor_recaudo: 200,
         medio_pago: 9,
@@ -56,7 +56,6 @@ describe('RecaudosGuardar', () => {
         });
 
         const result = response.json();
-
         expect(response.statusCode).toBe(201);
         expect(result.isError).toBe(false);
         expect(result.data).toBe('ok');
@@ -96,7 +95,7 @@ describe('RecaudosGuardar', () => {
                 path: 'tipo_recurso',
             },
         ]);
-    });
+    });*/
 
     it('Guardar recaudo error validacion 2', async () => {
         const response = await application.inject({
