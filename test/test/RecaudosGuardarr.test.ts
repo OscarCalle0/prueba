@@ -16,37 +16,34 @@ describe('RecaudosGuardar', () => {
     });
 
     const payload = {
-        recaudo_id: '3421131sx241112',
-        terminal: '1',
-        tipo_recurso: 6,
-        recurso: '1',
-        tipo_recurso_responsable: 1,
-        responsable: '301034',
+        recaudo_id: '21aaa2bcwex12',
+        terminal: 12,
         valor_recaudo: 200,
-        medio_pago: 1,
+        medio_pago: 9,
         fecha_hora_accion: '2023-10-12 12:12:12',
         tipo_recaudo: 22,
         origen_recaudo: 2,
         recaudo_anticipado: false,
-        tipo_recurso_referencias: 4,
-        referencias: [
+        recursos: [
             {
-                referencia: '1111',
-                valor: 100,
-            },
-            {
-                referencia: '1111',
-                valor: 100,
-            },
-        ],
-        info_complementaria: [
-            {
-                valor: 'ass41282351rf',
-                tipo: 6,
-            },
-            {
-                valor: '2000',
                 tipo: 1,
+                valor: '11283745',
+            },
+            {
+                tipo: 2,
+                valor: '7048-2',
+            },
+            {
+                tipo: 5,
+                valor: '2',
+            },
+            {
+                tipo: 3,
+                valor: '48-Logicuartas',
+            },
+            {
+                tipo: 6,
+                valor: '98765435756',
             },
         ],
     };
@@ -69,12 +66,12 @@ describe('RecaudosGuardar', () => {
         const response = await application.inject({
             method: 'POST',
             url: `${PREFIX}/recaudos`,
-            payload: { ...payload, tipo_recurso: 16 },
+            payload: { ...payload, medio_pago: 100 },
         });
 
         const result = response.json();
 
-        expect(response.statusCode).toBe(500);
+        expect(response.statusCode).toBe(400);
         expect(result.isError).toBe(true);
         expect(result.message).toBe(
             'insert or update on table "tipos_recursos" violates foreign key constraint on table "fk_recursos_id_tipo_recurso"',
