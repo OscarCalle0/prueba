@@ -1,8 +1,9 @@
-import { example } from './ExampleRouter';
 import { FastifyInstance } from 'fastify';
-import { examplePostSchema, exampleGetSchema } from '@infrastructure/api/swagger';
+import { ConsultarRCESchema } from '../swagger/schemas/ConsultarRCESchema';
+import { guardarRecaudo, healtCheck, consultaRecaudoEfectivo } from './RecaudosRouter';
 
 export const initRoutes = async (application: FastifyInstance): Promise<void> => {
-    application.get(`/:terminal`, exampleGetSchema, example);
-    application.post(`/`, examplePostSchema, example);
+    application.post(`/recaudos`, guardarRecaudo);
+    application.get(`/recaudos/rce-efectivo-guia/:codigo_remision`, ConsultarRCESchema, consultaRecaudoEfectivo);
+    application.get(`/healt-check`, healtCheck);
 };

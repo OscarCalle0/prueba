@@ -3,7 +3,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import formbody from '@fastify/formbody';
 import { validatePubSub } from '@infrastructure/api';
-import { decode, parse } from '@util';
+import { NODE_ENV, decode, parse } from '@util';
 
 type Payload = Record<string, unknown>;
 
@@ -24,25 +24,27 @@ export const middlewares = (application: FastifyInstance): void => {
     application.addHook<Payload, any>('onSend', async (req, reply, payload) => {
         const { id, method, url, headers, params, query, body } = req;
         const isPubSub = await validatePubSub(body);
-        console.log(
-            JSON.stringify({
-                application: process.env.SERVICE_NAME ?? 'SERVICE_NAME NOT FOUND',
-                id,
-                method,
-                url,
-                request: {
-                    headers,
-                    body: body ?? {},
-                    buffer: isPubSub ? parse(decode(isPubSub.message.data)) : {},
-                    messageId: isPubSub ? isPubSub.message.messageId : null,
-                    params,
-                    query,
-                },
-                response: {
-                    statusCode: reply.statusCode,
-                    payload,
-                },
-            }),
-        );
+        if (NODE_ENV !== 'test') {
+            console.log(
+                JSON.stringify({
+                    application: process.env.SERVICE_NAME ?? 'SERVICE_NAME NOT FOUND',
+                    id,
+                    method,
+                    url,
+                    request: {
+                        headers,
+                        body: body ?? {},
+                        buffer: isPubSub ? parse(decode(isPubSub.message.data)) : {},
+                        messageId: isPubSub ? isPubSub.message.messageId : null,
+                        params,
+                        query,
+                    },
+                    response: {
+                        statusCode: reply.statusCode,
+                        payload,
+                    },
+                }),
+            );
+        }
     });
 };
