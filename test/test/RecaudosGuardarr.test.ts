@@ -16,8 +16,8 @@ describe('RecaudosGuardar', () => {
     });
 
     const payload = {
-        recaudo_id: '3421131sx241112',
-        terminal: '1',
+        recaudo_id: 'vmashcovu',
+        terminal: 12,
         valor_recaudo: 200,
         medio_pago: 1,
         fecha_hora_accion: '2023-10-12 12:12:12',
@@ -26,12 +26,24 @@ describe('RecaudosGuardar', () => {
         recaudo_anticipado: false,
         recursos: [
             {
-                valor: 'ass41282351rf',
-                tipo: 6,
+                tipo: 1,
+                valor: '11283745',
             },
             {
-                valor: '2000',
+                tipo: 2,
+                valor: '7048-2',
+            },
+            {
                 tipo: 1,
+                valor: '2',
+            },
+            {
+                tipo: 1,
+                valor: '48-Logicuartas',
+            },
+            {
+                tipo: 1,
+                valor: '98765435756',
             },
         ],
     };
@@ -44,7 +56,6 @@ describe('RecaudosGuardar', () => {
         });
 
         const result = response.json();
-
         expect(response.statusCode).toBe(201);
         expect(result.isError).toBe(false);
         expect(result.data).toBe('ok');
@@ -54,7 +65,7 @@ describe('RecaudosGuardar', () => {
         const response = await application.inject({
             method: 'POST',
             url: `${PREFIX}/recaudos`,
-            payload: { ...payload },
+            payload: { ...payload, medio_pago: 100 },
         });
 
         const result = response.json();
@@ -62,7 +73,7 @@ describe('RecaudosGuardar', () => {
         expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
         expect(result.message).toBe(
-            `insert into "recaudos" (id_recaudo, id_medio_pago, fecha_hora_recaudo, valor, terminal, id_tipo_recaudo) values ($1, $2, $3, $4, $5, $6) returning "id_recaudo" - duplicate key value violates unique constraint "recaudos_pkey"`,
+            'insert or update on table "medios_pagos" violates foreign key constraint on table "fk_recaudos_relations_medios_p"',
         );
     });
 
@@ -70,7 +81,7 @@ describe('RecaudosGuardar', () => {
         const response = await application.inject({
             method: 'POST',
             url: `${PREFIX}/recaudos`,
-            payload: { ...payload, medio_pago: undefined },
+            payload: { ...payload, recaudo_id: undefined },
         });
 
         const result = response.json();
@@ -80,8 +91,8 @@ describe('RecaudosGuardar', () => {
         expect(result.message).toBe('Los valores de entrada no son correctos.');
         expect(result.cause).toEqual([
             {
-                message: 'El campo medio_pago es obligatorio',
-                path: 'medio_pago',
+                message: 'El campo recaudo_id es obligatorio',
+                path: 'recaudo_id',
             },
         ]);
     });

@@ -15,6 +15,9 @@ export const guardarRecaudo = async (req: FastifyRequest, reply: FastifyReply): 
     const response = await recaudosService.guardarRecaudo(data);
     return reply.status(201).send({ ...response, id: req.id });
 };
+export const healtCheck = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    return reply.send({ data: 'ok' });
+};
 
 export const consultaRecaudoEfectivo = async (
     req: FastifyRequest,
