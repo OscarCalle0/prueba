@@ -14,12 +14,12 @@ describe('RecaudosGuardar', () => {
 
         DEPENDENCY_CONTAINER.rebind<IDataBase<IMain>>(TYPES.Pg).toConstantValue(db);
     });
-/*
+
     const payload = {
         recaudo_id: 'vmashcovu',
         terminal: 12,
         valor_recaudo: 200,
-        medio_pago: 9,
+        medio_pago: 1,
         fecha_hora_accion: '2023-10-12 12:12:12',
         tipo_recaudo: 22,
         origen_recaudo: 2,
@@ -34,15 +34,15 @@ describe('RecaudosGuardar', () => {
                 valor: '7048-2',
             },
             {
-                tipo: 5,
+                tipo: 1,
                 valor: '2',
             },
             {
-                tipo: 3,
+                tipo: 1,
                 valor: '48-Logicuartas',
             },
             {
-                tipo: 6,
+                tipo: 1,
                 valor: '98765435756',
             },
         ],
@@ -69,11 +69,12 @@ describe('RecaudosGuardar', () => {
         });
 
         const result = response.json();
+        console.log('result', result);
 
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
         expect(result.message).toBe(
-            'insert or update on table "tipos_recursos" violates foreign key constraint on table "fk_recursos_id_tipo_recurso"',
+            'insert or update on table "medios_pagos" violates foreign key constraint on table "fk_recaudos_relations_medios_p"',
         );
     });
 
@@ -81,7 +82,7 @@ describe('RecaudosGuardar', () => {
         const response = await application.inject({
             method: 'POST',
             url: `${PREFIX}/recaudos`,
-            payload: { ...payload, tipo_recurso: undefined },
+            payload: { ...payload, recaudo_id: undefined },
         });
 
         const result = response.json();
@@ -91,11 +92,11 @@ describe('RecaudosGuardar', () => {
         expect(result.message).toBe('Los valores de entrada no son correctos.');
         expect(result.cause).toEqual([
             {
-                message: 'El campo tipo_recurso es obligatorio',
-                path: 'tipo_recurso',
+                message: 'El campo recaudo_id es obligatorio',
+                path: 'recaudo_id',
             },
         ]);
-    });*/
+    });
 
     it('Guardar recaudo error validacion 2', async () => {
         const response = await application.inject({

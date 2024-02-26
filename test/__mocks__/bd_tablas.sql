@@ -49,15 +49,9 @@ CREATE TABLE public.recaudos (
 	valor numeric NOT NULL,
 	terminal numeric NOT NULL,
 	id_tipo_recaudo varchar(10) NULL,
-	id_responsable int4 NOT NULL,
-	id_recurso int4 NOT NULL,
-	id_tipo_recurso_referencias int4 NOT NULL,
 	CONSTRAINT pk_recaudos PRIMARY KEY (id_recaudo),
 	CONSTRAINT fk_recaudos_id_tipo_recaudo FOREIGN KEY (id_tipo_recaudo) REFERENCES public.tipos_recaudos(id_tipo_recaudo),
-	CONSTRAINT fk_recaudos_id_tipo_recursso FOREIGN KEY (id_tipo_recurso_referencias) REFERENCES public.tipos_recursos(id_tipo_recurso),
-	CONSTRAINT fk_recaudos_relations_medios_p FOREIGN KEY (id_medio_pago) REFERENCES public.medios_pagos(id_medio_pago),
-	CONSTRAINT fk_recurs_recaudo FOREIGN KEY (id_recurso) REFERENCES public.recursos(id_recurso),
-	CONSTRAINT fk_recurs_respon FOREIGN KEY (id_responsable) REFERENCES public.recursos(id_recurso)
+	CONSTRAINT fk_recaudos_relations_medios_p FOREIGN KEY (id_medio_pago) REFERENCES public.medios_pagos(id_medio_pago)
 );
 
 
