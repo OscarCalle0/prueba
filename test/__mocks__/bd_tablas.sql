@@ -42,6 +42,7 @@ CREATE TABLE public.recursos (
 
 
 
+
 CREATE TABLE public.recaudos (
 	id_recaudo varchar(40) NOT NULL,
 	id_medio_pago int4 NOT NULL,
