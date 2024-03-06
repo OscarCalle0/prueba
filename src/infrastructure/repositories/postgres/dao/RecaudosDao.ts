@@ -38,21 +38,27 @@ export class RecaudosDao {
                     id_movimiento: resultadoRecaudo.id_recaudo,
                 });
 
-                const complemetariasPromise = data.recursos.map(async (item) => {
-                    const sqlRecursos = this.updsertRecaudoSql(item.valor, item.tipo);
-                    const recurso = await t.one<IRecursoOut>(sqlRecursos);
+                if (data.recursos) {
+                    const complemetariasPromise = data.recursos.map(async (item) => {
+                        const sqlRecursos = this.updsertRecaudoSql(item.valor, item.tipo);
+                        const recurso = await t.one<IRecursoOut>(sqlRecursos);
 
-                    return {
-                        id_recaudo: resultadoRecaudo.id_recaudo,
-                        id_recurso: recurso.id_recurso,
-                    };
-                });
+                        return {
+                            id_recaudo: resultadoRecaudo.id_recaudo,
+                            id_recurso: recurso.id_recurso,
+                        };
+                    });
 
-                const complemetarias = await Promise.all(complemetariasPromise);
+                    const complemetarias = await Promise.all(complemetariasPromise);
 
-                const sqlInsert = pgp.helpers.insert(complemetarias, ['id_recaudo', 'id_recurso'], 'recaudos_recursos');
+                    const sqlInsert = pgp.helpers.insert(
+                        complemetarias,
+                        ['id_recaudo', 'id_recurso'],
+                        'recaudos_recursos',
+                    );
 
-                await t.none(sqlInsert);
+                    await t.none(sqlInsert);
+                }
             })
             .catch((error) => {
                 //console.log('error', JSON.stringify(error));
