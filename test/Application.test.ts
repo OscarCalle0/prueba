@@ -1,16 +1,15 @@
 import { application } from '@infrastructure/api/Application';
-import { Firestore } from '@google-cloud/firestore';
-import MockFirebase from 'mock-cloud-firestore';
-import { PREFIX } from '@util';
 import { TYPES, DEPENDENCY_CONTAINER, createDependencyContainer } from '@configuration';
-
-const MockFirestore = new MockFirebase();
-const firestore = MockFirestore.firestore();
+import { IDataBase } from '@infrastructure/repositories';
+import { IMain } from 'pg-promise';
+import { crearDB } from './__mocks__';
 
 describe('Testing App Request', () => {
     beforeAll(() => {
+        const db = crearDB();
+
         createDependencyContainer();
-        DEPENDENCY_CONTAINER.rebind<Firestore>(TYPES.Firestore).toConstantValue(firestore);
+        DEPENDENCY_CONTAINER.rebind<IDataBase<IMain>>(TYPES.Pg).toConstantValue(db);
     });
 
     it('test de prueba con error 404', async () => {
@@ -19,13 +18,5 @@ describe('Testing App Request', () => {
             url: '/route-not-found',
         });
         expect(response.statusCode).toBe(404);
-    });
-
-    it('test de prueba exitoso', async () => {
-        const response = await application.inject({
-            method: 'GET',
-            url: `${PREFIX}/`,
-        });
-        expect(response.statusCode).toBe(200);
     });
 });

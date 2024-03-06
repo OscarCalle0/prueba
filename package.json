@@ -1,5 +1,5 @@
 {
-    "name": "example",
+    "name": "cm-dineros-transacciones",
     "version": "1.0.0",
     "main": "dist/infrastructure/api/Server.js",
     "description": "Proyecto que contiene la plantilla para los microservicios de Coordinadora",
@@ -29,11 +29,14 @@
         "@fastify/helmet": "^8.0.0",
         "@fastify/swagger": "^6.0.0",
         "@google-cloud/firestore": "5.0.2",
+        "@joi/date": "^2.1.0",
         "dotenv": "^16.0.0",
         "fastify": "^3.28.0",
         "inversify": "6.0.1",
         "joi": "17.6.0",
         "module-alias": "2.2.2",
+        "pg-mem": "^2.8.1",
+        "pg-promise": "^11.5.4",
         "reflect-metadata": "0.1.13"
     },
     "devDependencies": {

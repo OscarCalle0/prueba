@@ -2,12 +2,13 @@ import { FastifyError, FastifyInstance } from 'fastify';
 import { ErrorCode, Exception } from '@domain/exceptions';
 
 const buildErrorResponse = (error: FastifyError, cause?: string, statusCode?: number, errorCode?: ErrorCode) => {
+    const fechaActual = new Date();
     return {
         isError: true,
         message: error.message,
         code: error.code || errorCode,
         cause: cause || error.stack,
-        timestap: new Date(),
+        timestap: new Date(fechaActual.toLocaleString('en-US', { timeZone: 'America/Bogota' })),
         statusCode: statusCode || error.statusCode,
     };
 };

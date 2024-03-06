@@ -1,4 +1,4 @@
 export const TYPES = {
-    Firestore: Symbol.for('Firestore'),
-    FirestoreExampleRepository: Symbol.for('FirestoreExampleRepository'),
+    Pg: Symbol.for('Pg'),
+    cm: Symbol.for('cm'),
 };
