@@ -23,6 +23,7 @@ export const GuardarRecaudosJoiSchema = Joi.object<IRecaudosIn>({
             Joi.object<IInfoComplementariaIn>({
                 valor: Joi.string().required().messages(messages('valor')),
                 tipo: Joi.number().required().messages(messages('tipo')),
+                detalle: Joi.number().optional().messages(messages('detalle')),
             }),
         ),
 });

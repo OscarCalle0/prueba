@@ -43,6 +43,17 @@ export class RecaudosDao {
                         const sqlRecursos = this.updsertRecaudoSql(item.valor, item.tipo);
                         const recurso = await t.one<IRecursoOut>(sqlRecursos);
 
+                        if (item.tipo === 3) {
+                            const sqlTrasacciones = `INSERT INTO guias_recaudadas
+                            (id_recurso, id_recaudo, valor)
+                            values ($/id_recurso/, $/id_recaudo/, $/valor/)`;
+
+                            await t.none(sqlTrasacciones, {
+                                id_recurso: recurso.id_recurso,
+                                id_recaudo: resultadoRecaudo.id_recaudo,
+                                valor: item.detalle
+                            });
+                        }
                         return {
                             id_recaudo: resultadoRecaudo.id_recaudo,
                             id_recurso: recurso.id_recurso,
