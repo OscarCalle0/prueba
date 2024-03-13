@@ -4,7 +4,7 @@ export const PG_CONECTION: IConnectionParameters = {
     port: 3306,
     max: 30,
     idleTimeoutMillis: 3000,
-    query_timeout: 15000,
+    query_timeout: 50000,
     connect_timeout: 3000,
 };
 
