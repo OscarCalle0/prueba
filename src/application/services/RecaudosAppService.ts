@@ -13,7 +13,7 @@ export class RecaudosAppService {
     private cmDAO = DEPENDENCY_CONTAINER.get(cmDAO);
 
     async guardarRecaudo(data: IRecaudosIn): Promise<Response<string | null>> {
-        const key = `GUARDAR RECAUDO ${data.recaudo_id}`;
+        const key = `GUARDAR RECAUDO ${data.recaudo_id}, Guias => ${data.recursos.length}`;
         time(key);
         await this.recaudosDao.guardarRecaudo(data);
         timeEnd(key);
