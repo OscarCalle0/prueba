@@ -5,6 +5,7 @@ import { RecaudosDao } from '@infrastructure/repositories/postgres/dao/RecaudosD
 import { IRecaudosIn } from '@application/data';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 import { cmDAO } from '@infrastructure/repositories';
+import { time, timeEnd } from 'console';
 
 @injectable()
 export class RecaudosAppService {
@@ -12,7 +13,10 @@ export class RecaudosAppService {
     private cmDAO = DEPENDENCY_CONTAINER.get(cmDAO);
 
     async guardarRecaudo(data: IRecaudosIn): Promise<Response<string | null>> {
+        const key = `GUARDAR RECAUDO ${data.recaudo_id}, Guias => ${data.recursos.length}`;
+        time(key);
         await this.recaudosDao.guardarRecaudo(data);
+        timeEnd(key);
         return Result.ok('ok');
     }
 
