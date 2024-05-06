@@ -9,8 +9,9 @@ import { PostgresError } from '@domain/exceptions';
 export class RecaudosDao {
     private db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Pg);
 
-    public async guardarRecaudo(data: IRecaudosIn): Promise<void> {
+    public async guardarRecaudo(data: IRecaudosIn): Promise<number> {
         let idEquipo = 0;
+        let idTransaccion = 0;
         await this.db
             .tx(async (t) => {
                 const sqlRecaudo = `INSERT INTO recaudos
@@ -36,7 +37,6 @@ export class RecaudosDao {
                             const sqlTrasacciones = `INSERT INTO guias_recaudadas
                             (id_recurso, id_recaudo, valor)
                             values ($/id_recurso/, $/id_recaudo/, $/valor/)`;
-
                             await t.none(sqlTrasacciones, {
                                 id_recurso: recurso.id_recurso,
                                 id_recaudo: resultadoRecaudo.id_recaudo,
@@ -49,9 +49,7 @@ export class RecaudosDao {
                             id_recurso: recurso.id_recurso,
                         };
                     });
-
                     const complemetarias = await Promise.all(complemetariasPromise);
-
                     const sqlInsert = pgp.helpers.insert(
                         complemetarias,
                         ['id_recaudo', 'id_recurso'],
@@ -59,9 +57,10 @@ export class RecaudosDao {
                     );
                     const sqlTrasacciones = `INSERT INTO transacciones
                     (id_tipo_transaccion, valor_transaccion, fecha_hora_transaccion, ingreso_dinero, id_movimiento, id_recurso)
-                    values ($/id_tipo_transaccion/, $/valor_transaccion/, $/fecha_hora_transaccion/, $/ingreso_dinero/, $/id_movimiento/, $/id_recurso/)`;
+                    values ($/id_tipo_transaccion/, $/valor_transaccion/, $/fecha_hora_transaccion/, $/ingreso_dinero/, $/id_movimiento/, $/id_recurso/)
+                    RETURNING id_transaccion;`;
 
-                    await t.none(sqlTrasacciones, {
+                    const idTransaccionQuery = await t.oneOrNone<{ id_transaccion: number }>(sqlTrasacciones, {
                         id_tipo_transaccion: 1,
                         valor_transaccion: data.valor_recaudo,
                         fecha_hora_transaccion: data.fecha_hora_accion,
@@ -69,6 +68,7 @@ export class RecaudosDao {
                         id_movimiento: resultadoRecaudo.id_recaudo,
                         id_recurso: idEquipo,
                     });
+                    if (idTransaccionQuery) idTransaccion = idTransaccionQuery.id_transaccion;
                     await t.none(sqlInsert);
                 }
             })
@@ -76,6 +76,7 @@ export class RecaudosDao {
                 //console.log('error', JSON.stringify(error));
                 throw new PostgresError(error.code, error?.data?.error || error.message);
             });
+        return idTransaccion;
     }
     public async guardarRecau2(data: IRecaudosIn): Promise<void> {
         await this.db
