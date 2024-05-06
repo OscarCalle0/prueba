@@ -27,24 +27,12 @@ describe('RecaudosGuardar', () => {
         recursos: [
             {
                 tipo: 1,
-                valor: '11283745',
+                valor: '1-1',
             },
             {
                 tipo: 2,
-                valor: '7048-2',
-            },
-            {
-                tipo: 1,
-                valor: '2',
-            },
-            {
-                tipo: 1,
-                valor: '48-Logicuartas',
-            },
-            {
-                tipo: 1,
-                valor: '98765435756',
-            },
+                valor: '7048',
+            }
         ],
     };
 
@@ -58,7 +46,7 @@ describe('RecaudosGuardar', () => {
         const result = response.json();
         expect(response.statusCode).toBe(201);
         expect(result.isError).toBe(false);
-        expect(result.data).toBe('ok');
+        expect(result.data).toBe(1);
     });
 
     it('Guardar recaudo error', async () => {

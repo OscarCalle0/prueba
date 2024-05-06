@@ -12,12 +12,12 @@ export class RecaudosAppService {
     private recaudosDao = DEPENDENCY_CONTAINER.get(RecaudosDao);
     private cmDAO = DEPENDENCY_CONTAINER.get(cmDAO);
 
-    async guardarRecaudo(data: IRecaudosIn): Promise<Response<string | null>> {
+    async guardarRecaudo(data: IRecaudosIn): Promise<Response<number | null>> {
         const key = `GUARDAR RECAUDO ${data.recaudo_id}, Guias => ${data.recursos.length}`;
         time(key);
-        await this.recaudosDao.guardarRecaudo(data);
+        const transaccion = await this.recaudosDao.guardarRecaudo(data);
         timeEnd(key);
-        return Result.ok('ok');
+        return Result.ok(transaccion);
     }
 
     async consultarRecaudoRCE(data: IRecaudosConsulta): Promise<Response<boolean | null>> {
