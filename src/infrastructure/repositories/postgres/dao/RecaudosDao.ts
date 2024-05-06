@@ -10,6 +10,7 @@ export class RecaudosDao {
     private db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Pg);
 
     public async guardarRecaudo(data: IRecaudosIn): Promise<void> {
+        let idEquipo = 0;
         await this.db
             .tx(async (t) => {
                 const sqlRecaudo = `INSERT INTO recaudos
@@ -24,18 +25,6 @@ export class RecaudosDao {
                     valor: data.valor_recaudo,
                     terminal: data.terminal,
                     id_tipo_recaudo: data.origen_recaudo + '-' + data.tipo_recaudo,
-                });
-
-                const sqlTrasacciones = `INSERT INTO transacciones
-                    (id_tipo_transaccion, valor_transaccion, fecha_hora_transaccion, ingreso_dinero, id_movimiento)
-                    values ($/id_tipo_transaccion/, $/valor_transaccion/, $/fecha_hora_transaccion/, $/ingreso_dinero/, $/id_movimiento/)`;
-
-                await t.none(sqlTrasacciones, {
-                    id_tipo_transaccion: 1,
-                    valor_transaccion: data.valor_recaudo,
-                    fecha_hora_transaccion: data.fecha_hora_accion,
-                    ingreso_dinero: true,
-                    id_movimiento: resultadoRecaudo.id_recaudo,
                 });
 
                 if (data.recursos) {
@@ -54,6 +43,7 @@ export class RecaudosDao {
                                 valor: item.detalle,
                             });
                         }
+                        if (item.tipo === 1) idEquipo = recurso.id_recurso;
                         return {
                             id_recaudo: resultadoRecaudo.id_recaudo,
                             id_recurso: recurso.id_recurso,
@@ -67,7 +57,18 @@ export class RecaudosDao {
                         ['id_recaudo', 'id_recurso'],
                         'recaudos_recursos',
                     );
+                    const sqlTrasacciones = `INSERT INTO transacciones
+                    (id_tipo_transaccion, valor_transaccion, fecha_hora_transaccion, ingreso_dinero, id_movimiento, id_recurso)
+                    values ($/id_tipo_transaccion/, $/valor_transaccion/, $/fecha_hora_transaccion/, $/ingreso_dinero/, $/id_movimiento/, $/id_recurso/)`;
 
+                    await t.none(sqlTrasacciones, {
+                        id_tipo_transaccion: 1,
+                        valor_transaccion: data.valor_recaudo,
+                        fecha_hora_transaccion: data.fecha_hora_accion,
+                        ingreso_dinero: true,
+                        id_movimiento: resultadoRecaudo.id_recaudo,
+                        id_recurso: idEquipo,
+                    });
                     await t.none(sqlInsert);
                 }
             })
