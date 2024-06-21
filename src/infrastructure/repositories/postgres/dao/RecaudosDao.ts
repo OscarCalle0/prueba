@@ -9,7 +9,9 @@ import { PostgresError } from '@domain/exceptions';
 export class RecaudosDao {
     private db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Pg);
 
-    public async guardarRecaudo(data: IRecaudosIn): Promise<void> {
+    public async guardarRecaudo(data: IRecaudosIn): Promise<number> {
+        let idEquipo = 0;
+        let idTransaccion = 0;
         await this.db
             .tx(async (t) => {
                 const sqlRecaudo = `INSERT INTO recaudos
@@ -26,18 +28,6 @@ export class RecaudosDao {
                     id_tipo_recaudo: data.origen_recaudo + '-' + data.tipo_recaudo,
                 });
 
-                const sqlTrasacciones = `INSERT INTO transacciones
-                    (id_tipo_transaccion, valor_transaccion, fecha_hora_transaccion, ingreso_dinero, id_movimiento)
-                    values ($/id_tipo_transaccion/, $/valor_transaccion/, $/fecha_hora_transaccion/, $/ingreso_dinero/, $/id_movimiento/)`;
-
-                await t.none(sqlTrasacciones, {
-                    id_tipo_transaccion: 1,
-                    valor_transaccion: data.valor_recaudo,
-                    fecha_hora_transaccion: data.fecha_hora_accion,
-                    ingreso_dinero: true,
-                    id_movimiento: resultadoRecaudo.id_recaudo,
-                });
-
                 if (data.recursos) {
                     const complemetariasPromise = data.recursos.map(async (item) => {
                         const sqlRecursos = this.updsertRecaudoSql(item.valor, item.tipo);
@@ -47,27 +37,38 @@ export class RecaudosDao {
                             const sqlTrasacciones = `INSERT INTO guias_recaudadas
                             (id_recurso, id_recaudo, valor)
                             values ($/id_recurso/, $/id_recaudo/, $/valor/)`;
-
                             await t.none(sqlTrasacciones, {
                                 id_recurso: recurso.id_recurso,
                                 id_recaudo: resultadoRecaudo.id_recaudo,
                                 valor: item.detalle,
                             });
                         }
+                        if (item.tipo === 1) idEquipo = recurso.id_recurso;
                         return {
                             id_recaudo: resultadoRecaudo.id_recaudo,
                             id_recurso: recurso.id_recurso,
                         };
                     });
-
                     const complemetarias = await Promise.all(complemetariasPromise);
-
                     const sqlInsert = pgp.helpers.insert(
                         complemetarias,
                         ['id_recaudo', 'id_recurso'],
                         'recaudos_recursos',
                     );
+                    const sqlTrasacciones = `INSERT INTO transacciones
+                    (id_tipo_transaccion, valor_transaccion, fecha_hora_transaccion, ingreso_dinero, id_movimiento, id_recurso)
+                    values ($/id_tipo_transaccion/, $/valor_transaccion/, $/fecha_hora_transaccion/, $/ingreso_dinero/, $/id_movimiento/, $/id_recurso/)
+                    RETURNING id_transaccion;`;
 
+                    const idTransaccionQuery = await t.oneOrNone<{ id_transaccion: number }>(sqlTrasacciones, {
+                        id_tipo_transaccion: 1,
+                        valor_transaccion: data.valor_recaudo,
+                        fecha_hora_transaccion: data.fecha_hora_accion,
+                        ingreso_dinero: true,
+                        id_movimiento: resultadoRecaudo.id_recaudo,
+                        id_recurso: idEquipo,
+                    });
+                    if (idTransaccionQuery) idTransaccion = idTransaccionQuery.id_transaccion;
                     await t.none(sqlInsert);
                 }
             })
@@ -75,6 +76,7 @@ export class RecaudosDao {
                 //console.log('error', JSON.stringify(error));
                 throw new PostgresError(error.code, error?.data?.error || error.message);
             });
+        return idTransaccion;
     }
     public async guardarRecau2(data: IRecaudosIn): Promise<void> {
         await this.db
