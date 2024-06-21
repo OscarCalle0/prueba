@@ -19,7 +19,8 @@ module.exports = {
                 'refac', // Neither fixes a bug or adds a feature
                 'test', // Adding missing tests or correcting existing tests
                 'docs', // Changes in documentation
-                'chore', // Changes the build process
+                'chore', // Changes the build process,
+                'log',
             ],
         ],
     },

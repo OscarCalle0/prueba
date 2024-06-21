@@ -13,4 +13,5 @@ export interface IRecaudosIn {
 export interface IInfoComplementariaIn {
     valor: string;
     tipo: number;
+    detalle: string;
 }

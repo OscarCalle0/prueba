@@ -85,6 +85,8 @@ CREATE TABLE public.transacciones (
 	fecha_hora_transaccion timestamp NOT NULL,
 	ingreso_dinero bool NOT NULL,
 	id_movimiento varchar(100) NULL,
+	id_recurso int4 NULL,
 	CONSTRAINT pk_transacciones PRIMARY KEY (id_transaccion),
-	CONSTRAINT fk_transacc_relations_tipos_tr FOREIGN KEY (id_tipo_transaccion) REFERENCES public.tipos_transacciones(id_tipo_transaccion)
+	CONSTRAINT fk_transacc_relations_tipos_tr FOREIGN KEY (id_tipo_transaccion) REFERENCES public.tipos_transacciones(id_tipo_transaccion),
+	CONSTRAINT FK_TRANSACCIONES_RELATIONS_RECURSOS FOREIGN KEY (id_recurso) REFERENCES public.recursos(id_recurso)
 );
