@@ -21,7 +21,7 @@ export const CM_CONNECTION_PARAMETERS: IConnectionParameters = {
     ...PG_CONECTION,
     port: parseInt(process.env?.CM_PORT || '5432'),
     host: process.env.CM_HOST,
-    user: process.env.POSTGRES_USER,
+    user: process.env.CM_USER,
     password: process.env.CM_PASS,
     database: process.env.CM_DATABASE,
 };
