@@ -15,6 +15,11 @@ describe('RecaudosGuardar', () => {
         DEPENDENCY_CONTAINER.rebind<IDataBase<IMain>>(TYPES.Pg).toConstantValue(db);
     });
 
+    afterEach(() => {
+        jest.restoreAllMocks();
+        jest.clearAllMocks();
+    });
+
     const payload = {
         recaudo_id: 'vmashcovu',
         terminal: 12,
