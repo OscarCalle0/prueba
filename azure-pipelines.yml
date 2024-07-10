@@ -23,10 +23,10 @@ variables:
       - group: 'cm-dineros-recaudos-ms-dev'
 resources:
   repositories:
-    - repository: template-apis
+    - repository: template-apis-ci
       type: git
-      name: DevopsInfrasture/template-apis
+      name: DevopsInfrasture/template-apis-ci
       ref: refs/heads/main
 
 extends:
-  template: init.yml@template-apis
+  template: init.yml@template-apis-ci
