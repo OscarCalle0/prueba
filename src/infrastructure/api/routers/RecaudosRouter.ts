@@ -7,14 +7,14 @@ import { GuardarRecaudosJoiSchema } from '../schemas/GuardaRecaudosJoiSchema';
 import { ConsultaRCESchema } from '../schemas/ConsultarRCESchema';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 
+
 export const guardarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
-
     const data = validateData<IRecaudosIn>(GuardarRecaudosJoiSchema, req.body);
-
     const response = await recaudosService.guardarRecaudo(data);
     return reply.status(201).send({ ...response, id: req.id });
 };
+
 export const healtCheck = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     return reply.send({ data: 'ok' });
 };
@@ -28,3 +28,10 @@ export const consultaRecaudoEfectivo = async (
     const response = await recaudosService.consultarRecaudoRCE(data);
     return reply.status(200).send({ ...response, id: req.id });
 };
+
+/*export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
+    const response = await recaudosService.procesarRecaudo();
+    return reply.status(200).send({ ...response, id: req.id });
+};
+*/

@@ -4,8 +4,8 @@ import { guardarRecaudo, healtCheck, consultaRecaudoEfectivo } from './RecaudosR
 
 export const initRoutes = async (application: FastifyInstance): Promise<void> => {
     application.post(`/recaudos`, guardarRecaudo);
+   // application.post(`/recaudos/tarea`, procesarRecaudo);
     application.get(`/recaudos/rce-efectivo-guia/:codigo_remision`, ConsultarRCESchema, consultaRecaudoEfectivo);
     application.get(`/healt-check`, healtCheck);
     application.get(`/bolsillo`, healtCheck);
-
 };
