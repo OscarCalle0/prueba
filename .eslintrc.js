@@ -19,13 +19,6 @@ module.exports = {
     rules: {
         '@typescript-eslint/no-dynamic-delete': 'error',
         '@typescript-eslint/no-require-imports': 'error',
-        indent: [
-            'error',
-            4,
-            {
-                SwitchCase: 1,
-            },
-        ],
         'linebreak-style': ['error', 'unix'],
         'comma-spacing': [
             'error',
