@@ -37,3 +37,4 @@ pgp.pg.types.setTypeParser(1114, (str) => str);
 pgp.pg.types.setTypeParser(1082, (str) => str);
 export const db = pgp(getConnectionParameters('public')) as IDatabase<IMain>;
 export const cmDB = pgp(getCMConexion('public')) as IDatabase<IMain>;
+

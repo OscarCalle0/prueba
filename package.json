@@ -37,6 +37,7 @@
         "joi": "^17.13.3",
         "module-alias": "2.2.2",
         "pg-mem": "^2.8.1",
+        "got": "11.8.5",
         "pg-promise": "^11.5.4",
         "reflect-metadata": "0.1.13"
     },
