@@ -7,5 +7,4 @@ export const PREFIX = `/${process.env.DOMAIN}/${process.env.SERVICE_NAME}`;
 export const HOST = process.env.HOST || 'localhost';
 
 export const TRANSACCIONES_URL =
-    process.env.TRANSACCIONES_URL ??
-    'https://apiv2-dev.coordinadora.com/dineros/cm-dineros-transacciones/';
+    process.env.TRANSACCIONES_URL ?? 'https://apiv2-dev.coordinadora.com/dineros/cm-dineros-transacciones/';

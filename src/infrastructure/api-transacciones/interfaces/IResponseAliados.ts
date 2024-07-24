@@ -15,4 +15,3 @@ export interface IAliadosDataResponseApi {
     id_aliado: number;
     nombre_tipo_aliado: string;
 }
-

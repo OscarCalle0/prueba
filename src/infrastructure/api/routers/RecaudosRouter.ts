@@ -7,7 +7,6 @@ import { GuardarRecaudosJoiSchema } from '../schemas/GuardaRecaudosJoiSchema';
 import { ConsultaRCESchema } from '../schemas/ConsultarRCESchema';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 
-
 export const guardarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
     const data = validateData<IRecaudosIn>(GuardarRecaudosJoiSchema, req.body);
@@ -34,4 +33,3 @@ export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply):
     const response = await recaudosService.procesarRecaudo();
     return reply.status(200).send({ ...response, id: req.id });
 };
-
