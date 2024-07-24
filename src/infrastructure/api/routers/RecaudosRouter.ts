@@ -29,9 +29,9 @@ export const consultaRecaudoEfectivo = async (
     return reply.status(200).send({ ...response, id: req.id });
 };
 
-/*export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
     const response = await recaudosService.procesarRecaudo();
     return reply.status(200).send({ ...response, id: req.id });
 };
-*/
+

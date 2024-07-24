@@ -15,6 +15,7 @@ export class RecaudosFSDao implements FirestoreRepository {
         const recaudos: IFirestoreStageResponse[] = [];
         await this.firestore
             .collection(this.collection)
+            .where('estado', '==', 'pendiente')
             .limit(100)
             .get()
             .then((querySnapshot: any) => {

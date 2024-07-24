@@ -9,13 +9,13 @@ import { TRANSACCIONES_URL } from '@util';
 export class TransaccionesApiClient {
     async postRecaudosTarea(data: IFirestoreStageResponse): Promise<IResponseAliados | null> {
         try {
-            const response = await got.post<IResponseAliados>(`${TRANSACCIONES_URL}/recaudos/procesar`, {
+            const response = await got.post<IResponseAliados>(`${TRANSACCIONES_URL}recaudos/procesar`, {
                 json: data,
             });
             return response.body;
         } catch (e) {
-            console.error(`No se pudo conectar al servicio de aliados`, e);
-            throw new Error(`No se pudo conectar al servicio de aliados ${e}`);
+            console.error(`Error en el servicio de procesar recaudo`, e);
+            throw new Error(`Error en el servicio de procesar recaudo ${e}`);
         }
     }
 }

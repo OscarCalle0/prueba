@@ -6,15 +6,15 @@ import { IRecaudosIn } from '@application/data';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 import { cmDAO } from '@infrastructure/repositories';
 import { time, timeEnd } from 'console';
-import { RecaudosFSDao } from '@infrastructure/repositories/firestore copy';
 import { TransaccionesApiClient } from '@infrastructure/api-transacciones';
+import { FirestoreRepository } from '@domain/repository';
 
 @injectable()
 export class RecaudosAppService {
     private recaudosDao = DEPENDENCY_CONTAINER.get(RecaudosDao);
     private cmDAO = DEPENDENCY_CONTAINER.get(cmDAO);
-    private firestoreDAO = DEPENDENCY_CONTAINER.get<RecaudosFSDao>(TYPES.Firestore);
-    private recaudoApi = DEPENDENCY_CONTAINER.get<TransaccionesApiClient>(TYPES.TransaccionesApiClient);
+    private firestoreDAO = DEPENDENCY_CONTAINER.get<FirestoreRepository>(TYPES.firestoreDao);
+    private recaudoApi = DEPENDENCY_CONTAINER.get(TransaccionesApiClient);
 
     async guardarRecaudo(data: IRecaudosIn): Promise<Response<number | null>> {
         const key = `GUARDAR RECAUDO ${data.recaudo_id}, Guias => ${data.recursos.length}`;
@@ -35,7 +35,6 @@ export class RecaudosAppService {
 
     async procesarRecaudo(): Promise<Response<boolean | null>> {
         const recaudos = await this.firestoreDAO.getDataRecaudo();
-        console.log('recaudos', recaudos);
         for (const recaudo of recaudos) {
             await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, '', 'procesando');
             delete recaudo.estado;
