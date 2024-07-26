@@ -9,13 +9,20 @@ import { TRANSACCIONES_URL } from '@util';
 export class TransaccionesApiClient {
     async postRecaudosTarea(data: IFirestoreStageResponse): Promise<IResponseAliados | null> {
         try {
+            console.log('postRecaudosTarea', data);
             const response = await got.post<IResponseAliados>(`${TRANSACCIONES_URL}recaudos/procesar`, {
                 json: data,
+                responseType: 'json',
             });
             return response.body;
-        } catch (e) {
-            console.error(`Error en el servicio de procesar recaudo`, e);
-            throw new Error(`Error en el servicio de procesar recaudo ${e}`);
+        } catch (error: any) {
+            console.error('Error al procesar recaudo', error);
+            return {
+                isError: true,
+                date: error.details,
+                data: 'null',
+                message: error.message,
+            };
         }
     }
 }
