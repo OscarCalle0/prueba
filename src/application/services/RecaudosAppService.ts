@@ -38,7 +38,9 @@ export class RecaudosAppService {
         for (const recaudo of recaudos) {
             await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, '', 'procesando');
             delete recaudo.estado;
+            delete recaudo.ultimo_error;
             const response = await this.recaudoApi.postRecaudosTarea(recaudo);
+            console.log('response', response);
             if (response && response.isError) {
                 await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, '', 'error');
                 return Result.okBool(false);

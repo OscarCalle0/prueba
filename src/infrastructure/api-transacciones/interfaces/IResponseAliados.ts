@@ -2,6 +2,8 @@ export interface IResponseAliados {
     isError: boolean;
     data: string;
     date: string;
+    message: string;
+    
 }
 
 export interface IAliadosDataResponseApi {
