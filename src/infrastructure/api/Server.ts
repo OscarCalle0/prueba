@@ -9,6 +9,7 @@ const start = async () => {
     try {
         const server = await application.listen(port, '0.0.0.0');
         application.swagger();
+        console.log(application.printRoutes());
         createDependencyContainer();
         console.log(`Application running on ${server}`);
     } catch (error) {

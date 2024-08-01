@@ -37,7 +37,7 @@ describe('RecaudosGuardar', () => {
             {
                 tipo: 2,
                 valor: '7048',
-            }
+            },
         ],
     };
 
