@@ -18,16 +18,16 @@ spec:
                 app: #{SERVICE_NAME}#
         spec:
             volumes:
-                - name: "apis-template-service-account"
+                - name: "apis-dineros-service-account"
                   secret:
-                    secretName: "apis-template-service-account"
+                    secretName: "apis-dineros-service-account"
             containers:
                 - name: #{SERVICE_NAME}#
                   imagePullPolicy: Always
                   image: gcr.io/#{CLUSTER_PROJECT_ID}#/#{SERVICE_NAME}#:#{Build.BuildId}#
-                 # volumeMounts:
-                 #   - name: "apis-template-service-account"
-                 #     mountPath: "/var/secret"
+                  volumeMounts:
+                    - name: "apis-dineros-service-account"
+                      mountPath: "/var/secret"
                   ports:
                       - containerPort: 8080
                   resources:
@@ -39,4 +39,4 @@ spec:
                       memory: 240Mi
                   env:
                     - name: "GOOGLE_APPLICATION_CREDENTIALS"
-                      value: "/var/secret/apis-template-service-account.json"
+                      value: "/var/secret/apis-dineros-service-account.json"

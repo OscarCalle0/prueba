@@ -120,10 +120,10 @@ export class RecaudosDao {
                         SELECT id_recurso FROM recursos where identificador_recurso = $/identificador_recurso/ and id_tipo_recurso = $/id_tipo_recurso/
                     ),
                     insertar AS (
-                        INSERT INTO recursos (identificador_recurso, id_tipo_recurso) 
+                        INSERT INTO recursos (identificador_recurso, id_tipo_recurso)
                         SELECT $/identificador_recurso/, $/id_tipo_recurso/ WHERE 1 NOT IN (SELECT 1 FROM consultar)
                         ON CONFLICT (identificador_recurso, id_tipo_recurso)
-                        DO UPDATE SET id_tipo_recurso=EXCLUDED.id_tipo_recurso 
+                        DO UPDATE SET id_tipo_recurso=EXCLUDED.id_tipo_recurso
                         RETURNING id_recurso
                     ),
                     tmp AS (
