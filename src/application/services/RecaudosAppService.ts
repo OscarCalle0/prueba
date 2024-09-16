@@ -5,7 +5,7 @@ import { RecaudosDao } from '@infrastructure/repositories/postgres/dao/RecaudosD
 import { IRecaudosIn } from '@application/data';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 import { cmDAO } from '@infrastructure/repositories';
-import { time, timeEnd } from 'console';
+import { log, time, timeEnd } from 'console';
 import { TransaccionesApiClient } from '@infrastructure/api-transacciones';
 import { FirestoreRepository } from '@domain/repository';
 
@@ -35,14 +35,15 @@ export class RecaudosAppService {
 
     async procesarRecaudo(): Promise<Response<boolean | null>> {
         const recaudos = await this.firestoreDAO.getDataRecaudo();
+        console.log('recaudos', recaudos);
         for (const recaudo of recaudos) {
             await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, '', 'procesando');
             delete recaudo.estado;
             delete recaudo.ultimo_error;
             const response = await this.recaudoApi.postRecaudosTarea(recaudo);
-            console.log('response', response);
+            log('response', response);
             if (response && response.isError) {
-                await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, '', 'error');
+                await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, response.message, 'error');
                 return Result.okBool(false);
             }
             await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, '', 'procesado');

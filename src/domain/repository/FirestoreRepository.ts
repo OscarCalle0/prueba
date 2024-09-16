@@ -1,4 +1,4 @@
-import { IFirestoreStageResponse } from '@infrastructure/repositories/firestore copy/interfaces/IFirestoreStageResponse';
+import { IFirestoreStageResponse } from '@infrastructure/repositories/firestore/interfaces/IFirestoreStageResponse';
 
 export interface FirestoreRepository {
     getDataRecaudo(): Promise<IFirestoreStageResponse[]>;
