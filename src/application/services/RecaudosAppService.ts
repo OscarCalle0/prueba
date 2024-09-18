@@ -35,7 +35,6 @@ export class RecaudosAppService {
 
     async procesarRecaudo(): Promise<Response<boolean | null>> {
         const recaudos = await this.firestoreDAO.getDataRecaudo();
-        console.log('recaudos', recaudos);
         for (const recaudo of recaudos) {
             await this.firestoreDAO.updateRecaudoEstado(recaudo.recaudo_id, '', 'procesando');
             delete recaudo.estado;
