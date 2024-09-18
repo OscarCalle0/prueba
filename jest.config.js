@@ -3,6 +3,7 @@ const { resolve } = require('path');
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
+    setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
     testMatch: ['**/*.steps.ts', '**/*.test.ts'],
     collectCoverageFrom: ['src/**/*.ts', '!src/**/*/index.ts', '!src/**/*/Server.ts'],
     coverageDirectory: './coverage/',
@@ -15,4 +16,7 @@ module.exports = {
         '^@configuration': resolve(__dirname, './src/configuration/index'),
         '^@util': resolve(__dirname, './src/util/index'),
     },
+    testResultsProcessor: 'jest-junit',
+    reporters: ['default', ['jest-junit', { outputDirectory: 'test-results', outputName: 'test-report.xml' }]],
+
 };

@@ -4,7 +4,7 @@ import { RecaudosDao, cmDAO, cmDB, db } from '@infrastructure/repositories';
 import { TYPES } from './Types';
 import { IDatabase, IMain } from 'pg-promise';
 import { FirestoreRepository } from '@domain/repository';
-import { firestore, RecaudosFSDao } from '@infrastructure/repositories/firestore copy';
+import { firestore, RecaudosFSDao } from '@infrastructure/repositories/firestore';
 import { Firestore } from '@google-cloud/firestore';
 import { TransaccionesApiClient } from '@infrastructure/api-transacciones';
 
