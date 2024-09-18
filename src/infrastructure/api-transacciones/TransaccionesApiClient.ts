@@ -10,7 +10,6 @@ export class TransaccionesApiClient {
     async postRecaudosTarea(data: IFirestoreStageResponse): Promise<IResponseAliados | null> {
         try {
             console.log('postRecaudosTarea', data);
-            console.log('url', `${TRANSACCIONES_URL}recaudos/procesar`);
             const response = await axios<IResponseAliados>({
                 method: 'post',
                 url: `${TRANSACCIONES_URL}recaudos/procesar`,
