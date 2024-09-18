@@ -1,25 +1,8 @@
-import 'reflect-metadata';
-import { DEPENDENCY_CONTAINER, createDependencyContainer } from '@configuration/DependecyContainer';
-import { crearDB } from '../__mocks__';
-import { IDataBase } from '@infrastructure/repositories/postgres';
-import { IMain } from 'pg-promise';
-import { TYPES } from '@configuration';
 import { application } from '@infrastructure/api/Application';
 import { PREFIX } from '@util';
+import 'reflect-metadata';
 
 describe('RecaudosGuardar', () => {
-    const db = crearDB();
-    beforeAll(async () => {
-        createDependencyContainer();
-
-        DEPENDENCY_CONTAINER.rebind<IDataBase<IMain>>(TYPES.Pg).toConstantValue(db);
-    });
-
-    afterEach(() => {
-        jest.restoreAllMocks();
-        jest.clearAllMocks();
-    });
-
     const payload = {
         recaudo_id: 'vmashcovu',
         terminal: 12,

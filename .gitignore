@@ -17,6 +17,8 @@ lerna-debug.log*
 coverage
 .nyc_output
 .scannerwork
+junit.xml
+test-results
 
 # IDEs and editors
 /.idea
