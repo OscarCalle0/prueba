@@ -53,9 +53,9 @@ describe('Crear Tarea Recaudo', () => {
         expect(response.statusCode).toBe(200);
         expect(resultado.isError).toBe(false);
         expect(resultado.data).toBe(true);
-        //Verificar que después, los registros estén en estado procesado
-        expect(recaudo_temporal.docs[0].data().estado).toBe('procesado');
-        expect(recaudo_temporal.docs[1].data().estado).toBe('procesado');
+        console.log(recaudo_temporal.docs);
+        //Verificar que después, los registros pendientes deben quedar eliminados
+        expect(recaudo_temporal.docs.length).toBe(1);
     });
 
     it('Tarea Sin Recaudos pendientes - Status 200', async () => {
@@ -63,10 +63,6 @@ describe('Crear Tarea Recaudo', () => {
         const mockfirebase = new MockFirebase(FirestoreMockDataTareaRecaudo);
         const firestore = mockfirebase.firestore();
         DEPENDENCY_CONTAINER.rebind<Firestore>(TYPES.Firestore).toConstantValue(firestore);
-        const recaudo_temporal = await firestore.collection('recaudo_temporal_guias').get();
-        //Verificar que antes, los registros estén en estado procesado
-        expect(recaudo_temporal.docs[0].data().estado).toBe('procesado');
-        expect(recaudo_temporal.docs[1].data().estado).toBe('procesado');
         /* No se debe llamar a ningún API Externo ya que no existen recaudos pendientes.
            deebido a que fueron procesados exitosamente en el test anterior.
         */

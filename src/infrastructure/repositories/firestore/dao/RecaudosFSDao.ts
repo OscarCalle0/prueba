@@ -39,4 +39,15 @@ export class RecaudosFSDao implements FirestoreRepository {
                 throw new DatabaseError('Error al actualizar la fecha de creación', error);
             });
     }
+
+    async deleteRecaudo(recaudoID: string): Promise<void> {
+        await this.firestore
+            .collection(this.collection)
+            .doc(recaudoID)
+            .delete()
+            .catch((error) => {
+                console.error('Error al eliminar Recaudo', 'recaudo', error);
+                throw new DatabaseError('Error al eliminar Recaudo', error);
+            });
+    }
 }

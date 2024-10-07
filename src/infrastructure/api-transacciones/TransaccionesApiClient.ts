@@ -23,6 +23,7 @@ export class TransaccionesApiClient {
                 date: error.response.data.details,
                 data: 'null',
                 message: error.response.data.message,
+                statusCode: error.statusCode,
             };
         }
     }
