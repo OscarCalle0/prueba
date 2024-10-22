@@ -126,3 +126,12 @@ export const insertarAliadosEquipos = (bdmen: IMemoryDb): void => {
         VALUES
         (244, 3, 0);`);
 };
+
+export const insertarTiposNovedades = (bdmen: IMemoryDb): void => {
+    bdmen.public.none(`INSERT INTO novedades.tipos_novedades (tipo_novedad) 
+     VALUES
+	 ('Calculo Bolsillo'),
+	 ('Legalizacion'),
+	 ('Recaudo');
+`);
+};

@@ -8,10 +8,9 @@ import { DatabaseError } from '@domain/exceptions';
 
 @injectable()
 export class RecaudosFSDao implements FirestoreRepository {
-    private firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
-    private collection = 'recaudo_temporal_guias';
+    private readonly firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
+    private readonly collection = 'recaudo_temporal_guias';
     async getDataRecaudo(): Promise<IFirestoreStageResponse[]> {
-        console.log('getDataRecaudo');
         const recaudos: IFirestoreStageResponse[] = [];
         await this.firestore
             .collection(this.collection)

@@ -7,7 +7,7 @@ import { IDatabase, IMain } from 'pg-promise';
 
 @injectable()
 export class NovedadesDao implements NovedadesRepository {
-    private db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.cm);
+    private readonly db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Pg);
 
     public async insertar(data: INovedades): Promise<boolean> {
         try {

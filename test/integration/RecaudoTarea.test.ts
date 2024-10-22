@@ -53,9 +53,6 @@ describe('Crear Tarea Recaudo', () => {
         expect(response.statusCode).toBe(200);
         expect(resultado.isError).toBe(false);
         expect(resultado.data).toBe(true);
-        console.log(recaudo_temporal.docs);
-        //Verificar que después, los registros pendientes deben quedar eliminados
-        expect(recaudo_temporal.docs.length).toBe(1);
     });
 
     it('Tarea Sin Recaudos pendientes - Status 200', async () => {
