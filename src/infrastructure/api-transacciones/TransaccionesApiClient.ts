@@ -15,6 +15,7 @@ export class TransaccionesApiClient {
                 url: `${TRANSACCIONES_URL}recaudos/procesar`,
                 data,
             });
+            response.data.statusCode = response.status;
             return response.data;
         } catch (error: any) {
             console.error('Error al procesar recaudo', error.response.data);
@@ -23,6 +24,7 @@ export class TransaccionesApiClient {
                 date: error.response.data.details,
                 data: 'null',
                 message: error.response.data.message,
+                statusCode: error.response.data.statusCode,
             };
         }
     }

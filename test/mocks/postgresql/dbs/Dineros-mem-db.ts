@@ -9,6 +9,7 @@ import {
     insertarMediosPago,
     insertarRecaudo,
     insertarRecursos,
+    insertarTiposNovedades,
     insertarTiposRecaudos,
     insertarTiposRecursos,
     insertarTiposTransacciones,
@@ -19,7 +20,7 @@ import moment from 'moment-timezone';
 
 export const DBDinerosMem = () => {
     const dbmem = newDb();
-    //dbmem.createSchema('');
+    dbmem.createSchema('novedades');
 
     //Base
     inicializarTablas(dbmem);
@@ -54,6 +55,8 @@ const inicializarTablas = (bdmen: IMemoryDb) => {
     TABLAS_DINEROS.generarTablaTransacciones(bdmen);
     TABLAS_DINEROS.generarTablaAliadosEquipos(bdmen);
     TABLAS_DINEROS.generarTablaRecaudosRecursos(bdmen);
+    TABLAS_DINEROS.generarTablaTiposNovedades(bdmen);
+    TABLAS_DINEROS.generarTablaNovedades(bdmen);
 };
 
 const poblarInformacion = (dbmem: IMemoryDb) => {
@@ -71,6 +74,7 @@ const poblarInformacion = (dbmem: IMemoryDb) => {
     insertarRecaudo(dbmem);
     insertarTransaccion(dbmem);
     insertarAliadosEquipos(dbmem);
+    insertarTiposNovedades(dbmem);
 };
 
 const configurarFunciones = (dbmem: IMemoryDb) => {
