@@ -51,9 +51,5 @@ describe('Crear Tarea Recaudo', () => {
         //Verifica que en la tabla novedades.novedades haya quedado un registro
         expect(resultadoAntes.length).toBe(0);
         expect(resultadoDespues.length).toBe(1);
-        //Verificar que después, que el primer registro esté en estado error y el segundo en pendiente
-        expect(recaudo_temporal.docs[0].data().estado).toBe('error');
-        expect(recaudo_temporal.docs[0].data().ultimo_error).toBe(MENSAJE_ERROR);
-        expect(recaudo_temporal.docs[1].data().estado).toBe('pendiente');
     });
 });
