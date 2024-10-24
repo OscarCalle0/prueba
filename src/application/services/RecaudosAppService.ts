@@ -66,11 +66,7 @@ export class RecaudosAppService {
                 descripcion: responseApiTransacciones.message,
             };
             await this.novedadesRepository.insertar(novedad);
-            await this.firestoreRepository.updateRecaudoEstado(
-                recaudo.recaudo_id,
-                responseApiTransacciones.message,
-                'error',
-            );
+            await this.firestoreRepository.deleteRecaudo(recaudo.recaudo_id);
         } else {
             await this.firestoreRepository.updateRecaudoEstado(
                 recaudo.recaudo_id,
