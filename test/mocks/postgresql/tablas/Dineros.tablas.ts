@@ -234,4 +234,26 @@ export const TABLAS_DINEROS = {
         CONSTRAINT fk_recursos_relations_recursos FOREIGN KEY (id_recurso) REFERENCES public.recursos(id_recurso)
         );`);
     },
+
+    generarTablaNovedades: (db: IMemoryDb) => {
+        db.public.none(`
+        CREATE TABLE novedades.novedades (
+        id serial NOT NULL,
+        id_tipo_novedad int4 NOT NULL,
+        notificado bool DEFAULT false NOT NULL,
+        descripcion text NOT NULL,
+        fecha timestamp DEFAULT now() NOT NULL,
+        detalle text NOT NULL,
+        CONSTRAINT novedades_pk PRIMARY KEY (id),
+        CONSTRAINT novedades_tipos_novedades_fk FOREIGN KEY (id_tipo_novedad) REFERENCES novedades.tipos_novedades(id));`);
+    },
+
+    generarTablaTiposNovedades: (db: IMemoryDb) => {
+        db.public.none(`
+            CREATE TABLE novedades.tipos_novedades (
+            id serial NOT NULL,
+            tipo_novedad varchar NOT NULL,
+            CONSTRAINT tipos_novedades_pk PRIMARY KEY (id)
+        );`);
+    },
 };

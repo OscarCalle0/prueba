@@ -2,6 +2,7 @@ export const TYPES = {
     Pg: Symbol.for('Pg'),
     cm: Symbol.for('cm'),
     Firestore: Symbol.for('Firestore'),
-    firestoreDao: Symbol.for('firestoreDao'),
+    FirestoreRepository: Symbol.for('FirestoreRepository'),
     TransaccionesApiClient: Symbol.for('TransaccionesApiClient'),
+    NovedadesRepository: Symbol.for('NovedadesRepository'),
 };
