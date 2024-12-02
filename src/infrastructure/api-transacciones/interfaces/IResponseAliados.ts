@@ -3,7 +3,7 @@ export interface IResponseAliados {
     data: string;
     date: string;
     message: string;
-    
+    statusCode: number;
 }
 
 export interface IAliadosDataResponseApi {
