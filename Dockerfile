@@ -1,10 +1,12 @@
 FROM node:20-alpine
 
-WORKDIR /root/
+RUN mkdir -p /usr/src/app
+
+WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 
-RUN yarn install --production=true
+RUN yarn install --production=true --ignore-scripts
 
 COPY ./dist ./dist/
 

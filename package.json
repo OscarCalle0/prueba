@@ -21,7 +21,7 @@
         "test": "jest --color --verbose --no-cache",
         "coverage": "jest --coverage",
         "release": "standard-version",
-        "husky:install": "husky install"
+        "postinstall": "husky install"
     },
     "dependencies": {
         "@fastify/cors": "^7.0.0",
