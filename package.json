@@ -41,10 +41,11 @@
         "module-alias": "2.2.2",
         "moment-timezone": "0.5.45",
         "pg-mem": "2.8.1",
-        "pg-promise": "^11.9.1",
+        "pg-promise": "11.10.2",
         "reflect-metadata": "0.1.13",
         "semver": "7.6.3",
-        "cookie": "1.0.2"
+        "cookie": "1.0.2",
+        "@grpc/grpc-js": "1.12.2"
     },
     "devDependencies": {
         "@commitlint/cli": "16.2.4",
@@ -73,7 +74,9 @@
         "string-width": "4.1.0",
         "cross-spawn": "7.0.6",
         "micromatch": "4.0.8",
-        "send": "1.1.0"
+        "send": "1.1.0",
+        "semver": "7.6.3",
+        "cookie": "1.0.2"
     },
     "_moduleAliases": {
         "@application": "dist/application",
