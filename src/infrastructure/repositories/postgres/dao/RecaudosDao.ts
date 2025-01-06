@@ -1,4 +1,4 @@
-import { IRecaudosIn } from '@application/data/';
+import { IRecaudosIn, IValoresRecaudadosConsulta } from '@application/data/';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { PostgresError } from '@domain/exceptions';
 import { time, timeEnd } from 'console';
@@ -6,7 +6,6 @@ import { injectable } from 'inversify';
 import { IDatabase, IMain } from 'pg-promise';
 import { pgp } from '../adapter';
 import { IRecursosMerged } from './interfaces/IRecursosMerged';
-import { IValoresRecaudadosConsulta } from '@application/data/';
 import { IValoresRecaudadosResponse } from './interfaces/IValoresRecaudadosResponse';
 
 @injectable()
