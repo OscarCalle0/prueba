@@ -1,10 +1,13 @@
-import { application } from '@infrastructure/api/Application';
+import { application } from '@infrastructure/api/Application';  
 import { PREFIX } from '@util';
 import 'reflect-metadata';
 
 describe('Consultar Valores Recaudados', () => {
+    beforeAll(() => {
+        jest.clearAllMocks();
+    })
     it('Consultar Valores Recaudados exitoso', async () => {
-        const id_equipo = '3001-1';
+        const id_equipo = '1234-1';
         const fecha_inicial = '2024-01-01';
         const fecha_final = '2025-01-01';
         const response = await application.inject({
@@ -21,7 +24,7 @@ describe('Consultar Valores Recaudados', () => {
     });
 
     it('Consultar Valores Recaudados error 400', async () => {
-        const id_equipo = '3001-1';
+        const id_equipo = '1234-1';
         const fecha_inicial = '2025-01-01';
         const fecha_final = '2024-01-01';
         const response = await application.inject({
