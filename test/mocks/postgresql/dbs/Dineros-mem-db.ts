@@ -15,6 +15,7 @@ import {
     insertarTiposTransacciones,
     insertarTransaccion,
     insertarTraslado,
+    insertarRecaudosRecursos,
 } from '../data';
 import moment from 'moment-timezone';
 
@@ -75,6 +76,7 @@ const poblarInformacion = (dbmem: IMemoryDb) => {
     insertarTransaccion(dbmem);
     insertarAliadosEquipos(dbmem);
     insertarTiposNovedades(dbmem);
+    insertarRecaudosRecursos(dbmem);
 };
 
 const configurarFunciones = (dbmem: IMemoryDb) => {

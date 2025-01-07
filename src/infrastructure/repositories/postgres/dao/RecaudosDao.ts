@@ -11,6 +11,7 @@ import { IGuiasTipoRecaudoResponse } from './interfaces/IGuiasTipoRecaudoRespons
 @injectable()
 export class RecaudosDao {
     private db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Pg);
+    private replicaDB = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.replicaDB);
 
     public async guardarRecaudo(data: IRecaudosIn): Promise<number> {
         let idEquipo = 0;
@@ -133,7 +134,7 @@ export class RecaudosDao {
             GROUP BY re2.identificador_recurso, r.valor, tr.abreviado
             ORDER BY re2.identificador_recurso DESC;
             `;
-            const response = await this.db.manyOrNone<IGuiasTipoRecaudoResponse>(query, [data.id_equipo, data.fecha_inicial, data.fecha_final, data.id_medio_pago]);
+            const response = await this.replicaDB.manyOrNone<IGuiasTipoRecaudoResponse>(query, [data.id_equipo, data.fecha_inicial, data.fecha_final, data.id_medio_pago]);
             return response;
         } catch (error: any) {
             console.error('Error en getTipoRecaudo', error);

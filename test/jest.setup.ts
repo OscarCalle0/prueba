@@ -15,6 +15,7 @@ beforeAll(() => {
 
     // Databases -Postgres
     DEPENDENCY_CONTAINER.rebind<IDatabase<IMain>>(TYPES.Pg).toConstantValue(dbDineros);
+    DEPENDENCY_CONTAINER.rebind<IDatabase<IMain>>(TYPES.replicaDB).toConstantValue(dbDineros);
 });
 
 afterAll(() => {

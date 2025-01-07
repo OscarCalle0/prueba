@@ -5,4 +5,5 @@ export const TYPES = {
     FirestoreRepository: Symbol.for('FirestoreRepository'),
     TransaccionesApiClient: Symbol.for('TransaccionesApiClient'),
     NovedadesRepository: Symbol.for('NovedadesRepository'),
+    replicaDB: Symbol.for('replicaDB'),
 };
