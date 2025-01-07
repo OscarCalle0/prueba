@@ -40,7 +40,7 @@ export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply):
 export const getValoresRecaudados = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
     const data = validateData<IValoresRecaudadosConsulta>(GetValoresRecaudadosSchema, req.params);
-    if (!validateFechas(data)) {
+    if (!validateFechas(data.fecha_inicial, data.fecha_final)) {
         return reply.status(400).send({ isError: true, message: 'Las fechas no son válidas', id: req.id });
     }
     const response = await recaudosService.consultarValoresRecaudados(data);

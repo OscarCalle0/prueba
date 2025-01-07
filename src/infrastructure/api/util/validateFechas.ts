@@ -1,7 +1,5 @@
-import { IValoresRecaudadosConsulta } from '@application/data/in/IValoresRecaudadosConsulta';
-export const validateFechas = (data: IValoresRecaudadosConsulta): boolean => {
-    const fechaInicial = new Date(data.fecha_inicial);
-    const fechaFinal = data.fecha_final ? new Date(data.fecha_final) : fechaInicial;
-
+export const validateFechas = (fecha_inicial: string, fecha_final: string | null | undefined): boolean => {
+    const fechaInicial = new Date(fecha_inicial);
+    const fechaFinal = fecha_final ? new Date(fecha_final) : fechaInicial;
     return fechaInicial <= fechaFinal;
 };
