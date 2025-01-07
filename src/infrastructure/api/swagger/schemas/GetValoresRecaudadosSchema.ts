@@ -1,0 +1,57 @@
+export const GetValoresRecaudadosSchema = {
+    schema: {
+        description:
+            'Endpoint para consultar la tirilla de recaudos de medios de pago.',
+        tags: ['MPG'],
+        params: {
+            type: 'object',
+            properties: {
+                fecha_inicial: { type: 'string', example: '2025-01-02', description: '(Obligatorio)' },
+                fecha_final: { type: 'string', example: '2025-01-02', description: '(Opcional)' },
+                id_equipo: { type: 'string', example: '3001-1', description: '(Obligatorio)' },
+            },
+            required: ['fecha_inicial', 'id_equipo']
+        },
+        response: {
+            '200': {
+                description: 'Consulta exitosa',
+                type: 'object',
+                properties: {
+                    isError: { type: 'boolean', example: false },
+                    data: { type: 'array', example: [] },
+                    timestamp: { type: 'string', format: 'date-time', example: '2023-03-22T20:55:57.020Z' },
+                    id: { type: 'string', example: 'f3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e' },
+                },
+            },
+            '400': {
+                description: 'Valores de entrada incorrecta',
+                type: 'object',
+                properties: {
+                    isError: { type: 'boolean', example: true },
+                    message: { type: 'string', example: 'Los valores de entrada no son correctos.' },
+                    code: { type: 'string', example: 'BAD_MESSAGE' },
+                    cause: { type: 'null', example: 'null' },
+                    timestamp: { type: 'string', format: 'date-time', example: '2023-03-22T21:00:00.000Z' },
+                    statusCode: { type: 'number', example: '400' },
+                    id: { type: 'string', example: 'f3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e' },
+                },
+            },
+            '500': {
+                description: 'Error de servidor',
+                type: 'object',
+                properties: {
+                    isError: { type: 'boolean', example: true },
+                    message: {
+                        type: 'string',
+                        example: 'Error al consultar codigo droopError: getaddrinfo ENOTFOUND dbcmtest.loc',
+                    },
+                    code: { type: 'string', example: 'UNKNOWN_ERROR' },
+                    cause: { type: 'string', example: 'Default translator error' },
+                    timestamp: { type: 'string', format: 'date-time', example: '2023-03-22T20:52:41.413Z' },
+                    statusCode: { type: 'number', example: '500' },
+                    id: { type: 'string', example: '9085d074fd57bb27361465acffa3f4f6f439af7b' },
+                },
+            },
+        },
+    },
+};

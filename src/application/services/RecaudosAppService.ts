@@ -12,6 +12,8 @@ import { INovedades } from '@infrastructure/api/interfaces/INovedades';
 import { NovedadesRepository } from '@domain/repository/NovedadesRepository';
 import { IResponseAliados } from '@infrastructure/api-transacciones/interfaces';
 import { IFirestoreStageResponse } from '@infrastructure/repositories/firestore/interfaces/IFirestoreStageResponse';
+import { IValoresRecaudadosConsulta } from '@application/data/in/IValoresRecaudadosConsulta';
+import { IValoresRecaudadosOut } from '@application/data/out/IValoresRecaudadosOut';
 
 @injectable()
 export class RecaudosAppService {
@@ -74,6 +76,12 @@ export class RecaudosAppService {
                 'reintentar',
             );
         }
+    }
+
+    async consultarValoresRecaudados(data: IValoresRecaudadosConsulta): Promise<Response<IValoresRecaudadosOut[] | null>> {
+        if(!data.fecha_final) data.fecha_final = data.fecha_inicial;
+        const resultValoresRecaudados = await this.recaudosDao.consultarValoresRecaudados(data);
+        return Result.ok(resultValoresRecaudados);
     }
 
     async consultarGuiasRecaudadas(data: ITipoRecaudoConsulta): Promise<Response<IGuiasTipoRecaudoOut[] | null>> {

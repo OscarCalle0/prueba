@@ -1,4 +1,4 @@
-import { IRecaudosIn, ITipoRecaudoConsulta } from '@application/data/';
+import { IRecaudosIn, IValoresRecaudadosConsulta, ITipoRecaudoConsulta } from '@application/data/';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { PostgresError } from '@domain/exceptions';
 import { time, timeEnd } from 'console';
@@ -6,6 +6,7 @@ import { injectable } from 'inversify';
 import { IDatabase, IMain } from 'pg-promise';
 import { pgp } from '../adapter';
 import { IRecursosMerged } from './interfaces/IRecursosMerged';
+import { IValoresRecaudadosResponse } from './interfaces/IValoresRecaudadosResponse';
 import { IGuiasTipoRecaudoResponse } from './interfaces/IGuiasTipoRecaudoResponse';
 
 @injectable()
@@ -116,6 +117,24 @@ export class RecaudosDao {
                 throw new PostgresError(error.code, error?.data?.error || error.message);
             });
         return idTransaccion;
+    }
+    public async consultarValoresRecaudados(data: IValoresRecaudadosConsulta): Promise<IValoresRecaudadosResponse[] | null> {
+        try {
+            const query = `
+            SELECT mp.id_medio_pago, mp.descripcion_medio_pago, SUM(valor) valor
+            FROM recaudos r
+            INNER JOIN medios_pagos mp on r.id_medio_pago = mp.id_medio_pago
+            INNER JOIN recaudos_recursos rr on r.id_recaudo = rr.id_recaudo
+            INNER JOIN recursos re on rr.id_recurso = re.id_recurso
+            WHERE re.identificador_recurso = $1
+            AND (r.fecha_hora_recaudo::date BETWEEN $2 AND $3)
+            GROUP BY mp.id_medio_pago, mp.descripcion_medio_pago;`;
+            const response = await this.replicaDB.manyOrNone<IValoresRecaudadosResponse>(query, [data.id_equipo, data.fecha_inicial, data.fecha_final]);
+            return response;
+        } catch (error: any) {
+            console.error('Error en consultarValoresRecaudados', error);
+            throw new PostgresError(error, 'Error en consultarValoresRecaudados');
+        }
     }
     public async consultarGuiasTipoRecaudo(data: ITipoRecaudoConsulta): Promise<IGuiasTipoRecaudoResponse[] | null> {
         try {
