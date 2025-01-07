@@ -153,9 +153,7 @@ export class RecaudosDao {
             GROUP BY re2.identificador_recurso, r.valor, tr.abreviado
             ORDER BY re2.identificador_recurso DESC;
             `;
-            console.log(data);
             const response = await this.replicaDB.manyOrNone<IGuiasTipoRecaudoResponse>(query, [data.id_equipo, data.fecha_inicial, data.fecha_final, data.id_medio_pago]);
-            console.log(response);
             return response;
         } catch (error: any) {
             console.error('Error en getTipoRecaudo', error);
