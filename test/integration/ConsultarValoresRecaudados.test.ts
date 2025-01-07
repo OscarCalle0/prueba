@@ -35,6 +35,6 @@ describe('Consultar Valores Recaudados', () => {
 
         expect(response.statusCode).toBe(400);
         expect(result.isError).toBe(true);
-        expect(result.message).toBe('Las fechas no son validas');
+        expect(result.message).toBe('Las fechas no son válidas');
     });
 })
