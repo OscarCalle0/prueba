@@ -2,10 +2,12 @@ import { RecaudosAppService } from '@application/services';
 import { DEPENDENCY_CONTAINER } from '@configuration';
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { validateData } from '../util';
-import { IRecaudosIn } from '@application/data';
+import { IRecaudosIn, ITipoRecaudoConsulta } from '@application/data';
 import { GuardarRecaudosJoiSchema } from '../schemas/GuardaRecaudosJoiSchema';
 import { ConsultaRCESchema } from '../schemas/ConsultarRCESchema';
+import { GetTipoRecaudoSchema } from '../schemas/GetTipoRecaudoSchema';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
+import { validateFechas } from '../util/ValidateFechas';
 
 export const guardarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
@@ -31,5 +33,14 @@ export const consultaRecaudoEfectivo = async (
 export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
     const response = await recaudosService.procesarRecaudo();
+    return reply.status(200).send({ ...response, id: req.id });
+};
+
+export const getTipoRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
+    const data = validateData<ITipoRecaudoConsulta>(GetTipoRecaudoSchema, req.params);
+    if (!validateFechas(data.fecha_inicial, data.fecha_final))
+        return reply.status(400).send({ isError: true, message: 'Las fechas no son validas', id: req.id });
+    const response = await recaudosService.consultarGuiasRecaudadas(data);
     return reply.status(200).send({ ...response, id: req.id });
 };

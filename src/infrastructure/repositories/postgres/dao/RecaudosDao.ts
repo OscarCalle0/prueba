@@ -1,4 +1,4 @@
-import { IRecaudosIn } from '@application/data/';
+import { IRecaudosIn, ITipoRecaudoConsulta } from '@application/data/';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { PostgresError } from '@domain/exceptions';
 import { time, timeEnd } from 'console';
@@ -6,6 +6,7 @@ import { injectable } from 'inversify';
 import { IDatabase, IMain } from 'pg-promise';
 import { pgp } from '../adapter';
 import { IRecursosMerged } from './interfaces/IRecursosMerged';
+import { IGuiasTipoRecaudoResponse } from './interfaces/IGuiasTipoRecaudoResponse';
 
 @injectable()
 export class RecaudosDao {
@@ -114,6 +115,30 @@ export class RecaudosDao {
                 throw new PostgresError(error.code, error?.data?.error || error.message);
             });
         return idTransaccion;
+    }
+    public async consultarGuiasTipoRecaudo(data: ITipoRecaudoConsulta): Promise<IGuiasTipoRecaudoResponse[] | null> {
+        try {
+            const query = `
+            SELECT re2.identificador_recurso, r.valor, tr.abreviado
+            FROM recaudos r
+            INNER JOIN medios_pagos mp ON r.id_medio_pago = mp.id_medio_pago
+            INNER JOIN recaudos_recursos rr ON r.id_recaudo = rr.id_recaudo
+            INNER JOIN recursos re ON rr.id_recurso = re.id_recurso
+            INNER JOIN guias_recaudadas gr ON r.id_recaudo = gr.id_recaudo
+            INNER JOIN recursos re2 ON gr.id_recurso = re2.id_recurso
+            INNER JOIN tipos_recaudos tr ON r.id_tipo_recaudo = tr.id_tipo_recaudo
+            WHERE re.identificador_recurso = $1
+            AND (r.fecha_hora_recaudo::date BETWEEN $2 AND $3)
+            AND r.id_medio_pago = $4
+            GROUP BY re2.identificador_recurso, r.valor, tr.abreviado
+            ORDER BY re2.identificador_recurso DESC;
+            `;
+            const response = await this.db.manyOrNone<IGuiasTipoRecaudoResponse>(query, [data.id_equipo, data.fecha_inicial, data.fecha_final, data.id_medio_pago]);
+            return response;
+        } catch (error: any) {
+            console.error('Error en getTipoRecaudo', error);
+            throw new PostgresError(error, 'Error en getTipoRecaudo');
+        }
     }
     /*public updsertRecaudoSql(recurso: string, idTipoRecurso: number): string {
         const sql = `WITH consultar AS (
