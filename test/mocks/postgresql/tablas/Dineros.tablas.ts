@@ -200,6 +200,7 @@ export const TABLAS_DINEROS = {
             CREATE TABLE public.tipos_recaudos (
             id_tipo_recaudo varchar(10) NOT NULL,
             descripcion_recaudo varchar(40) NOT NULL,
+            abreviado varchar(10) NOT NULL,
             CONSTRAINT pk_tipos_recaudos PRIMARY KEY (id_tipo_recaudo)
         );`);
     },
@@ -256,4 +257,13 @@ export const TABLAS_DINEROS = {
             CONSTRAINT tipos_novedades_pk PRIMARY KEY (id)
         );`);
     },
+
+    generarTablaGuiasRecaudadas: (db: IMemoryDb) => {
+        db.public.none(`
+            CREATE TABLE public.guias_recaudadas (
+            id_recurso int4 NOT NULL,
+            id_recaudo varchar(100) NOT NULL,
+            valor numeric NOT NULL
+        );`);
+    }
 };

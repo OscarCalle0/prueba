@@ -1,2 +1,2 @@
 export * from './Schemas';
-export * from './ValidateFechas';
+export * from './validateFechas';
