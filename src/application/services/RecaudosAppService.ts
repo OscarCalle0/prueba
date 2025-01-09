@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Result, Response } from '@domain/response';
 import { RecaudosDao } from '@infrastructure/repositories/postgres/dao/RecaudosDao';
-import { IRecaudosIn } from '@application/data';
+import { IRecaudosIn, ITipoRecaudoConsulta, IGuiasTipoRecaudoOut } from '@application/data';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 import { cmDAO } from '@infrastructure/repositories';
 import { time, timeEnd } from 'console';
@@ -82,5 +82,11 @@ export class RecaudosAppService {
         if(!data.fecha_final) data.fecha_final = data.fecha_inicial;
         const resultValoresRecaudados = await this.recaudosDao.consultarValoresRecaudados(data);
         return Result.ok(resultValoresRecaudados);
+    }
+
+    async consultarGuiasRecaudadas(data: ITipoRecaudoConsulta): Promise<Response<IGuiasTipoRecaudoOut[] | null>> {
+        if(!data.fecha_final) data.fecha_final = data.fecha_inicial;
+        const resultGuiasTipoRecaudo = await this.recaudosDao.consultarGuiasTipoRecaudo(data);
+        return Result.ok(resultGuiasTipoRecaudo);
     }
 }
