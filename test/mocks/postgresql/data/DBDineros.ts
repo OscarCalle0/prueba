@@ -130,7 +130,7 @@ export const insertarAliadosEquipos = (bdmen: IMemoryDb): void => {
 };
 
 export const insertarTiposNovedades = (bdmen: IMemoryDb): void => {
-    bdmen.public.none(`INSERT INTO novedades.tipos_novedades (tipo_novedad) 
+    bdmen.public.none(`INSERT INTO novedades.tipos_novedades (tipo_novedad)
      VALUES
 	 ('Calculo Bolsillo'),
 	 ('Legalizacion'),
@@ -154,4 +154,13 @@ export const insertarGuiasRecaudadas = (bdmen: IMemoryDb): void => {
         ('1', 'prueba217', 1000000),
         ('1', 'prueba218', 1000000),
         ('1', 'prueba219', 1000000);`);
+};
+
+export const insertarRecaudoRecursos = (bdmen: IMemoryDb): void => {
+    bdmen.public.none(`INSERT INTO public.recaudos_recursos
+    (id_recurso,id_recaudo)
+    VALUES
+    (3,'prueba217'),
+    (4,'prueba217'),
+    (6,'prueba217');`);
 };

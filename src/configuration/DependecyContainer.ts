@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
-import { RecaudosAppService } from '@application/services';
-import { NovedadesDao, RecaudosDao, cmDAO, cmDB, db, replicaDB } from '@infrastructure/repositories';
+import { PitagorasAppService, RecaudosAppService } from '@application/services';
+import { NovedadesDao, PitagorasDao, RecaudosDao, cmDAO, cmDB, db, replicaDB } from '@infrastructure/repositories';
 import { TYPES } from './Types';
 import { IDatabase, IMain } from 'pg-promise';
 import { FirestoreRepository } from '@domain/repository';
@@ -22,4 +22,6 @@ export const createDependencyContainer = (): void => {
     DEPENDENCY_CONTAINER.bind(TransaccionesApiClient).toSelf().inSingletonScope();
     DEPENDENCY_CONTAINER.bind<Firestore>(TYPES.Firestore).toConstantValue(firestore);
     DEPENDENCY_CONTAINER.bind<FirestoreRepository>(TYPES.FirestoreRepository).to(RecaudosFSDao).inSingletonScope();
+    DEPENDENCY_CONTAINER.bind(PitagorasDao).toSelf().inSingletonScope();
+    DEPENDENCY_CONTAINER.bind(PitagorasAppService).toSelf().inSingletonScope();
 };
