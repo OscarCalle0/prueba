@@ -1,7 +1,6 @@
 export const GetValoresRecaudadosSchema = {
     schema: {
-        description:
-            'Endpoint para consultar la tirilla de recaudos de medios de pago.',
+        description: 'Endpoint para consultar la tirilla de recaudos de medios de pago.',
         tags: ['MPG'],
         params: {
             type: 'object',
@@ -10,7 +9,7 @@ export const GetValoresRecaudadosSchema = {
                 fecha_final: { type: 'string', example: '2025-01-02', description: '(Opcional)' },
                 id_equipo: { type: 'string', example: '3001-1', description: '(Obligatorio)' },
             },
-            required: ['fecha_inicial', 'id_equipo']
+            required: ['fecha_inicial', 'id_equipo'],
         },
         response: {
             '200': {

@@ -143,7 +143,7 @@ describe('PitagorasRouter', () => {
             forma_de_pago: 1,
             numero_aprobacion: '12345',
             valor: 1000000,
-            usuario: 'Aut-Dineros'
+            usuario: 'Aut-Dineros',
         };
 
         jest.spyOn(pitagorasDao, 'getDataRecaudo').mockResolvedValue(mockData);
@@ -171,7 +171,7 @@ describe('PitagorasRouter', () => {
             forma_de_pago: 1,
             numero_aprobacion: '12345',
             valor: 1000000,
-            usuario: 'Aut-Dineros'
+            usuario: 'Aut-Dineros',
         };
 
         jest.spyOn(pitagorasDao, 'getDataRecaudo').mockResolvedValue(mockData);

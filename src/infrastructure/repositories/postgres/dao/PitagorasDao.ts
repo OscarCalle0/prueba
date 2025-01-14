@@ -11,7 +11,7 @@ export class PitagorasDao {
 
     public async getDataRecaudo(idTransaccion: number): Promise<IPitagorasIn> {
         try {
-            const sql = `SELECT r.fecha_hora_recaudo as fecha,r.terminal,r.id_medio_pago AS forma_de_pago,
+            const queryConsultaDataRecaudo = `SELECT r.fecha_hora_recaudo as fecha,r.terminal,r.id_medio_pago AS forma_de_pago,
                     MAX(CASE WHEN re.id_tipo_recurso = 1 THEN re.identificador_recurso END) as equipo,
                     MAX(CASE WHEN re.id_tipo_recurso = 2 THEN re.identificador_recurso END) as recibidor,
                     MAX(CASE WHEN re.id_tipo_recurso = 4 THEN re.identificador_recurso END) as numero_aprobacion,
@@ -22,7 +22,7 @@ export class PitagorasDao {
                 WHERE r.id_recaudo = (select id_movimiento from transacciones where id_transaccion = ${idTransaccion})
                     AND re.id_tipo_recurso IN (1,2,4)
                 GROUP BY r.fecha_hora_recaudo, r.terminal,r.valor,r.id_medio_pago;`;
-            return await this.dbDineros.one(sql);
+            return await this.dbDineros.one(queryConsultaDataRecaudo);
         } catch (error) {
             console.error(`Error al obtener datos de recaudo transacción ${idTransaccion}:`, error);
             throw new Error('Error al obtener datos de recaudo.'); // Lanzar error genérico o personalizarlo según el caso
@@ -32,8 +32,8 @@ export class PitagorasDao {
     public async insertPitagoras(data: IPitagorasIn, idTransaccion: number): Promise<number> {
         try {
             return await this.dbCm.tx(async (t1) => {
-                const sql = `select * from func_registrar_sesion('dineros','cm-dineros-recaudos') as respuesta`;
-                await t1.one(sql);
+                const queryRegistroSesion = `select * from func_registrar_sesion('dineros','cm-dineros-recaudos') as respuesta`;
+                await t1.one(queryRegistroSesion);
 
                 try {
                     const result = await t1.one<{ id: number }>(
@@ -66,8 +66,8 @@ export class PitagorasDao {
 
                     return result.id;
                 } catch (error: any) {
-                    //const updateQuery = `UPDATE public.recaudos SET estado=10 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
-                    //await this.dbDineros.none(updateQuery, [idTransaccion]);
+                    const updateQuery = `UPDATE public.recaudos SET estado=10 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+                    await this.dbDineros.none(updateQuery, [idTransaccion]);
                     throw new DatabaseError(error, 'Error al insertar en dineros_recibidor');
                 }
             });
