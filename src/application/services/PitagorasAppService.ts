@@ -7,11 +7,10 @@ export class PitagorasAppService {
     private readonly pitagorasDao = DEPENDENCY_CONTAINER.get(PitagorasDao);
 
     async insertPitagoras(idTransaccion: number): Promise<{ message: string; code: number; error: boolean }> {
-        //consultar la data;
-        const data = await this.pitagorasDao.getDataRecaudo(idTransaccion);
-        const id = await this.pitagorasDao.insertPitagoras(data, idTransaccion);
+        const dataRecaudo = await this.pitagorasDao.getDataRecaudo(idTransaccion);
+        const idInsertPitagoras = await this.pitagorasDao.insertPitagoras(dataRecaudo, idTransaccion);
 
-        if (id > 0) {
+        if (idInsertPitagoras > 0) {
             return {
                 message: 'Registro procesado exitosamente',
                 code: 201,
