@@ -118,7 +118,9 @@ export class RecaudosDao {
             });
         return idTransaccion;
     }
-    public async consultarValoresRecaudados(data: IValoresRecaudadosConsulta): Promise<IValoresRecaudadosResponse[] | null> {
+    public async consultarValoresRecaudados(
+        data: IValoresRecaudadosConsulta,
+    ): Promise<IValoresRecaudadosResponse[] | null> {
         try {
             const query = `
             SELECT mp.id_medio_pago, mp.descripcion_medio_pago, SUM(valor) valor
@@ -129,7 +131,11 @@ export class RecaudosDao {
             WHERE re.identificador_recurso = $1
             AND (r.fecha_hora_recaudo::date BETWEEN $2 AND $3)
             GROUP BY mp.id_medio_pago, mp.descripcion_medio_pago;`;
-            const response = await this.replicaDB.manyOrNone<IValoresRecaudadosResponse>(query, [data.id_equipo, data.fecha_inicial, data.fecha_final]);
+            const response = await this.replicaDB.manyOrNone<IValoresRecaudadosResponse>(query, [
+                data.id_equipo,
+                data.fecha_inicial,
+                data.fecha_final,
+            ]);
             return response;
         } catch (error: any) {
             console.error('Error en consultarValoresRecaudados', error);
@@ -153,7 +159,12 @@ export class RecaudosDao {
             GROUP BY re2.identificador_recurso, r.valor, tr.abreviado
             ORDER BY re2.identificador_recurso DESC;
             `;
-            const response = await this.replicaDB.manyOrNone<IGuiasTipoRecaudoResponse>(query, [data.id_equipo, data.fecha_inicial, data.fecha_final, data.id_medio_pago]);
+            const response = await this.replicaDB.manyOrNone<IGuiasTipoRecaudoResponse>(query, [
+                data.id_equipo,
+                data.fecha_inicial,
+                data.fecha_final,
+                data.id_medio_pago,
+            ]);
             return response;
         } catch (error: any) {
             console.error('Error en getTipoRecaudo', error);

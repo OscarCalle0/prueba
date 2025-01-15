@@ -78,14 +78,16 @@ export class RecaudosAppService {
         }
     }
 
-    async consultarValoresRecaudados(data: IValoresRecaudadosConsulta): Promise<Response<IValoresRecaudadosOut[] | null>> {
-        if(!data.fecha_final) data.fecha_final = data.fecha_inicial;
+    async consultarValoresRecaudados(
+        data: IValoresRecaudadosConsulta,
+    ): Promise<Response<IValoresRecaudadosOut[] | null>> {
+        if (!data.fecha_final) data.fecha_final = data.fecha_inicial;
         const resultValoresRecaudados = await this.recaudosDao.consultarValoresRecaudados(data);
         return Result.ok(resultValoresRecaudados);
     }
 
     async consultarGuiasRecaudadas(data: ITipoRecaudoConsulta): Promise<Response<IGuiasTipoRecaudoOut[] | null>> {
-        if(!data.fecha_final) data.fecha_final = data.fecha_inicial;
+        if (!data.fecha_final) data.fecha_final = data.fecha_inicial;
         const resultGuiasTipoRecaudo = await this.recaudosDao.consultarGuiasTipoRecaudo(data);
         return Result.ok(resultGuiasTipoRecaudo);
     }

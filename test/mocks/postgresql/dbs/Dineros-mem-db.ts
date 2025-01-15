@@ -1,5 +1,5 @@
 import { DataType, IMemoryDb, newDb } from 'pg-mem';
-import { TABLAS_DINEROS } from '../tablas';
+import { TABLAS_DINEROS, TABLAS_PITAGORAS } from '../tablas';
 import {
     insertarAliadosEquipos,
     insertarBolsillo,
@@ -60,6 +60,7 @@ const inicializarTablas = (bdmen: IMemoryDb) => {
     TABLAS_DINEROS.generarTablaTiposNovedades(bdmen);
     TABLAS_DINEROS.generarTablaNovedades(bdmen);
     TABLAS_DINEROS.generarTablaGuiasRecaudadas(bdmen);
+    TABLAS_PITAGORAS.generarTablaDinerosRecibidor(bdmen);
 };
 
 const poblarInformacion = (dbmem: IMemoryDb) => {

@@ -1,11 +1,11 @@
-import { application } from '@infrastructure/api/Application';  
+import { application } from '@infrastructure/api/Application';
 import { PREFIX } from '@util';
 import 'reflect-metadata';
 
 describe('Consultar Valores Recaudados', () => {
     beforeAll(() => {
         jest.clearAllMocks();
-    })
+    });
     it('Consultar Valores Recaudados exitoso', async () => {
         const id_equipo = '1234-1';
         const fecha_inicial = '2024-01-01';
@@ -37,4 +37,4 @@ describe('Consultar Valores Recaudados', () => {
         expect(result.isError).toBe(true);
         expect(result.message).toBe('Las fechas no son válidas');
     });
-})
+});

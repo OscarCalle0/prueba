@@ -265,5 +265,5 @@ export const TABLAS_DINEROS = {
             id_recaudo varchar(100) NOT NULL,
             valor numeric NOT NULL
         );`);
-    }
+    },
 };
