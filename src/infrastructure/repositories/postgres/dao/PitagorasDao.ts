@@ -36,13 +36,14 @@ export class PitagorasDao {
                 await t1.one(queryRegistroSesion);
 
                 try {
+                    const fecha = new Date(data.fecha).toISOString().split('T')[0]; // Extraer la fecha en formato YYYY-MM-DD
+
                     const result = await t1.one<{ id: number }>(
-                        `INSERT INTO public.dineros_recibidor
-                    (fecha, terminal, equipo, recibidor, forma_de_pago, numero_aprobacion, valor, usuario)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                        `INSERT INTO public.dineros_recibidor (fecha, terminal, equipo, recibidor, forma_de_pago, numero_aprobacion, valor, usuario, entrega,prefijo,factura,banco,cheque,cuenta_cheque,cuenta_cartera)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8,1,'','','','','',0)
                     RETURNING id`,
                         [
-                            data.fecha,
+                            fecha,
                             +data.terminal,
                             +data.equipo.split('-')[0],
                             +data.recibidor,
@@ -52,7 +53,6 @@ export class PitagorasDao {
                             data.usuario,
                         ],
                     );
-
                     try {
                         await this.dbDineros.tx(async (t2) => {
                             const updateQuery = `UPDATE public.recaudos SET id_estado=9 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
