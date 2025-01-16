@@ -30,8 +30,11 @@
         "@fastify/static": "7.0.4",
         "@fastify/swagger": "6.1.1",
         "@google-cloud/firestore": "7.9.0",
+        "@grpc/grpc-js": "1.12.2",
         "@joi/date": "2.1.1",
         "axios": "1.7.7",
+        "cm-idempotencia": "^1.5.8",
+        "cookie": "1.0.2",
         "dotenv": "16.4.5",
         "fastify": "3.29.5",
         "got": "11.8.5",
@@ -43,9 +46,7 @@
         "pg-mem": "2.8.1",
         "pg-promise": "11.10.2",
         "reflect-metadata": "0.1.13",
-        "semver": "7.6.3",
-        "cookie": "1.0.2",
-        "@grpc/grpc-js": "1.12.2"
+        "semver": "7.6.3"
     },
     "devDependencies": {
         "@commitlint/cli": "16.2.4",
