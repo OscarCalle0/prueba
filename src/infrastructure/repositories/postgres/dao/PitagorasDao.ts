@@ -43,19 +43,19 @@ export class PitagorasDao {
                     RETURNING id`,
                         [
                             data.fecha,
-                            data.terminal,
-                            data.equipo,
-                            data.recibidor,
+                            +data.terminal,
+                            +data.equipo.split('-')[0],
+                            +data.recibidor,
                             data.forma_de_pago,
                             data.numero_aprobacion,
-                            data.valor,
+                            +data.valor,
                             data.usuario,
                         ],
                     );
 
                     try {
                         await this.dbDineros.tx(async (t2) => {
-                            const updateQuery = `UPDATE public.recaudos SET id_estado=9 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+                            const updateQuery = `UPDATE public.recaudos SET id_estado=9 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
                             await t2.none(updateQuery, [idTransaccion]); // Throws if the update fails
                             await t1.query('COMMIT'); // Manually commit dbCm
                         });
@@ -66,7 +66,7 @@ export class PitagorasDao {
 
                     return result.id;
                 } catch (error: any) {
-                    const updateQuery = `UPDATE public.recaudos SET id_estado=10 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+                    const updateQuery = `UPDATE public.recaudos SET id_estado=10 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
                     await this.dbDineros.none(updateQuery, [idTransaccion]);
                     throw new DatabaseError(error, 'Error al insertar en dineros_recibidor');
                 }
@@ -78,7 +78,7 @@ export class PitagorasDao {
 
     public async cambiarEstadoRecaudo(idTransaccion: number): Promise<void> {
         try {
-            const query = `UPDATE public.recaudos SET id_estado=8 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+            const query = `UPDATE public.recaudos SET id_estado=8 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
             await this.dbDineros.none(query, [idTransaccion]);
         } catch (error) {
             console.error(`Error al cambiar estado de recaudo transacción ${idTransaccion}:`, error);
