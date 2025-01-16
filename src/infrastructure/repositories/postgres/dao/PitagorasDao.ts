@@ -57,11 +57,11 @@ export class PitagorasDao {
                         await this.dbDineros.tx(async (t2) => {
                             const updateQuery = `UPDATE public.recaudos SET id_estado=9 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
                             await t2.none(updateQuery, [idTransaccion]); // Throws if the update fails
-                            await t1.query('COMMIT'); // Manually commit dbCm
+                            await t1.query('COMMIT');
                         });
                     } catch (dbError) {
                         await t1.query('ROLLBACK');
-                        throw dbError; // Re-throw
+                        throw dbError;
                     }
 
                     return result.id;
