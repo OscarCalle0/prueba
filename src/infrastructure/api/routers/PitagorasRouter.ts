@@ -6,7 +6,6 @@ import { PitagorasJoiSchema } from '../schemas';
 import { PitagorasAppService } from '@application/services';
 
 export const insertPitagoras = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
-    console.log('insertPitagoras');
     const data = validateDataPubSub<IpitagorasTransaccion>(PitagorasJoiSchema, req.body);
     const pitagorasService = DEPENDENCY_CONTAINER.get(PitagorasAppService);
     const response = await pitagorasService.insertPitagoras(data.idTransaccion);

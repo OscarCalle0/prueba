@@ -27,10 +27,8 @@ export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
 
 export const validateDataPubSub = <T>(schema: Schema, dataToValidate: Body): T => {
     const pubSubPayload = validatePubSub(dataToValidate);
-    console.log(`pubSubPayload: ${JSON.stringify(pubSubPayload)}`);
     if (pubSubPayload) {
         const decodeMessage = parse(decode(pubSubPayload.message.data));
-        console.log(`decodeMessage: ${JSON.stringify(decodeMessage)}`);
         const { error, value } = schema.validate(decodeMessage, { convert: true });
         if (error) {
             console.error(`schemaError: ${JSON.stringify(error)}`);
