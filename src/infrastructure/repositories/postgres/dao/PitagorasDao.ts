@@ -55,7 +55,7 @@ export class PitagorasDao {
 
                     try {
                         await this.dbDineros.tx(async (t2) => {
-                            const updateQuery = `UPDATE public.recaudos SET estado=9 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+                            const updateQuery = `UPDATE public.recaudos SET id_estado=9 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
                             await t2.none(updateQuery, [idTransaccion]); // Throws if the update fails
                             await t1.query('COMMIT'); // Manually commit dbCm
                         });
@@ -66,13 +66,23 @@ export class PitagorasDao {
 
                     return result.id;
                 } catch (error: any) {
-                    const updateQuery = `UPDATE public.recaudos SET estado=10 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+                    const updateQuery = `UPDATE public.recaudos SET id_estado=10 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
                     await this.dbDineros.none(updateQuery, [idTransaccion]);
                     throw new DatabaseError(error, 'Error al insertar en dineros_recibidor');
                 }
             });
         } catch (error: any) {
             throw new DatabaseError(error, 'Error al insertar en dineros_recibidor');
+        }
+    }
+
+    public async cambiarEstadoRecaudo(idTransaccion: number): Promise<void> {
+        try {
+            const query = `UPDATE public.recaudos SET id_estado=8 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+            await this.dbDineros.none(query, [idTransaccion]);
+        } catch (error) {
+            console.error(`Error al cambiar estado de recaudo transacción ${idTransaccion}:`, error);
+            throw new Error('Error al cambiar estado de recaudo.');
         }
     }
 }

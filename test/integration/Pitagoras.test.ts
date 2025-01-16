@@ -33,7 +33,7 @@ describe('PitagorasRouter', () => {
             valor: 1000000,
             usuario: 'Aut-Dineros',
         };
-
+        jest.spyOn(pitagorasDao, 'cambiarEstadoRecaudo').mockResolvedValue();
         jest.spyOn(pitagorasDao, 'getDataRecaudo').mockResolvedValue(mockData);
         jest.spyOn(pitagorasDao, 'insertPitagoras').mockResolvedValue(1);
 
@@ -80,6 +80,7 @@ describe('PitagorasRouter', () => {
     it('Insertar pitagoras error al obtener datos de recaudo', async () => {
         const dbDineros = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Pg);
         const spy = jest.spyOn(dbDineros, 'one');
+
         spy.mockRejectedValueOnce(new Error('error validanto data de entrada'));
 
         const response = await application.inject({
@@ -91,12 +92,15 @@ describe('PitagorasRouter', () => {
         const result = response.json();
         expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
-        expect(result.message).toBe('Error al obtener datos de recaudo.');
+        expect(result.message).toBe('Error al cambiar estado de recaudo.');
     });
 
     it('Insertar pitagoras error al insertar en dineros_recibidor', async () => {
         const dbCm = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.cm);
+        const pitagorasDao = DEPENDENCY_CONTAINER.get(PitagorasDao);
         const spy = jest.spyOn(dbCm, 'tx');
+        jest.spyOn(pitagorasDao, 'cambiarEstadoRecaudo').mockResolvedValue();
+
         spy.mockRejectedValueOnce(new Error('error validanto data de entrada'));
 
         const response = await application.inject({
@@ -145,7 +149,7 @@ describe('PitagorasRouter', () => {
             valor: 1000000,
             usuario: 'Aut-Dineros',
         };
-
+        jest.spyOn(pitagorasDao, 'cambiarEstadoRecaudo').mockResolvedValue();
         jest.spyOn(pitagorasDao, 'getDataRecaudo').mockResolvedValue(mockData);
         jest.spyOn(pitagorasDao, 'insertPitagoras').mockResolvedValue(0);
 
@@ -172,7 +176,7 @@ describe('PitagorasRouter', () => {
             valor: 1000000,
             usuario: 'Aut-Dineros',
         };
-
+        jest.spyOn(pitagorasDao, 'cambiarEstadoRecaudo').mockResolvedValue();
         jest.spyOn(pitagorasDao, 'getDataRecaudo').mockResolvedValue(mockData);
         jest.spyOn(pitagorasDao, 'insertPitagoras').mockRejectedValue(new Error('error validanto data de entrada'));
 

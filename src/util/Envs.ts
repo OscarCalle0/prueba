@@ -8,3 +8,9 @@ export const HOST = process.env.HOST || 'localhost';
 
 export const TRANSACCIONES_URL =
     process.env.TRANSACCIONES_URL ?? 'https://apiv2-dev.coordinadora.com/dineros/cm-dineros-transacciones/';
+
+export const REDIS_HOST = process.env.REDIS_HOST ?? 'localhost';
+
+export const REDIS_PORT = process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379;
+
+export const REDIS_CONNECTION_LOCAL_ENV = process.env.REDIS_CONNECTION_LOCAL_ENV ?? false;
