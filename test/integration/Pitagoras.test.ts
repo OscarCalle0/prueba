@@ -10,8 +10,8 @@ describe('PitagorasRouter', () => {
         message: {
             data: Buffer.from(JSON.stringify({ idTransaccion: 8592 })).toString('base64'),
             messageId: 'test-message-id',
-            publishTime: '2024-01-16T12:00:00Z'
-        }
+            publishTime: '2024-01-16T12:00:00Z',
+        },
     };
 
     beforeEach(() => {
