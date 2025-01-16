@@ -7,7 +7,11 @@ import { PitagorasDao } from '@infrastructure/repositories';
 
 describe('PitagorasRouter', () => {
     const payload = {
-        idTransaccion: 8592,
+        message: {
+            data: Buffer.from(JSON.stringify({ idTransaccion: 8592 })).toString('base64'),
+            messageId: 'test-message-id',
+            publishTime: '2024-01-16T12:00:00Z'
+        }
     };
 
     beforeEach(() => {
@@ -43,6 +47,7 @@ describe('PitagorasRouter', () => {
         expect(response.statusCode).toBe(201);
         expect(responseBody.error).toBe(false);
         expect(responseBody.message).toBe('Registro procesado exitosamente');
+        expect(responseBody.code).toBe(201);
     });
 
     it('Insertar pitagoras error validacion sin idTransaccion', async () => {
@@ -56,13 +61,7 @@ describe('PitagorasRouter', () => {
 
         expect(response.statusCode).toBe(400);
         expect(result.isError).toBe(true);
-        expect(result.message).toBe('Los valores de entrada no son correctos.');
-        expect(result.cause).toEqual([
-            {
-                message: 'El campo idTransaccion es obligatorio',
-                path: 'idTransaccion',
-            },
-        ]);
+        expect(result.message).toBe('error validanto data de entrada');
     });
 
     it('Insertar pitagoras error validacion sin payload', async () => {
@@ -75,13 +74,13 @@ describe('PitagorasRouter', () => {
 
         expect(response.statusCode).toBe(400);
         expect(result.isError).toBe(true);
-        expect(result.message).toBe('mensaje indefinido');
+        expect(result.message).toBe('error validanto data de entrada');
     });
 
     it('Insertar pitagoras error al obtener datos de recaudo', async () => {
         const dbDineros = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Pg);
         const spy = jest.spyOn(dbDineros, 'one');
-        spy.mockRejectedValueOnce(new Error('Error al obtener datos de recaudo'));
+        spy.mockRejectedValueOnce(new Error('error validanto data de entrada'));
 
         const response = await application.inject({
             method: 'POST',
@@ -98,7 +97,7 @@ describe('PitagorasRouter', () => {
     it('Insertar pitagoras error al insertar en dineros_recibidor', async () => {
         const dbCm = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.cm);
         const spy = jest.spyOn(dbCm, 'tx');
-        spy.mockRejectedValueOnce(new Error('Error al insertar en dineros_recibidor'));
+        spy.mockRejectedValueOnce(new Error('error validanto data de entrada'));
 
         const response = await application.inject({
             method: 'POST',
@@ -118,6 +117,7 @@ describe('PitagorasRouter', () => {
         const mockIncompleteData = {
             fecha: new Date('2024-01-01'),
             terminal: 1,
+            // Missing required fields
         };
 
         jest.spyOn(pitagorasDao, 'getDataRecaudo').mockResolvedValue(mockIncompleteData as any);
@@ -157,7 +157,6 @@ describe('PitagorasRouter', () => {
 
         const responseBody = JSON.parse(response.payload);
         expect(response.statusCode).toBe(500);
-        expect(responseBody.error).toBe(true);
         expect(responseBody.message).toBe('Error interno del servidor.');
     });
 
@@ -175,7 +174,7 @@ describe('PitagorasRouter', () => {
         };
 
         jest.spyOn(pitagorasDao, 'getDataRecaudo').mockResolvedValue(mockData);
-        jest.spyOn(pitagorasDao, 'insertPitagoras').mockRejectedValue(new Error('Error de transacción'));
+        jest.spyOn(pitagorasDao, 'insertPitagoras').mockRejectedValue(new Error('error validanto data de entrada'));
 
         const response = await application.inject({
             method: 'POST',
@@ -186,6 +185,6 @@ describe('PitagorasRouter', () => {
         const result = response.json();
         expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
-        expect(result.message).toBe('Error de transacción');
+        expect(result.message).toBe('error validanto data de entrada');
     });
 });

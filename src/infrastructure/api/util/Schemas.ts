@@ -1,5 +1,5 @@
 import Joi from 'joi';
-//import { parse, decode } from '@util';
+import { parse, decode } from '@util';
 import { pubSubSchema, PubSubPayload } from '@infrastructure/api/schemas';
 import { BadMessageException } from '@domain/exceptions';
 
@@ -25,7 +25,7 @@ export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
     throw new BadMessageException('mensaje indefinido', 'mensaje indefinido');
 };
 
-/* export const validateDataPubSub = <T>(schema: Schema, dataToValidate: Body): T => {
+export const validateDataPubSub = <T>(schema: Schema, dataToValidate: Body): T => {
     const pubSubPayload = validatePubSub(dataToValidate);
     if (pubSubPayload) {
         const decodeMessage = parse(decode(pubSubPayload.message.data));
@@ -37,7 +37,7 @@ export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
         return value;
     }
     throw new BadMessageException('no se encontró data de pubsub', 'error validanto data de entrada');
-}; */
+};
 
 export const validatePubSub = (dataToValidate: Body): PubSubPayload | null => {
     if (dataToValidate) {
