@@ -157,7 +157,7 @@ export class RecaudosDao {
             AND (r.fecha_hora_recaudo::date BETWEEN $2 AND $3)
             AND r.id_medio_pago = $4
             GROUP BY re2.identificador_recurso, r.valor, tr.abreviado
-            ORDER BY re2.identificador_recurso DESC;
+            ORDER BY re2.identificador_recurso ASC;
             `;
             const response = await this.replicaDB.manyOrNone<IGuiasTipoRecaudoResponse>(query, [
                 data.id_equipo,
