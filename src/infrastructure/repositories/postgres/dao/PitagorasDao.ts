@@ -36,37 +36,37 @@ export class PitagorasDao {
                 await t1.one(queryRegistroSesion);
 
                 try {
+                    const fecha = new Date(data.fecha).toISOString().split('T')[0]; // Extraer la fecha en formato YYYY-MM-DD
+
                     const result = await t1.one<{ id: number }>(
-                        `INSERT INTO public.dineros_recibidor
-                    (fecha, terminal, equipo, recibidor, forma_de_pago, numero_aprobacion, valor, usuario)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                        `INSERT INTO public.dineros_recibidor (fecha, terminal, equipo, recibidor, forma_de_pago, numero_aprobacion, valor, usuario, entrega,prefijo,factura,banco,cheque,cuenta_cheque,cuenta_cartera)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8,1,'','','','','',0)
                     RETURNING id`,
                         [
-                            data.fecha,
-                            data.terminal,
-                            data.equipo,
-                            data.recibidor,
+                            fecha,
+                            +data.terminal,
+                            +data.equipo.split('-')[0],
+                            +data.recibidor,
                             data.forma_de_pago,
                             data.numero_aprobacion,
-                            data.valor,
+                            +data.valor,
                             data.usuario,
                         ],
                     );
-
                     try {
                         await this.dbDineros.tx(async (t2) => {
-                            const updateQuery = `UPDATE public.recaudos SET id_estado=9 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+                            const updateQuery = `UPDATE public.recaudos SET id_estado=9 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
                             await t2.none(updateQuery, [idTransaccion]); // Throws if the update fails
-                            await t1.query('COMMIT'); // Manually commit dbCm
+                            await t1.query('COMMIT');
                         });
                     } catch (dbError) {
                         await t1.query('ROLLBACK');
-                        throw dbError; // Re-throw
+                        throw dbError;
                     }
 
                     return result.id;
                 } catch (error: any) {
-                    const updateQuery = `UPDATE public.recaudos SET id_estado=10 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+                    const updateQuery = `UPDATE public.recaudos SET id_estado=10 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
                     await this.dbDineros.none(updateQuery, [idTransaccion]);
                     throw new DatabaseError(error, 'Error al insertar en dineros_recibidor');
                 }
@@ -78,7 +78,7 @@ export class PitagorasDao {
 
     public async cambiarEstadoRecaudo(idTransaccion: number): Promise<void> {
         try {
-            const query = `UPDATE public.recaudos SET id_estado=8 WHERE id_recaudo = select id_movimiento from transacciones where id_transaccion = $1`;
+            const query = `UPDATE public.recaudos SET id_estado=8 WHERE id_recaudo = (select id_movimiento from transacciones where id_transaccion = $1)`;
             await this.dbDineros.none(query, [idTransaccion]);
         } catch (error) {
             console.error(`Error al cambiar estado de recaudo transacción ${idTransaccion}:`, error);

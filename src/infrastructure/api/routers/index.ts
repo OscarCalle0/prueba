@@ -11,7 +11,6 @@ import {
     getTipoRecaudo,
 } from './RecaudosRouter';
 import { insertPitagoras } from './PitagorasRouter';
-import { PitagorasSchema } from '../swagger/schemas';
 
 export const initRoutes = async (application: FastifyInstance): Promise<void> => {
     application.post(`/recaudos`, guardarRecaudo);
@@ -29,11 +28,5 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
         GetTipoRecaudoSchema,
         getTipoRecaudo,
     );
-    application.post(
-        `/pitagoras`,
-        {
-            schema: process.env.NODE_ENV === 'test' ? undefined : PitagorasSchema,
-        },
-        insertPitagoras,
-    );
+    application.post(`/pitagoras`, insertPitagoras);
 };

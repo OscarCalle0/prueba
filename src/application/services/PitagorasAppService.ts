@@ -10,7 +10,6 @@ export class PitagorasAppService {
         await this.pitagorasDao.cambiarEstadoRecaudo(idTransaccion);
         const dataRecaudo = await this.pitagorasDao.getDataRecaudo(idTransaccion);
         const idInsertPitagoras = await this.pitagorasDao.insertPitagoras(dataRecaudo, idTransaccion);
-
         if (idInsertPitagoras > 0) {
             return {
                 message: 'Registro procesado exitosamente',
