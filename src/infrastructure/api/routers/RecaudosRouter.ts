@@ -1,7 +1,7 @@
 import { RecaudosAppService } from '@application/services';
 import { DEPENDENCY_CONTAINER } from '@configuration';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { validateData } from '../util';
+import { validateData, validateDataPubSub } from '../util';
 import { IRecaudosIn, ITipoRecaudoConsulta } from '@application/data';
 import { GuardarRecaudosJoiSchema } from '../schemas/GuardaRecaudosJoiSchema';
 import { ConsultaRCESchema } from '../schemas/ConsultarRCESchema';
@@ -42,7 +42,7 @@ export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply):
 
 export const errorBolsilloRouter = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
-    const data = validateData<IErrorBolsilloDataIn>(ErrorBolsilloJoiSchema, req.body);
+    const data = validateDataPubSub<IErrorBolsilloDataIn>(ErrorBolsilloJoiSchema, req.body);
     const response = await recaudosService.guardarErrorBolsillo(data);
     return reply.status(201).send({ ...response, id: req.id });
 };
