@@ -1,7 +1,7 @@
 import { RecaudosAppService } from '@application/services';
 import { DEPENDENCY_CONTAINER } from '@configuration';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { validateData } from '../util';
+import { validateData, validateDataPubSub } from '../util';
 import { IRecaudosIn, ITipoRecaudoConsulta } from '@application/data';
 import { GuardarRecaudosJoiSchema } from '../schemas/GuardaRecaudosJoiSchema';
 import { ConsultaRCESchema } from '../schemas/ConsultarRCESchema';
@@ -10,6 +10,8 @@ import { GetTipoRecaudoSchema } from '../schemas/GetTipoRecaudoSchema';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 import { IValoresRecaudadosConsulta } from '@application/data/in/IValoresRecaudadosConsulta';
 import { validateFechas } from '../util/validateFechas';
+import { IErrorBolsilloDataIn } from '@application/data/in/IErrorBolsilloDataIn';
+import { ErrorBolsilloJoiSchema } from '../schemas/ErrorBolsilloJoiSchema';
 
 export const guardarRecaudo = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
@@ -36,6 +38,13 @@ export const procesarRecaudo = async (req: FastifyRequest, reply: FastifyReply):
     const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
     const response = await recaudosService.procesarRecaudo();
     return reply.status(200).send({ ...response, id: req.id });
+};
+
+export const errorBolsilloRouter = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    const recaudosService = DEPENDENCY_CONTAINER.get(RecaudosAppService);
+    const data = validateDataPubSub<IErrorBolsilloDataIn>(ErrorBolsilloJoiSchema, req.body);
+    const response = await recaudosService.guardarErrorBolsillo(data);
+    return reply.status(201).send({ ...response, id: req.id });
 };
 
 export const getValoresRecaudados = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {

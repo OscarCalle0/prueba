@@ -189,6 +189,7 @@ export const TABLAS_DINEROS = {
             valor numeric NOT NULL,
             terminal numeric NOT NULL,
             id_tipo_recaudo varchar(10) NULL,
+            id_estado int4 NULL,
             CONSTRAINT pk_recaudos PRIMARY KEY (id_recaudo),
             CONSTRAINT fk_recaudos_id_tipo_recaudo FOREIGN KEY (id_tipo_recaudo) REFERENCES public.tipos_recaudos(id_tipo_recaudo),
             CONSTRAINT fk_recaudos_relations_medios_p FOREIGN KEY (id_medio_pago) REFERENCES public.medios_pagos(id_medio_pago)

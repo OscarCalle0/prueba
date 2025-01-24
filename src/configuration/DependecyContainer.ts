@@ -8,6 +8,11 @@ import { firestore, RecaudosFSDao } from '@infrastructure/repositories/firestore
 import { Firestore } from '@google-cloud/firestore';
 import { TransaccionesApiClient } from '@infrastructure/api-transacciones';
 import { NovedadesRepository } from '@domain/repository/NovedadesRepository';
+import { PubSub } from '@google-cloud/pubsub';
+import { pubsub } from '@infrastructure/pubsub/pubsub/config/PubSubConfig';
+import { BolsilloPubsub } from '@infrastructure/pubsub/pubsub';
+import { IBolsilloPubSubRepository } from '@infrastructure/pubsub/IBolsilloPubSub';
+import { Redis } from '@infrastructure/repositories/redis';
 
 export const DEPENDENCY_CONTAINER = new Container();
 
@@ -24,4 +29,7 @@ export const createDependencyContainer = (): void => {
     DEPENDENCY_CONTAINER.bind<FirestoreRepository>(TYPES.FirestoreRepository).to(RecaudosFSDao).inSingletonScope();
     DEPENDENCY_CONTAINER.bind(PitagorasDao).toSelf().inSingletonScope();
     DEPENDENCY_CONTAINER.bind(PitagorasAppService).toSelf().inSingletonScope();
+    DEPENDENCY_CONTAINER.bind<PubSub>(TYPES.PubSub).toConstantValue(pubsub);
+    DEPENDENCY_CONTAINER.bind<IBolsilloPubSubRepository>(TYPES.PubSubBolsillo).to(BolsilloPubsub).inSingletonScope();
+    DEPENDENCY_CONTAINER.bind(TYPES.RedisClient).to(Redis).inSingletonScope();
 };

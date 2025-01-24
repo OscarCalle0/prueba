@@ -51,7 +51,7 @@ export class RecaudosDao {
                     const arrayRecursos = await t.many(
                         sqlInsertRecursos +
                             `ON CONFLICT (identificador_recurso, id_tipo_recurso)
-                            DO UPDATE SET id_tipo_recurso=EXCLUDED.id_tipo_recurso 
+                            DO UPDATE SET id_tipo_recurso=EXCLUDED.id_tipo_recurso
                             RETURNING id_recurso, identificador_recurso, id_tipo_recurso;`,
                     );
                     timeEnd('recursos');
@@ -171,27 +171,19 @@ export class RecaudosDao {
             throw new PostgresError(error, 'Error en getTipoRecaudo');
         }
     }
-    /*public updsertRecaudoSql(recurso: string, idTipoRecurso: number): string {
-        const sql = `WITH consultar AS (
-                        SELECT id_recurso FROM recursos where identificador_recurso = $/identificador_recurso/ and id_tipo_recurso = $/id_tipo_recurso/
-                    ),
-                    insertar AS (
-                        INSERT INTO recursos (identificador_recurso, id_tipo_recurso)
-                        SELECT $/identificador_recurso/, $/id_tipo_recurso/ WHERE 1 NOT IN (SELECT 1 FROM consultar)
-                        ON CONFLICT (identificador_recurso, id_tipo_recurso)
-                        DO UPDATE SET id_tipo_recurso=EXCLUDED.id_tipo_recurso
-                        RETURNING id_recurso
-                    ),
-                    tmp AS (
-                        SELECT id_recurso FROM insertar
-                        UNION ALL
-                        SELECT id_recurso FROM consultar
-                    )
-                    SELECT DISTINCT id_recurso FROM tmp;`;
-
-        return as.format(sql, {
-            identificador_recurso: recurso,
-            id_tipo_recurso: idTipoRecurso,
-        });
-    }*/
+    public async updateEstadoRecaudo(id_transaccion: number): Promise<void> {
+        await this.db
+            .none(
+                `
+            UPDATE recaudos
+            SET id_estado = 6
+            WHERE id_recaudo = (SELECT id_movimiento FROM transacciones WHERE id_transaccion = $1);
+        `,
+                id_transaccion,
+            )
+            .catch((error) => {
+                console.log('error', JSON.stringify(error));
+                throw new PostgresError(error.code, error?.data?.error || error.message);
+            });
+    }
 }

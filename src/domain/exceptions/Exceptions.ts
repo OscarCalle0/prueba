@@ -28,6 +28,12 @@ export class DatabaseError extends Exception {
     }
 }
 
+export class PubSubException extends Exception {
+    constructor(message: string, cause: string) {
+        super(message, ErrorCode.PUBSUB_ERROR, StatusCode.INTERNAL_ERROR, cause);
+    }
+}
+
 /* export class RepositoryException extends Exception {
     constructor() {
         const message = 'Ocurrió un error al momento de guardar la guía';

@@ -92,7 +92,7 @@ describe('PitagorasRouter', () => {
         const result = response.json();
         expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
-        expect(result.message).toBe('Error al cambiar estado de recaudo.');
+        expect(result.message).toBe('Error al obtener datos de recaudo.');
     });
 
     it('Insertar pitagoras error al insertar en dineros_recibidor', async () => {

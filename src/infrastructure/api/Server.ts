@@ -3,6 +3,7 @@ import 'module-alias/register';
 dotenv.config();
 import { application } from './Application';
 import { createDependencyContainer } from '@configuration';
+import { dependenciasIdempotencia } from 'cm-idempotencia';
 
 const start = async () => {
     const port = process.env.PORT || 8080;
@@ -11,6 +12,7 @@ const start = async () => {
         application.swagger();
         console.log(application.printRoutes());
         createDependencyContainer();
+        dependenciasIdempotencia();
         console.log(`Application running on ${server}`);
     } catch (error) {
         console.error(error);
