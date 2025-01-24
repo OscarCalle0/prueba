@@ -18,4 +18,3 @@ export const REDIS_CONNECTION_LOCAL_ENV = process.env.REDIS_CONNECTION_LOCAL_ENV
 export const REDIS_TIEMPO_VENCIMIENTO = process.env.REDIS_TIEMPO_VENCIMIENTO ?? '3600';
 
 export const TOPIC_PUBSUB_BOLSILLO = process.env.TOPIC_PUBSUB_BOLSILLO ?? 'recaudo-bolsillo';
-
