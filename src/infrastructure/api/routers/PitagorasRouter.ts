@@ -14,5 +14,4 @@ export const insertPitagoras = async (req: FastifyRequest, reply: FastifyReply):
 
 export const healtCheck = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     return reply.send({ data: 'ok' });
-}
-
+};
