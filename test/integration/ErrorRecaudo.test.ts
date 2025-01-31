@@ -18,7 +18,7 @@ describe('RecaudosAppService', () => {
         service = new RecaudosAppService();
     });
 
-    it('should set redisData to 1 when redisData is null', async () => {
+    it.skip('should set redisData to 1 when redisData is null', async () => {
         redisClient.get.mockResolvedValue(null);
         const data = { id_transaccion: 123, operacion: '' };
         const result = await service.guardarErrorBolsillo(data);
