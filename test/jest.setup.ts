@@ -4,6 +4,7 @@ import { createDependencyContainerTest, DEPENDENCY_CONTAINER_TEST } from './mock
 import { DBDinerosMem } from './mocks/postgresql';
 import axios from 'axios';
 import { createDependencyContainer, DEPENDENCY_CONTAINER, TYPES } from '@configuration';
+import redis from 'redis-mock';
 
 jest.mock('axios');
 export const mockApiAxios = axios as jest.MockedFunction<typeof axios>;
@@ -15,6 +16,10 @@ beforeAll(() => {
 
     // Databases -Postgres
     DEPENDENCY_CONTAINER.rebind<IDatabase<IMain>>(TYPES.Pg).toConstantValue(dbDineros);
+    DEPENDENCY_CONTAINER.rebind<IDatabase<IMain>>(TYPES.replicaDB).toConstantValue(dbDineros);
+
+    const redisMock = redis.createClient();
+    DEPENDENCY_CONTAINER.rebind(TYPES.RedisClient).toConstantValue(redisMock);
 });
 
 afterAll(() => {

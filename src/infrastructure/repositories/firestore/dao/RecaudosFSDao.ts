@@ -5,6 +5,7 @@ import { IFirestoreStageResponse } from '../interfaces/IFirestoreStageResponse';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { FirestoreRepository } from '@domain/repository';
 import { DatabaseError } from '@domain/exceptions';
+import { IErrorBolsilloDataIn } from '@application/data/in/IErrorBolsilloDataIn';
 
 @injectable()
 export class RecaudosFSDao implements FirestoreRepository {
@@ -48,5 +49,9 @@ export class RecaudosFSDao implements FirestoreRepository {
                 console.error('Error al eliminar Recaudo', 'recaudo', error);
                 throw new DatabaseError('Error al eliminar Recaudo', error);
             });
+    }
+
+    async guardarNovedad(data: IErrorBolsilloDataIn): Promise<void> {
+        await this.firestore.collection(this.collection).doc(String(data.id_transaccion)).set(data);
     }
 }

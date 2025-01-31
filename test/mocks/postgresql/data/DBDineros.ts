@@ -88,7 +88,9 @@ export const insertarRecaudo = (bdmen: IMemoryDb): void => {
     bdmen.public.none(`INSERT INTO public.recaudos
         (id_recaudo, id_medio_pago, fecha_hora_recaudo, valor, terminal, id_tipo_recaudo)
         VALUES
-        ('prueba217', 1, '2024-08-21 16:00:12.000000', 1000000, 1, '1-7');`);
+        ('prueba217', 1, '2024-08-21 16:00:12.000000', 1000000, 1, '1-7'),
+        ('prueba218', 1, '2024-08-22 16:00:12.000000', 1000000, 1, '1-7'),
+        ('prueba219', 1, '2024-08-23 16:00:12.000000', 1000000, 1, '1-7');`);
 };
 
 export const insertarMediosPago = (bdmen: IMemoryDb): void => {
@@ -109,15 +111,15 @@ export const insertarMediosPago = (bdmen: IMemoryDb): void => {
 
 export const insertarTiposRecaudos = (bdmen: IMemoryDb): void => {
     bdmen.public.none(`INSERT INTO public.tipos_recaudos
-        (id_tipo_recaudo,descripcion_recaudo)
+        (id_tipo_recaudo,descripcion_recaudo, abreviado)
         VALUES
-        ('1-6','Flete contra entrega'),
-        ('1-3','Flete pago'),
-        ('1-7','Flete pago internacional'),
-        ('2-22','Recaudo Contra Entrega'),
-        ('2-106','Recaudo Contra Entrega AM'),
-        ('2-105','Recaudo Contra Entrega Mismo Dia'),
-        ('3-1','Servicios publicos');`);
+        ('1-6','Flete contra entrega', 'FCE'),
+        ('1-3','Flete pago', 'FP'),
+        ('1-7','Flete pago internacional', 'FPI'),
+        ('2-22','Recaudo Contra Entrega', 'RCE'),
+        ('2-106','Recaudo Contra Entrega AM', 'RCEAM'),
+        ('2-105','Recaudo Contra Entrega Mismo Dia', 'RCEMD'),
+        ('3-1','Servicios publicos', 'SP');`);
 };
 
 export const insertarAliadosEquipos = (bdmen: IMemoryDb): void => {
@@ -128,10 +130,37 @@ export const insertarAliadosEquipos = (bdmen: IMemoryDb): void => {
 };
 
 export const insertarTiposNovedades = (bdmen: IMemoryDb): void => {
-    bdmen.public.none(`INSERT INTO novedades.tipos_novedades (tipo_novedad) 
+    bdmen.public.none(`INSERT INTO novedades.tipos_novedades (tipo_novedad)
      VALUES
 	 ('Calculo Bolsillo'),
 	 ('Legalizacion'),
 	 ('Recaudo');
 `);
+};
+
+export const insertarRecaudosRecursos = (bdmen: IMemoryDb): void => {
+    bdmen.public.none(`INSERT INTO public.recaudos_recursos
+        (id_recaudo, id_recurso)
+        VALUES
+        ('prueba217', 1),
+        ('prueba218', 1),
+        ('prueba219', 1);`);
+};
+
+export const insertarGuiasRecaudadas = (bdmen: IMemoryDb): void => {
+    bdmen.public.none(`INSERT INTO public.guias_recaudadas
+        (id_recurso, id_recaudo, valor)
+        VALUES
+        ('1', 'prueba217', 1000000),
+        ('1', 'prueba218', 1000000),
+        ('1', 'prueba219', 1000000);`);
+};
+
+export const insertarRecaudoRecursos = (bdmen: IMemoryDb): void => {
+    bdmen.public.none(`INSERT INTO public.recaudos_recursos
+    (id_recurso,id_recaudo)
+    VALUES
+    (3,'prueba217'),
+    (4,'prueba217'),
+    (6,'prueba217');`);
 };
