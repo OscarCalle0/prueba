@@ -1,5 +1,5 @@
 import { DataType, IMemoryDb, newDb } from 'pg-mem';
-import { TABLAS_DINEROS } from '../tablas';
+import { TABLAS_DINEROS, TABLAS_PITAGORAS } from '../tablas';
 import {
     insertarAliadosEquipos,
     insertarBolsillo,
@@ -15,6 +15,8 @@ import {
     insertarTiposTransacciones,
     insertarTransaccion,
     insertarTraslado,
+    insertarRecaudosRecursos,
+    insertarGuiasRecaudadas,
 } from '../data';
 import moment from 'moment-timezone';
 
@@ -57,6 +59,8 @@ const inicializarTablas = (bdmen: IMemoryDb) => {
     TABLAS_DINEROS.generarTablaRecaudosRecursos(bdmen);
     TABLAS_DINEROS.generarTablaTiposNovedades(bdmen);
     TABLAS_DINEROS.generarTablaNovedades(bdmen);
+    TABLAS_DINEROS.generarTablaGuiasRecaudadas(bdmen);
+    TABLAS_PITAGORAS.generarTablaDinerosRecibidor(bdmen);
 };
 
 const poblarInformacion = (dbmem: IMemoryDb) => {
@@ -75,6 +79,8 @@ const poblarInformacion = (dbmem: IMemoryDb) => {
     insertarTransaccion(dbmem);
     insertarAliadosEquipos(dbmem);
     insertarTiposNovedades(dbmem);
+    insertarRecaudosRecursos(dbmem);
+    insertarGuiasRecaudadas(dbmem);
 };
 
 const configurarFunciones = (dbmem: IMemoryDb) => {

@@ -189,6 +189,7 @@ export const TABLAS_DINEROS = {
             valor numeric NOT NULL,
             terminal numeric NOT NULL,
             id_tipo_recaudo varchar(10) NULL,
+            id_estado int4 NULL,
             CONSTRAINT pk_recaudos PRIMARY KEY (id_recaudo),
             CONSTRAINT fk_recaudos_id_tipo_recaudo FOREIGN KEY (id_tipo_recaudo) REFERENCES public.tipos_recaudos(id_tipo_recaudo),
             CONSTRAINT fk_recaudos_relations_medios_p FOREIGN KEY (id_medio_pago) REFERENCES public.medios_pagos(id_medio_pago)
@@ -200,6 +201,7 @@ export const TABLAS_DINEROS = {
             CREATE TABLE public.tipos_recaudos (
             id_tipo_recaudo varchar(10) NOT NULL,
             descripcion_recaudo varchar(40) NOT NULL,
+            abreviado varchar(10) NOT NULL,
             CONSTRAINT pk_tipos_recaudos PRIMARY KEY (id_tipo_recaudo)
         );`);
     },
@@ -254,6 +256,15 @@ export const TABLAS_DINEROS = {
             id serial NOT NULL,
             tipo_novedad varchar NOT NULL,
             CONSTRAINT tipos_novedades_pk PRIMARY KEY (id)
+        );`);
+    },
+
+    generarTablaGuiasRecaudadas: (db: IMemoryDb) => {
+        db.public.none(`
+            CREATE TABLE public.guias_recaudadas (
+            id_recurso int4 NOT NULL,
+            id_recaudo varchar(100) NOT NULL,
+            valor numeric NOT NULL
         );`);
     },
 };

@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Result, Response } from '@domain/response';
 import { RecaudosDao } from '@infrastructure/repositories/postgres/dao/RecaudosDao';
-import { IRecaudosIn } from '@application/data';
+import { IRecaudosIn, ITipoRecaudoConsulta, IGuiasTipoRecaudoOut } from '@application/data';
 import { IRecaudosConsulta } from '@application/data/in/IRecaudosConsulta';
 import { cmDAO } from '@infrastructure/repositories';
 import { time, timeEnd } from 'console';
@@ -12,6 +12,11 @@ import { INovedades } from '@infrastructure/api/interfaces/INovedades';
 import { NovedadesRepository } from '@domain/repository/NovedadesRepository';
 import { IResponseAliados } from '@infrastructure/api-transacciones/interfaces';
 import { IFirestoreStageResponse } from '@infrastructure/repositories/firestore/interfaces/IFirestoreStageResponse';
+import { IValoresRecaudadosConsulta } from '@application/data/in/IValoresRecaudadosConsulta';
+import { IValoresRecaudadosOut } from '@application/data/out/IValoresRecaudadosOut';
+import { IErrorBolsilloDataIn } from '@application/data/in/IErrorBolsilloDataIn';
+import { Redis } from '@infrastructure/repositories/redis';
+import { IBolsilloPubSubRepository } from '@infrastructure/pubsub/IBolsilloPubSub';
 
 @injectable()
 export class RecaudosAppService {
@@ -21,6 +26,8 @@ export class RecaudosAppService {
     private readonly firestoreRepository = DEPENDENCY_CONTAINER.get<FirestoreRepository>(TYPES.FirestoreRepository);
     private readonly recaudoApi = DEPENDENCY_CONTAINER.get(TransaccionesApiClient);
     private readonly ID_TIPO_NOVEDAD_RECAUDO = 3;
+    private readonly redisClient: Redis = DEPENDENCY_CONTAINER.get(TYPES.RedisClient);
+    private readonly pubsubPublisher = DEPENDENCY_CONTAINER.get<IBolsilloPubSubRepository>(TYPES.PubSubBolsillo);
 
     async guardarRecaudo(data: IRecaudosIn): Promise<Response<number | null>> {
         const key = `GUARDAR RECAUDO ${data.recaudo_id}, Guias => ${data.recursos.length}`;
@@ -74,5 +81,38 @@ export class RecaudosAppService {
                 'reintentar',
             );
         }
+    }
+
+    async consultarValoresRecaudados(
+        data: IValoresRecaudadosConsulta,
+    ): Promise<Response<IValoresRecaudadosOut[] | null>> {
+        if (!data.fecha_final) data.fecha_final = data.fecha_inicial;
+        const resultValoresRecaudados = await this.recaudosDao.consultarValoresRecaudados(data);
+        return Result.ok(resultValoresRecaudados);
+    }
+
+    async consultarGuiasRecaudadas(data: ITipoRecaudoConsulta): Promise<Response<IGuiasTipoRecaudoOut[] | null>> {
+        if (!data.fecha_final) data.fecha_final = data.fecha_inicial;
+        const resultGuiasTipoRecaudo = await this.recaudosDao.consultarGuiasTipoRecaudo(data);
+        return Result.ok(resultGuiasTipoRecaudo);
+    }
+
+    async guardarErrorBolsillo(data: IErrorBolsilloDataIn): Promise<Response<number | null>> {
+        const idTransaccion = String(data.id_transaccion);
+
+        const redisData = await this.redisClient.get<number>(idTransaccion);
+        if (redisData === null) {
+            await this.redisClient.set(idTransaccion, 1);
+        } else if (redisData < 10) {
+            await this.redisClient.set(idTransaccion, redisData + 1);
+        } else {
+            await this.firestoreRepository.guardarNovedad(data);
+            return Result.ok(null);
+        }
+
+        await this.recaudosDao.updateEstadoRecaudo(data.id_transaccion);
+        await this.pubsubPublisher.publicarBolsillo(data);
+
+        return Result.ok(redisData === null ? 1 : redisData + 1);
     }
 }

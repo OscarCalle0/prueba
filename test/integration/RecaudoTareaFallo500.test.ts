@@ -43,7 +43,6 @@ describe('Crear Tarea Recaudo', () => {
 
         const resultadoDespues = await repository.executeQuery(query);
         const resultado = JSON.parse(response.body);
-        console.log('resultado', resultado);
         // Assert
         expect(response.statusCode).toBe(200);
         expect(resultado.isError).toBe(false);
