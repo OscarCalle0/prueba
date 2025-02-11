@@ -11,7 +11,7 @@ import {
     getTipoRecaudo,
     errorBolsilloRouter,
 } from './RecaudosRouter';
-import { RecaudoHandler } from '../middlewares/RecaudoHandler';
+import { insertPitagoras } from './PitagorasRouter';
 
 export const initRoutes = async (application: FastifyInstance): Promise<void> => {
     application.post(`/recaudos`, guardarRecaudo);
@@ -19,7 +19,7 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
     application.get(`/recaudos/rce-efectivo-guia/:codigo_remision`, ConsultarRCESchema, consultaRecaudoEfectivo);
     application.get(`/healt-check`, healtCheck);
     application.get(`/bolsillo`, healtCheck);
-    application.post(`/recaudos/error-bolsillo`, RecaudoHandler, errorBolsilloRouter);
+    application.post(`/recaudos/error-bolsillo`, errorBolsilloRouter);
     application.get(
         `/medios-pago/:id_equipo/:fecha_inicial/:fecha_final?`,
         GetValoresRecaudadosSchema,
@@ -30,5 +30,5 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
         GetTipoRecaudoSchema,
         getTipoRecaudo,
     );
-    application.post(`/pitagoras`, healtCheck);
+    application.post(`/pitagoras`, insertPitagoras);
 };
