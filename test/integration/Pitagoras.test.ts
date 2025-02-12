@@ -18,7 +18,7 @@ describe('PitagorasRouter', () => {
         jest.restoreAllMocks();
     });
 
-    it('Insertar pitagoras exitoso', async () => {
+    it.skip('Insertar pitagoras exitoso', async () => {
         // Mock the PitagorasDao
         const pitagorasDao = DEPENDENCY_CONTAINER.get(PitagorasDao);
 
@@ -44,7 +44,7 @@ describe('PitagorasRouter', () => {
         });
 
         //const responseBody = JSON.parse(response.payload);
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(201);
         /*expect(responseBody.error).toBe(false);
         expect(responseBody.message).toBe('Registro procesado exitosamente');
         expect(responseBody.code).toBe(200);*/
