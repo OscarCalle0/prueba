@@ -18,7 +18,7 @@ describe('PitagorasRouter', () => {
         jest.restoreAllMocks();
     });
 
-    it.skip('Insertar pitagoras exitoso', async () => {
+    it('Insertar pitagoras exitoso', async () => {
         // Mock the PitagorasDao
         const pitagorasDao = DEPENDENCY_CONTAINER.get(PitagorasDao);
 
