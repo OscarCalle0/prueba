@@ -11,7 +11,3 @@ export const insertPitagoras = async (req: FastifyRequest, reply: FastifyReply):
     const response = await pitagorasService.insertPitagoras(data.idTransaccion);
     return reply.status(response.code).send({ ...response, id: req.id });
 };
-
-export const healtCheck = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
-    return reply.send({ data: 'ok' });
-};
