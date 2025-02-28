@@ -1,7 +1,7 @@
 import { PREFIX, HOST, NODE_ENV } from '@util';
 import { FastifyDynamicSwaggerOptions } from '@fastify/swagger';
 
-export const swagger_config: FastifyDynamicSwaggerOptions = {
+export let swagger_config: FastifyDynamicSwaggerOptions = {
     routePrefix: `${PREFIX}/docs`,
     swagger: {
         info: {
@@ -22,3 +22,6 @@ export const swagger_config: FastifyDynamicSwaggerOptions = {
     exposeRoute: true,
     hideUntagged: true,
 };
+if (NODE_ENV === 'production') {
+    swagger_config = {};
+}
