@@ -2,8 +2,8 @@ import { IDatabase, IMain } from 'pg-promise';
 import 'reflect-metadata';
 import { createDependencyContainerTest, DEPENDENCY_CONTAINER_TEST } from './mocks';
 import { DBDinerosMem } from './mocks/postgresql';
-import axios from 'axios';
 import { createDependencyContainer, DEPENDENCY_CONTAINER, TYPES } from '@configuration';
+import axios from 'axios';
 import redis from 'redis-mock';
 
 jest.mock('axios');
