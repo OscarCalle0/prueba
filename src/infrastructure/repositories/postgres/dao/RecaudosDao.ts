@@ -145,7 +145,7 @@ export class RecaudosDao {
     public async consultarGuiasTipoRecaudo(data: ITipoRecaudoConsulta): Promise<IGuiasTipoRecaudoResponse[] | null> {
         try {
             const query = `
-            SELECT re2.identificador_recurso, r.valor, tr.abreviado
+            SELECT re2.identificador_recurso, gr.valor, tr.abreviado
             FROM recaudos r
             INNER JOIN medios_pagos mp ON r.id_medio_pago = mp.id_medio_pago
             INNER JOIN recaudos_recursos rr ON r.id_recaudo = rr.id_recaudo
@@ -156,7 +156,7 @@ export class RecaudosDao {
             WHERE re.identificador_recurso = $1
             AND (r.fecha_hora_recaudo::date BETWEEN $2 AND $3)
             AND r.id_medio_pago = $4
-            GROUP BY r.id_recaudo, re2.identificador_recurso, r.valor, tr.abreviado
+            GROUP BY r.id_recaudo, re2.identificador_recurso, gr.valor, tr.abreviado
             ORDER BY re2.identificador_recurso ASC;
             `;
             const response = await this.replicaDB.manyOrNone<IGuiasTipoRecaudoResponse>(query, [
