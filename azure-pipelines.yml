@@ -17,7 +17,7 @@ pr:
 variables:
   - ${{ if or(eq(variables['Build.Reason'], 'PullRequest'),startsWith(variables['System.PullRequest.SourceBranch'], 'refs/heads/feature/'),eq(variables['Build.SourceBranch'], 'refs/heads/test')) }}:
       - group: 'cm-dineros-recaudos-ms-test'
-  - ${{ if or(eq(variables['Build.Reason'], 'PullRequest'),startsWith(variables['System.PullRequest.SourceBranch'], 'refs/heads/feature/'),eq(variables['Build.SourceBranch'], 'refs/heads/master')) }}:
+  - ${{ if or(eq(variables['Build.Reason'], 'PullRequest'),startsWith(variables['System.PullRequest.SourceBranch'], 'refs/heads/feature/'),eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
       - group: 'cm-dineros-recaudos-ms-prod'
   - ${{ if or(eq(variables['Build.Reason'], 'PullRequest'),startsWith(variables['System.PullRequest.SourceBranch'], 'refs/heads/feature/'),eq(variables['Build.SourceBranch'], 'refs/heads/dev')) }}:
       - group: 'cm-dineros-recaudos-ms-dev'

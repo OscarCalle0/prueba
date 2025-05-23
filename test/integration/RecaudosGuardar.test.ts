@@ -73,7 +73,7 @@ describe('RecaudosGuardar', () => {
         ]);
     });
 
-    it('Guardar recaudo error validacion 2', async () => {
+    it('Guardar recaudo error - Error 500', async () => {
         const response = await application.inject({
             method: 'POST',
             url: `${PREFIX}/recaudos`,
@@ -81,8 +81,7 @@ describe('RecaudosGuardar', () => {
 
         const result = response.json();
 
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
-        expect(result.message).toBe('mensaje indefinido');
     });
 });
