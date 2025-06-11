@@ -15,8 +15,6 @@ describe('Consultar Valores Recaudados', () => {
             url: `${PREFIX}/tipo-recaudo/${id_equipo}/${id_medio_pago}/${fecha_inicial}/${fecha_final}`,
         });
         const result = JSON.parse(response.body);
-        console.log(result);
-        console.log(response);
         expect(response.statusCode).toBe(200);
         expect(result.isError).toBe(false);
         expect(result.data).toBeInstanceOf(Array);
