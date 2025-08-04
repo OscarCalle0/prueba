@@ -1,5 +1,5 @@
 export const guardarRecaudoSchema = {
-    schema:{
+    schema: {
         description: 'Guardar Recaudo',
         tags: ['Recaudo'],
         summary: 'Guardar Recaudo',
@@ -36,7 +36,7 @@ export const guardarRecaudoSchema = {
                     data: { type: 'number', example: 1 },
                     timestamp: { type: 'string', example: '2023-10-12T12:12:12Z' },
                     id: { type: 'string', example: '8e19538b79e' },
-                }
+                },
             },
             '400': {
                 description: 'Valores de entrada incorrecta',
@@ -75,4 +75,4 @@ export const guardarRecaudoSchema = {
             },
         },
     },
-}
+};

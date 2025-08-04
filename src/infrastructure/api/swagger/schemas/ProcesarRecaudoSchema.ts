@@ -1,5 +1,5 @@
 export const procesarRecaudoSchema = {
-    schema:{
+    schema: {
         description: 'Procesar Recaudo',
         tags: ['Recaudos'],
         response: {
@@ -28,4 +28,4 @@ export const procesarRecaudoSchema = {
             },
         },
     },
-}
+};
