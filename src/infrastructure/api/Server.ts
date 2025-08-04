@@ -6,7 +6,7 @@ import { createDependencyContainer } from '@configuration';
 import { dependenciasIdempotencia } from 'cm-idempotencia';
 
 const start = async () => {
-    const port = process.env.PORT || 8080;
+    const port = process.env.PORT ?? 8080;
     try {
         await application.listen(port, '0.0.0.0');
         application.swagger();
