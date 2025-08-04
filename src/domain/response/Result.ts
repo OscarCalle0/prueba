@@ -11,7 +11,7 @@ export class Result {
         const fechaActual = new Date();
         return {
             isError: false,
-            data: data || null,
+            data: data ?? null,
             timestamp: new Date(fechaActual.toLocaleString('en-US', { timeZone: 'America/Bogota' })),
         };
     }

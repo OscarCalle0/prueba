@@ -114,7 +114,7 @@ export class RecaudosDao {
             })
             .catch((error) => {
                 console.error('error', JSON.stringify(error));
-                throw new PostgresError(error.code, error?.data?.error || error.message);
+                throw new PostgresError(error.code, error?.data?.error ?? error.message);
             });
         return idTransaccion;
     }
@@ -183,7 +183,7 @@ export class RecaudosDao {
             )
             .catch((error) => {
                 console.error('error', JSON.stringify(error));
-                throw new PostgresError(error.code, error?.data?.error || error.message);
+                throw new PostgresError(error.code, error?.data?.error ?? error.message);
             });
     }
 }

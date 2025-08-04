@@ -12,7 +12,7 @@ const getConnectionParameters = (db: string): IConnectionParameters => {
         testing: {},
         production: {},
     };
-    const DATABASE = DATABASES[NODE_ENV] || DATABASES.development;
+    const DATABASE = DATABASES[NODE_ENV] ?? DATABASES.development;
     const CONEXION: IDataBase<IConnectionParameters> = {
         public: { ...CLOUD_CONNECTION_PARAMETERS, ...DATABASE },
     };
@@ -25,7 +25,7 @@ const getCMConexion = (db: string): IConnectionParameters => {
         testing: {},
         production: {},
     };
-    const DATABASE = DATABASES[NODE_ENV] || DATABASES.development;
+    const DATABASE = DATABASES[NODE_ENV] ?? DATABASES.development;
     const CONEXION: IDataBase<IConnectionParameters> = {
         public: { ...CM_CONNECTION_PARAMETERS, ...DATABASE },
     };
@@ -38,7 +38,7 @@ const getReplicaConexion = (db: string): IConnectionParameters => {
         testing: {},
         production: {},
     };
-    const DATABASE = DATABASES[NODE_ENV] || DATABASES.development;
+    const DATABASE = DATABASES[NODE_ENV] ?? DATABASES.development;
     const CONEXION: IDataBase<IConnectionParameters> = {
         public: { ...CLOUD_CONNECTION_PARAMETERS_REPLICA, ...DATABASE },
     };

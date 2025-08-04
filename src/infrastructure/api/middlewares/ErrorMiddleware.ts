@@ -6,10 +6,10 @@ const buildErrorResponse = (error: FastifyError, cause?: string, statusCode?: nu
     return {
         isError: true,
         message: error.message,
-        code: error.code || errorCode,
-        cause: cause || error.stack,
+        code: error.code ?? errorCode,
+        cause: cause ?? error.stack,
         timestap: new Date(fechaActual.toLocaleString('en-US', { timeZone: 'America/Bogota' })),
-        statusCode: statusCode || error.statusCode,
+        statusCode: statusCode ?? error.statusCode,
     };
 };
 
@@ -25,7 +25,7 @@ const translateError = (error: FastifyError) => {
 export const errorHandler = (application: FastifyInstance): void => {
     application.setErrorHandler((error, req, reply) => {
         const exception = translateError(error);
-        reply.statusCode = exception?.statusCode || 500;
+        reply.statusCode = exception?.statusCode ?? 500;
         reply.send({ ...exception, id: req.id });
     });
 };

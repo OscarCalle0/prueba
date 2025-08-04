@@ -10,7 +10,7 @@ export const PG_CONECTION: IConnectionParameters = {
 
 export const CLOUD_CONNECTION_PARAMETERS: IConnectionParameters = {
     ...PG_CONECTION,
-    port: parseInt(process.env?.POSTGRES_PORT || '5432'),
+    port: parseInt(process.env?.POSTGRES_PORT ?? '5432'),
     host: process.env.POSTGRES_HOST,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASS,
@@ -19,7 +19,7 @@ export const CLOUD_CONNECTION_PARAMETERS: IConnectionParameters = {
 
 export const CM_CONNECTION_PARAMETERS: IConnectionParameters = {
     ...PG_CONECTION,
-    port: parseInt(process.env?.CM_PORT || '5432'),
+    port: parseInt(process.env?.CM_PORT ?? '5432'),
     host: process.env.CM_HOST,
     user: process.env.CM_USER,
     password: process.env.CM_PASS,
@@ -28,9 +28,9 @@ export const CM_CONNECTION_PARAMETERS: IConnectionParameters = {
 
 export const CLOUD_CONNECTION_PARAMETERS_REPLICA: IConnectionParameters = {
     ...PG_CONECTION,
-    port: parseInt(process.env?.POSTGRES_REPLICA_PORT || '5432'),
-    host: process.env.POSTGRES_REPLICA_HOST || process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_REPLICA_USER || process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_REPLICA_PASS || process.env.POSTGRES_PASS,
-    database: process.env.POSTGRES_REPLICA_DATABASE || process.env.POSTGRES_DATABASE,
+    port: parseInt(process.env?.POSTGRES_REPLICA_PORT ?? '5432'),
+    host: process.env.POSTGRES_REPLICA_HOST ?? process.env.POSTGRES_HOST,
+    user: process.env.POSTGRES_REPLICA_USER ?? process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_REPLICA_PASS ?? process.env.POSTGRES_PASS,
+    database: process.env.POSTGRES_REPLICA_DATABASE ?? process.env.POSTGRES_DATABASE,
 };
