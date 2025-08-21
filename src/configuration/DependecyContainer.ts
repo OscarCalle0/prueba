@@ -13,6 +13,7 @@ import { pubsub } from '@infrastructure/pubsub/pubsub/config/PubSubConfig';
 import { BolsilloPubsub } from '@infrastructure/pubsub/pubsub';
 import { IBolsilloPubSubRepository } from '@infrastructure/pubsub/IBolsilloPubSub';
 import { Redis } from '@infrastructure/repositories/redis';
+import { RecursosApiClient } from '@infrastructure/api-recursos';
 
 export const DEPENDENCY_CONTAINER = new Container();
 
@@ -32,4 +33,5 @@ export const createDependencyContainer = (): void => {
     DEPENDENCY_CONTAINER.bind<PubSub>(TYPES.PubSub).toConstantValue(pubsub);
     DEPENDENCY_CONTAINER.bind<IBolsilloPubSubRepository>(TYPES.PubSubBolsillo).to(BolsilloPubsub).inSingletonScope();
     DEPENDENCY_CONTAINER.bind(TYPES.RedisClient).to(Redis).inSingletonScope();
+    DEPENDENCY_CONTAINER.bind(RecursosApiClient).toSelf().inSingletonScope();
 };
