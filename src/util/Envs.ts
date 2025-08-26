@@ -8,6 +8,7 @@ export const HOST = process.env.HOST ?? 'localhost';
 
 export const TRANSACCIONES_URL =
     process.env.TRANSACCIONES_URL ?? 'https://apiv2-dev.coordinadora.com/dineros/cm-dineros-transacciones/';
+export const CONSULTA_RECURSOS_URL = process.env.CONSULTA_RECURSOS_URL;
 
 export const REDIS_HOST = process.env.REDIS_HOST ?? 'localhost';
 

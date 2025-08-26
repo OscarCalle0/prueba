@@ -17,6 +17,8 @@ import { IValoresRecaudadosOut } from '@application/data/out/IValoresRecaudadosO
 import { IErrorBolsilloDataIn } from '@application/data/in/IErrorBolsilloDataIn';
 import { Redis } from '@infrastructure/repositories/redis';
 import { IBolsilloPubSubRepository } from '@infrastructure/pubsub/IBolsilloPubSub';
+import { RecursosApiClient } from '@infrastructure/api-recursos';
+import { IGuiasTipoRecaudoResponse } from '@infrastructure/repositories/postgres/dao/interfaces/IGuiasTipoRecaudoResponse';
 
 @injectable()
 export class RecaudosAppService {
@@ -28,6 +30,7 @@ export class RecaudosAppService {
     private readonly ID_TIPO_NOVEDAD_RECAUDO = 3;
     private readonly redisClient: Redis = DEPENDENCY_CONTAINER.get(TYPES.RedisClient);
     private readonly pubsubPublisher = DEPENDENCY_CONTAINER.get<IBolsilloPubSubRepository>(TYPES.PubSubBolsillo);
+    private readonly consultaRecursosApi = DEPENDENCY_CONTAINER.get(RecursosApiClient);
 
     async guardarRecaudo(data: IRecaudosIn): Promise<Response<number | null>> {
         const key = `GUARDAR RECAUDO ${data.recaudo_id}, Guias => ${data.recursos.length}`;
@@ -94,7 +97,24 @@ export class RecaudosAppService {
     async consultarGuiasRecaudadas(data: ITipoRecaudoConsulta): Promise<Response<IGuiasTipoRecaudoOut[] | null>> {
         if (!data.fecha_final) data.fecha_final = data.fecha_inicial;
         const resultGuiasTipoRecaudo = await this.recaudosDao.consultarGuiasTipoRecaudo(data);
-        return Result.ok(resultGuiasTipoRecaudo);
+        const respustaRecurso = await this.consultarNombreResponsable(resultGuiasTipoRecaudo);
+        return Result.ok(respustaRecurso);
+    }
+
+    async consultarNombreResponsable(
+        guiasTipoRecaudo: IGuiasTipoRecaudoResponse[] | null,
+    ): Promise<IGuiasTipoRecaudoOut[] | null> {
+        if (guiasTipoRecaudo === null) return guiasTipoRecaudo;
+        const asignarNombreRecurso = await Promise.all(
+            guiasTipoRecaudo.map(async (guia) => {
+                const recurso = await this.consultaRecursosApi.getRecursosApiClient(guia.id_responsable);
+                return {
+                    ...guia,
+                    nombre_responsable: recurso.data ?? 'null',
+                };
+            }),
+        );
+        return asignarNombreRecurso;
     }
 
     async guardarErrorBolsillo(data: IErrorBolsilloDataIn): Promise<Response<number | null>> {
