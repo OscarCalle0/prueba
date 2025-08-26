@@ -113,8 +113,8 @@ export class RecaudosDao {
                 }
             })
             .catch((error) => {
-                console.log('error', JSON.stringify(error));
-                throw new PostgresError(error.code, error?.data?.error || error.message);
+                console.error('error', JSON.stringify(error));
+                throw new PostgresError(error.code, error?.data?.error ?? error.message);
             });
         return idTransaccion;
     }
@@ -145,18 +145,21 @@ export class RecaudosDao {
     public async consultarGuiasTipoRecaudo(data: ITipoRecaudoConsulta): Promise<IGuiasTipoRecaudoResponse[] | null> {
         try {
             const query = `
-            SELECT re2.identificador_recurso, gr.valor, tr.abreviado
+            SELECT re2.identificador_recurso, gr.valor, tr.abreviado, re3.identificador_recurso as id_responsable
             FROM recaudos r
             INNER JOIN medios_pagos mp ON r.id_medio_pago = mp.id_medio_pago
             INNER JOIN recaudos_recursos rr ON r.id_recaudo = rr.id_recaudo
+            INNER JOIN recaudos_recursos rr2 ON r.id_recaudo = rr2.id_recaudo
             INNER JOIN recursos re ON rr.id_recurso = re.id_recurso
             INNER JOIN guias_recaudadas gr ON r.id_recaudo = gr.id_recaudo
             INNER JOIN recursos re2 ON gr.id_recurso = re2.id_recurso
+            INNER JOIN recursos re3 ON rr2.id_recurso = re3.id_recurso
             INNER JOIN tipos_recaudos tr ON r.id_tipo_recaudo = tr.id_tipo_recaudo
             WHERE re.identificador_recurso = $1
             AND (r.fecha_hora_recaudo::date BETWEEN $2 AND $3)
             AND r.id_medio_pago = $4
-            GROUP BY r.id_recaudo, re2.identificador_recurso, gr.valor, tr.abreviado
+            AND re3.id_tipo_recurso = 2
+            GROUP BY r.id_recaudo, re2.identificador_recurso, gr.valor, tr.abreviado, re3.identificador_recurso
             ORDER BY re2.identificador_recurso ASC;
             `;
             const response = await this.replicaDB.manyOrNone<IGuiasTipoRecaudoResponse>(query, [
@@ -182,8 +185,8 @@ export class RecaudosDao {
                 id_transaccion,
             )
             .catch((error) => {
-                console.log('error', JSON.stringify(error));
-                throw new PostgresError(error.code, error?.data?.error || error.message);
+                console.error('error', JSON.stringify(error));
+                throw new PostgresError(error.code, error?.data?.error ?? error.message);
             });
     }
 }

@@ -20,6 +20,7 @@ export const insertarRecursos = (bdmen: IMemoryDb): void => {
 	    (1,'1234-1'),
         (1, '019165'),
         (1, '3024-1'),
+        (2, '10141'),
         (6, '1');`);
 };
 
@@ -144,7 +145,10 @@ export const insertarRecaudosRecursos = (bdmen: IMemoryDb): void => {
         VALUES
         ('prueba217', 1),
         ('prueba218', 1),
-        ('prueba219', 1);`);
+        ('prueba219', 1),
+        ('prueba217', 4),
+        ('prueba218', 4),
+        ('prueba219', 4);`);
 };
 
 export const insertarGuiasRecaudadas = (bdmen: IMemoryDb): void => {

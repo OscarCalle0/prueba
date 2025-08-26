@@ -1,5 +1,5 @@
 export const errorBolsilloSchema = {
-    schema:{
+    schema: {
         description: 'Guardar Recaudo',
         tags: ['Recaudo'],
         summary: 'Guardar Recaudo',
@@ -11,17 +11,17 @@ export const errorBolsilloSchema = {
                     properties: {
                         data: {
                             type: 'string',
-                            example: 'ewoJIm9wZXJhY2lvbiI6InJlY2F1ZG8iLAoJImlkX3RyYW5zYWNjaW9uIjo2Cn0='
+                            example: 'ewoJIm9wZXJhY2lvbiI6InJlY2F1ZG8iLAoJImlkX3RyYW5zYWNjaW9uIjo2Cn0=',
                         },
                         publishTime: {
                             type: 'string',
-                            example: '1734644732541'
+                            example: '1734644732541',
                         },
                         messageId: {
                             type: 'string',
-                            example: '21213121'
-                        }
-                    }
+                            example: '21213121',
+                        },
+                    },
                 },
             },
         },
@@ -34,7 +34,7 @@ export const errorBolsilloSchema = {
                     data: { type: 'number', example: 1 },
                     timestamp: { type: 'string', example: '2023-10-12T12:12:12Z' },
                     id: { type: 'string', example: '8e19538b79e' },
-                }
+                },
             },
             '400': {
                 description: 'Valores de entrada incorrecta',
@@ -52,7 +52,7 @@ export const errorBolsilloSchema = {
             '500': {
                 description: 'Error interno del servidor',
                 type: 'object',
-                properties: {    
+                properties: {
                     isError: { type: 'boolean', example: true },
                     message: { type: 'string', example: 'Error interno del servidor' },
                     code: { type: 'string', example: 'SERVER_ERROR' },

@@ -12,7 +12,7 @@ export abstract class Exception {
         this.message = message;
         this.code = code;
         this.statusCode = statusCode;
-        this.cause = cause || null;
+        this.cause = cause ?? null;
     }
 }
 

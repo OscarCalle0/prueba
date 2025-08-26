@@ -25,7 +25,7 @@ export const middlewares = (application: FastifyInstance): void => {
         const { id, method, url, headers, params, query, body } = req;
         const isPubSub = await validatePubSub(body);
         if (NODE_ENV !== 'test') {
-            console.log(
+            console.warn(
                 JSON.stringify({
                     application: process.env.SERVICE_NAME ?? 'SERVICE_NAME NOT FOUND',
                     id,
