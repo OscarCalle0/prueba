@@ -19,6 +19,7 @@ import { Redis } from '@infrastructure/repositories/redis';
 import { IBolsilloPubSubRepository } from '@infrastructure/pubsub/IBolsilloPubSub';
 import { RecursosApiClient } from '@infrastructure/api-recursos';
 import { IGuiasTipoRecaudoResponse } from '@infrastructure/repositories/postgres/dao/interfaces/IGuiasTipoRecaudoResponse';
+import { StatusCode } from '@domain/exceptions';
 
 @injectable()
 export class RecaudosAppService {
@@ -50,9 +51,19 @@ export class RecaudosAppService {
     }
 
     async procesarRecaudo(): Promise<Response<boolean | null>> {
+        const CENTESIMA = 100;
         const recaudos = await this.firestoreRepository.getDataRecaudo();
         for (const recaudo of recaudos) {
             await this.firestoreRepository.updateRecaudoEstado(recaudo.recaudo_id, '', 'procesando');
+
+            const conDecimalesError = recaudo.valor_recaudo
+                ? Math.floor(recaudo.valor_recaudo * CENTESIMA) !== recaudo.valor_recaudo * CENTESIMA
+                : false;
+
+            if (conDecimalesError) {
+                this.gestionarNovedadDecimalesConError(recaudo);
+                return Result.okBool(true);
+            }
             delete recaudo.estado;
             delete recaudo.ultimo_error;
             const responseApiTransacciones = await this.recaudoApi.postRecaudosTarea(recaudo);
@@ -65,11 +76,21 @@ export class RecaudosAppService {
         return Result.okBool(true);
     }
 
+    async gestionarNovedadDecimalesConError(recaudo: IFirestoreStageResponse) {
+        const novedad: INovedades = {
+            id_tipo_novedad: this.ID_TIPO_NOVEDAD_RECAUDO,
+            detalle: JSON.stringify(recaudo),
+            descripcion: 'Valor del recaudo con mas de dos decimales',
+        };
+        await this.novedadesRepository.insertar(novedad);
+        await this.firestoreRepository.deleteRecaudo(recaudo.recaudo_id);
+    }
+
     async gestionarErrorApiTransacciones(
         recaudo: IFirestoreStageResponse,
         responseApiTransacciones: IResponseAliados,
     ): Promise<void> {
-        if (responseApiTransacciones.statusCode < 500) {
+        if (+responseApiTransacciones.statusCode < +StatusCode.INTERNAL_ERROR) {
             const novedad: INovedades = {
                 id_tipo_novedad: this.ID_TIPO_NOVEDAD_RECAUDO,
                 detalle: JSON.stringify(recaudo),
