@@ -1,4 +1,4 @@
-/*import MockFirebase from 'mock-cloud-firestore';
+import MockFirebase from 'mock-cloud-firestore';
 import { FirestoreMockDataTareaRecaudo } from '../mocks/data/';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
@@ -6,13 +6,8 @@ import { mockApiAxios } from '../jest.setup';
 import { PREFIX } from '@util';
 import { application } from '@infrastructure/api/Application';
 import { DBMemRepositoryTestFactory } from '../mocks/factories';
-*/
-describe('Crear Tarea Recaudo', () => {
 
-    it('Crear Tarea con Fallo - Status 200', async () => {
-        expect(0).toEqual(0);
-    })
-    /*
+describe('Crear Tarea Recaudo', () => {
     const MENSAJE_ERROR = 'El Equipo 100-100 no existe';
     it('Crear Tarea con Fallo - Status 200', async () => {
         // Arrange
@@ -56,5 +51,4 @@ describe('Crear Tarea Recaudo', () => {
         expect(resultadoAntes.length).toBe(0);
         expect(resultadoDespues.length).toBe(1);
     });
-    */
 });

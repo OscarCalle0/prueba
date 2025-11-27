@@ -1,13 +1,8 @@
-/*import { application } from '@infrastructure/api/Application';
+import { application } from '@infrastructure/api/Application';
 import { PREFIX } from '@util';
 import 'reflect-metadata';
-*/
 
 describe('RecaudosGuardar', () => {
-    it('Guardar recaudo exitoso', async () => {
-        expect(0).toEqual(0);
-    });
-    /*
     const payload = {
         recaudo_id: 'vmashcovu',
         terminal: 12,
@@ -89,5 +84,4 @@ describe('RecaudosGuardar', () => {
         expect(response.statusCode).toBe(500);
         expect(result.isError).toBe(true);
     });
-    */
 });

@@ -1,4 +1,4 @@
-/*import MockFirebase from 'mock-cloud-firestore';
+import MockFirebase from 'mock-cloud-firestore';
 import { FirestoreMockDataTareaRecaudo } from '../mocks/data';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
@@ -6,13 +6,8 @@ import { mockApiAxios } from '../jest.setup';
 import { PREFIX } from '@util';
 import { application } from '@infrastructure/api/Application';
 import { DBMemRepositoryTestFactory } from '../mocks/factories';
-*/
-describe('Crear Tarea Recaudo', () => {
 
-    it('Crear Tarea con Fallo 500 - Status 200', async () => {
-        expect(0).toEqual(0);
-    })
-    /*
+describe('Crear Tarea Recaudo', () => {
     const MENSAJE_ERROR = 'Error de Base de datos';
     it('Crear Tarea con Fallo 500 - Status 200', async () => {
         // Arrange
@@ -60,5 +55,4 @@ describe('Crear Tarea Recaudo', () => {
         expect(recaudo_temporal.docs[0].data().ultimo_error).toBe(MENSAJE_ERROR);
         expect(recaudo_temporal.docs[1].data().estado).toBe('pendiente');
     });
-    */
 });

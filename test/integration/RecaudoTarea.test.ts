@@ -1,4 +1,3 @@
-/*
 import MockFirebase from 'mock-cloud-firestore';
 import { FirestoreMockDataTareaRecaudo } from '../mocks/data/';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
@@ -6,13 +5,8 @@ import { Firestore } from '@google-cloud/firestore';
 import { mockApiAxios } from '../jest.setup';
 import { PREFIX } from '@util';
 import { application } from '@infrastructure/api/Application';
-*/
-describe('Crear Tarea Recaudo', () => {
 
-    it('Crear Tarea - Status 200', async () => {
-        expect(0).toEqual(0);
-    })
-    /*
+describe('Crear Tarea Recaudo', () => {
     it('Crear Tarea - Status 200', async () => {
         // Arrange
         const mockfirebase = new MockFirebase(FirestoreMockDataTareaRecaudo);
@@ -69,18 +63,17 @@ describe('Crear Tarea Recaudo', () => {
         /* No se debe llamar a ningún API Externo ya que no existen recaudos pendientes.
            deebido a que fueron procesados exitosamente en el test anterior.
         */
-/*
-    // Act
-    const response = await application.inject({
-        method: 'GET',
-        url: `${PREFIX}/recaudos/tarea`,
-    });
 
-    const resultado = JSON.parse(response.body);
-    // Assert
-    expect(response.statusCode).toBe(200);
-    expect(resultado.isError).toBe(false);
-    expect(resultado.data).toBe(true);
-});
-*/
+        // Act
+        const response = await application.inject({
+            method: 'GET',
+            url: `${PREFIX}/recaudos/tarea`,
+        });
+
+        const resultado = JSON.parse(response.body);
+        // Assert
+        expect(response.statusCode).toBe(200);
+        expect(resultado.isError).toBe(false);
+        expect(resultado.data).toBe(true);
+    });
 });
