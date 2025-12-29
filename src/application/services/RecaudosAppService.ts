@@ -51,13 +51,13 @@ export class RecaudosAppService {
     }
 
     async procesarRecaudo(): Promise<Response<boolean | null>> {
-        const CENTESIMA = 100;
         const recaudos = await this.firestoreRepository.getDataRecaudo();
+        const MAXIMO_DECIMALES = 2;
         for (const recaudo of recaudos) {
             await this.firestoreRepository.updateRecaudoEstado(recaudo.recaudo_id, '', 'procesando');
 
             const conDecimalesError = recaudo.valor_recaudo
-                ? Math.floor(recaudo.valor_recaudo * CENTESIMA) !== recaudo.valor_recaudo * CENTESIMA
+                ? Number(recaudo.valor_recaudo.toFixed(MAXIMO_DECIMALES)) !== recaudo.valor_recaudo
                 : false;
 
             if (conDecimalesError) {
